@@ -1,0 +1,969 @@
+% Chapter 5: What Is Information? (Shannon)
+% Part II: Information
+
+\chapter{What Is Information?}
+\label{ch:information}
+
+%======================================================================
+% SECTION 1: THE QUESTION
+%======================================================================
+\section{The Question: What Problem Was Humanity Trying to Solve?}
+\label{sec:information:question}
+
+By the 1940s, communication engineering faced a crisis. Telephone networks were expanding, but engineers lacked a \emph{theory} of communication. They could measure voltage, current, power — but not \emph{information}. How much ``information'' does a telegraph signal carry? A telephone conversation? A television broadcast? Without a unit of information, you cannot answer:
+
+\begin{itemize}
+\item What is the maximum rate of reliable communication over a noisy channel?
+\item How much can you compress a message without losing meaning?
+\item How do you compare different communication systems (telegraph vs. radio vs. wire)?
+\end{itemize}
+
+Before Shannon, each communication medium was studied in isolation. Telegraph engineers optimized dot-dash timing. Telephone engineers worried about voice clarity over long lines. Radio engineers fought atmospheric noise. There was no common language — no way to say ``a telephone call and a page of text carry the same amount of information.'' The field needed exactly what thermodynamics had found decades earlier: a universal measure.
+
+\begin{question}What exactly is information? Can it be measured, like mass or energy?\end{question}
+
+\begin{highlightbox}[The Core Question]Is there a universal, quantitative measure of information — independent of meaning, language, or medium — that captures the fundamental limits of communication and compression?\end{highlightbox}
+
+\begin{connectionbox}[Connection to Thermodynamics]
+The predicament was strikingly similar to 19th-century thermodynamics. Engineers could build steam engines but had no theory of efficiency. Carnot's insight — that efficiency depends only on temperature difference — was purely abstract. Shannon's abstraction was equally radical: information is not about what a message says, but about how many possibilities it eliminates.
+
+\end{connectionbox}
+
+%======================================================================
+% SECTION 2: WHY IT SEEMED IMPOSSIBLE
+%======================================================================
+\section{Why It Seemed Impossible}
+\label{sec:information:impossible}
+
+Before Shannon, ``information'' was synonymous with ``meaning.'' A sentence in English carries information; a random string of letters does not. The idea that \emph{meaning is irrelevant} to measuring information was heretical:
+
+\begin{enumerate}
+\item \textbf{The Meaning Trap:} Everyone assumed information = semantic content. A love letter and a spam email of the same length were thought to contain different ``amounts of information.'' How could you measure something without understanding it?
+
+\item \textbf{The Continuous vs. Discrete Gap:} Telegraph signals are discrete (dots/dashes). Telephone signals are continuous (voltage waves). Radio is electromagnetic waves. No unified framework existed. A theory that handled discrete and continuous sources with the same mathematics seemed impossible.
+
+\item \textbf{Noise as Enemy:} Noise was seen as a nuisance to be minimized, not a fundamental parameter that \emph{defines} channel capacity. The idea that noise \emph{sets a hard limit} on communication rate was unknown. Engineers assumed that with enough power, you could always overcome noise — but Shannon showed this is false when bandwidth is finite.
+
+\item \textbf{Compression as Heuristic:} Morse code assigned short codes to frequent letters — a clever trick, not a mathematical principle. No one knew the theoretical limit of compression. Braille, shorthand, and telegraph codes were all optimized by trial and error, not by theory.
+
+\item \textbf{No Notion of Channel-Pair Matching:} A radio channel is good for analog broadcasts but terrible for digital ones — unless you use the right code. Before Shannon, there was no way to ask: ``given this channel, what is the best possible signaling scheme?''
+\end{enumerate}
+
+\begin{roadblockbox}[The Meaning Barrier]
+``Information is what reduces uncertainty.'' This sounds circular. Uncertainty \emph{about what}? The recipient's knowledge? The sender's intent? The state of the world? Shannon's key contribution was to define uncertainty \emph{mathematically} — without reference to any knower.
+
+\end{roadblockbox}
+
+\begin{roadblockbox}[The Circularity Objection]
+Critics objected: ``If information is defined as what reduces uncertainty, and uncertainty is defined by information content, isn't this circular?'' The answer is no: uncertainty is defined by a probability distribution over possible messages — a purely mathematical object. The receiver's subjective state never enters the definition.
+
+\end{roadblockbox}
+
+%======================================================================
+% SECTION 3: HISTORICAL CONTEXT
+%======================================================================
+\section{Historical Context: What Was Known at the Time}
+\label{sec:information:context}
+
+\begin{historicalbox}[Claude Shannon (1916--2001)]
+Shannon was born in Petoskey, Michigan, and grew up in Gaylord. He built model airplanes, a telegraph system to a friend's house a mile away, and a barbed-wire telephone line. At the University of Michigan (1932--1936), he studied electrical engineering and mathematics. His 1937 MIT Master's thesis — ``A Symbolic Analysis of Relay and Switching Circuits'' — founded digital circuit design (Boolean algebra = switching circuits). Von Neumann called it ``one of the most important master's theses ever written.'' His 1940 PhD: ``An Algebra for Theoretical Genetics'' — applying algebra to population genetics. At Bell Labs (1941--1972), he worked on cryptography (with Turing, 1943), fire control, and communication theory.
+
+Beyond his technical work, Shannon was a playful inventor. He built a maze-solving mouse (``Theseus''), a juggling machine, the ``Ultimate Machine'' (a box with a switch that turns itself off), a Roman numeral calculator (THROBAC), and a flame-throwing trumpet. He rode a unicycle through Bell Labs hallways while juggling. His playful spirit was inseparable from his creativity.
+
+1948: ``A Mathematical Theory of Communication'' — the founding paper of information theory. Vannevar Bush described it as ``one of the greatest works of the century.''
+
+\end{historicalbox}
+
+Key precursors:
+
+\begin{itemize}
+\item \textbf{1920s:} Nyquist (telegraph speed), Hartley (``amount of information'' $\propto \log(\text{number of symbols})$).
+\item \textbf{1928:} Hartley's formula: $H = n \log s$ ($n$ symbols, $s$ choices each) — but only for \emph{equiprobable} symbols, no noise.
+\item \textbf{1930s:} Wiener (cybernetics, feedback, stochastic processes) — Wiener's work on prediction theory heavily influenced Shannon's approach to noise.
+\item \textbf{1940:} Shannon's PhD thesis on genetics — showing his pattern of applying mathematical tools from one field to another.
+\item \textbf{1943:} Shannon meets Turing at Bell Labs; they discuss ``machines that think'' and cryptography. They shared tea and discussed the Turing machine, leading Shannon to think about communication between machines.
+\item \textbf{1948:} Shannon's two-part paper in \emph{Bell System Technical Journal} — 55 pages that created a field. It appeared in July and October 1948. By 1949, Warren Weaver had popularized it in a book version that added the famous diagram: Source $\to$ Transmitter $\to$ Channel $\to$ Receiver $\to$ Destination.
+\end{itemize}
+
+\begin{connectionbox}[Connection to Chapter 1]
+Shannon, like Turing, analyzed a human activity (communication) and extracted a mathematical essence. Turing asked ``What is a mechanical procedure?'' Shannon asked ``What is a message?'' Both answered by \emph{stripping away meaning} — syntax without semantics.
+
+\end{connectionbox}
+
+\begin{highlightbox}[Shannon's Personality]
+Shannon was notoriously uninterested in fame and career-building. After his 1948 paper made him a celebrity, he often declined speaking invitations. He preferred tinkering in his basement workshop — building mechanical mice, juggling machines, and a computer that played chess in Roman numerals. When asked about his greatest contribution, he once said the relay-switching thesis was his favorite, not information theory. His lesson: pursue what fascinates you, not what others admire.
+
+\end{highlightbox}
+
+%======================================================================
+% SECTION 4: THE MENTAL LEAP
+%======================================================================
+\section{The Mental Leap: The Creative Insight That Changed Everything}
+\label{sec:information:leap}
+
+\begin{mentalLeap}[The Insight]Information is not \emph{meaning} — it is \emph{choice}. The information content of a message is the logarithm of the number of \emph{equally likely alternatives} it selects from. A message that eliminates more uncertainty carries more information. Meaning is irrelevant; only the \emph{probability distribution} of possible messages matters.\end{mentalLeap}
+
+This leap had three revolutionary components:
+
+\begin{enumerate}
+\item \textbf{Meaning Is Explicitly Discarded:} ``The semantic aspects of communication are irrelevant to the engineering problem.'' (Shannon 1948) A random string and a Shakespeare sonnet of the same length have the \emph{same} information content if drawn from the same distribution. This was the most controversial move — and the most productive.
+
+\item \textbf{Entropy as the Measure:} Borrowing from statistical mechanics (Boltzmann, Gibbs), Shannon defined the information of a random variable $X$ with distribution $p(x)$ as:
+\[
+H(X) = -\sum_x p(x) \log p(x)
+\]
+This is the \emph{expected} number of bits needed to encode $X$. It is the unique measure satisfying: continuity (small changes in $p$ produce small changes in $H$), monotonicity (more outcomes $\to$ more entropy), and additivity (independent variables add).
+
+Shannon derived this uniqueness property in Appendix 2 of his 1948 paper. He showed that any function satisfying: (1) $H(p_1,\dots,p_n)$ is continuous in the $p_i$, (2) $H(1/n,\dots,1/n)$ increases with $n$, (3) $H(p_1,\dots,p_n) = H(p_1+\dots+p_k, p_{k+1}+\dots+p_n) + (p_1+\dots+p_k)H(\frac{p_1}{p_1+\dots+p_k},\dots) + \dots$ must have the form $-K\sum p_i\log p_i$. The constant $K$ determines the unit — for $K=1$ with $\log_2$, we get bits.
+
+\item \textbf{Channel Capacity as a Hard Limit:} For a noisy channel with conditional probabilities $p(y|x)$, the maximum rate of reliable communication is:
+\[
+C = \max_{p(x)} I(X;Y) = \max_{p(x)} [H(Y) - H(Y|X)]
+\]
+\textbf{Below $C$:} arbitrarily reliable communication is possible (with coding). \textbf{Above $C$:} impossible. This is the \emph{Channel Coding Theorem} — the central result of information theory.
+\end{enumerate}
+
+\begin{roadblockbox}[Why This Was Shocking]
+Engineers expected a tradeoff curve: more power $\to$ less errors, more bandwidth $\to$ more rate. Shannon proved there is a \emph{cliff}: a sharp threshold $C$. Below it, error $\to$ 0 exponentially with block length. Above it, error $\to$ 1. No gradual degradation. This was the first ``phase transition'' in engineering.
+
+\end{roadblockbox}
+
+\begin{highlightbox}[Hartley's Anticipation]
+In 1928, Ralph Hartley had already proposed that information is $\log s^n = n\log s$ for $s$ symbols transmitted $n$ times. But Hartley assumed all symbols were equally likely — he had no notion of noise, no probability, and no way to handle unequal probabilities. Shannon generalized Hartley's formula by replacing the count of symbols with their probability: $H = -\sum p_i \log p_i$. This one change — from counting to expectation — unlocked everything.
+
+\end{highlightbox}
+
+%======================================================================
+% SECTION 5: THE MATHEMATICS
+%======================================================================
+\section{The Mathematics: Rigorous Development of the Theory}
+\label{sec:information:math}
+
+\subsection{Entropy and Its Properties}
+\label{sec:information:entropy}
+
+\begin{definition}[Entropy]
+For a discrete random variable $X \sim p(x)$:
+\[
+H(X) = -\sum_{x \in \mathcal{X}} p(x) \log_2 p(x) \quad \text{(units: bits)}
+\]
+For continuous $X$ with density $f(x)$: differential entropy $h(X) = -\int f(x) \log f(x) dx$.
+\end{definition}
+
+The logarithm base determines the unit: base 2 gives bits, base $e$ gives nats, base 10 gives dits (decimal digits). In almost all theoretical work, we use bits.
+
+\begin{example}[Binary Entropy]
+For a binary random variable $X \in \{0,1\}$ with $\Pr(X=1)=p$:
+\[
+H_b(p) = -p\log p - (1-p)\log(1-p)
+\]
+This function — the \emph{binary entropy function} — is symmetric about $p=1/2$, concave, and maximized at $p=1/2$ with $H_b(1/2) = 1$ bit. At $p=0$ or $p=1$, $H_b = 0$. The binary entropy function appears throughout information theory.
+\end{example}
+
+\begin{theorem}[Properties of Entropy]
+\label{thm:entropy-properties}
+\begin{enumerate}
+\item $H(X) \ge 0$, with equality iff $X$ is deterministic.
+\item $H(X) \le \log |\mathcal{X}|$, with equality iff $X$ is uniform.
+\item $H(X,Y) = H(X) + H(Y|X) = H(Y) + H(X|Y)$ (chain rule).
+\item $H(X|Y) \le H(X)$, equality iff $X \perp Y$.
+\item $H(f(X)) \le H(X)$ for any function $f$ (processing reduces entropy).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}[Proof of Non-Negativity]
+Since $0 \le p(x) \le 1$, $\log p(x) \le 0$, so $-p(x)\log p(x) \ge 0$ for each $x$. The sum of non-negative terms is non-negative, and the sum is zero iff each term is zero, which requires each $p(x) \in \{0,1\}$ — i.e., $X$ is deterministic.
+\end{proof}
+
+\begin{proof}[Proof of the Upper Bound]
+We maximize $H(X)$ subject to $\sum_x p(x)=1$ using Lagrange multipliers. Let
+\[
+L = -\sum_x p(x)\log p(x) + \lambda\left(\sum_x p(x)-1\right)
+\]
+Taking derivative: $\partial L/\partial p(x) = -\log p(x) - 1 + \lambda = 0$, so $p(x) = 2^{\lambda-1}$ — all $p(x)$ equal. The uniform distribution $p(x) = 1/|\mathcal{X}|$ gives $H(X) = \log |\mathcal{X}|$. To verify this is a maximum, note that $H$ is concave in $p$ (the Hessian is negative definite).
+\end{proof}
+
+\begin{proof}[Proof of the Chain Rule]
+\[
+H(X,Y) = -\sum_{x,y} p(x,y) \log p(x,y)
+= -\sum_{x,y} p(x,y) \log[p(x)p(y|x)]
+\]
+\[
+= -\sum_{x,y} p(x,y)\log p(x) - \sum_{x,y} p(x,y)\log p(y|x)
+\]
+\[
+= -\sum_x p(x)\log p(x) - \sum_{x,y} p(x,y)\log p(y|x) = H(X) + H(Y|X).
+\]
+\end{proof}
+
+\begin{definition}[Joint Entropy and Conditional Entropy]
+Joint entropy: $H(X,Y) = -\sum_{x,y} p(x,y)\log p(x,y)$.
+Conditional entropy: $H(Y|X) = -\sum_{x,y} p(x,y)\log p(y|x) = \mathbb{E}_x[H(Y|X=x)]$.
+\end{definition}
+
+\begin{definition}[Mutual Information]
+\[
+I(X;Y) = H(X) - H(X|Y) = H(Y) - H(Y|X) = \sum_{x,y} p(x,y) \log \frac{p(x,y)}{p(x)p(y)}
+\]
+Measures reduction in uncertainty about $X$ from observing $Y$. $I(X;Y) \ge 0$, equality iff $X \perp Y$.
+\end{definition}
+
+\begin{proof}[Proof of Non-Negativity of Mutual Information]
+By the log-sum inequality (or Gibbs' inequality):
+\[
+I(X;Y) = D(p(x,y) \| p(x)p(y)) \ge 0
+\]
+where $D(p\|q) = \sum p\log(p/q)$ is the Kullback--Leibler divergence. Equality holds iff $p(x,y) = p(x)p(y)$ for all $x,y$, i.e., $X \perp Y$.
+\end{proof}
+
+\subsection{The Asymptotic Equipartition Property}
+\label{sec:information:aep}
+
+The AEP is the information-theoretic analog of the law of large numbers. It states that for i.i.d.\ sequences, the log-probability of a sequence converges to the entropy.
+
+\begin{theorem}[Asymptotic Equipartition Property]
+Let $X_1,X_2,\dots,X_n$ be i.i.d.\ $\sim p(x)$. Then:
+\[
+-\frac{1}{n}\log p(X_1,\dots,X_n) \xrightarrow{p} H(X)
+\]
+where $\xrightarrow{p}$ denotes convergence in probability.
+\end{theorem}
+
+\begin{proof}
+Since $X_i$ are i.i.d., $\log p(X_1,\dots,X_n) = \sum_{i=1}^n \log p(X_i)$. By the weak law of large numbers:
+\[
+-\frac{1}{n}\log p(X_1,\dots,X_n) = -\frac{1}{n}\sum_{i=1}^n \log p(X_i) \xrightarrow{p} -\mathbb{E}[\log p(X)] = H(X).
+\]
+\end{proof}
+
+\begin{definition}[Typical Set]
+The typical set $A_\epsilon^{(n)}$ is the set of sequences $x^n \in \mathcal{X}^n$ such that:
+\[
+\left| -\frac{1}{n}\log p(x^n) - H(X) \right| < \epsilon.
+\]
+\end{definition}
+
+\begin{theorem}[Properties of the Typical Set]
+Let $A_\epsilon^{(n)}$ be the typical set. Then:
+\begin{enumerate}
+\item $\Pr(A_\epsilon^{(n)}) > 1 - \epsilon$ for sufficiently large $n$.
+\item $|A_\epsilon^{(n)}| \le 2^{n(H(X)+\epsilon)}$.
+\item $|A_\epsilon^{(n)}| \ge (1-\epsilon) 2^{n(H(X)-\epsilon)}$ for sufficiently large $n$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Property (1) follows directly from the AEP (convergence in probability). For (2), note that for any $x^n \in A_\epsilon^{(n)}$, $p(x^n) \ge 2^{-n(H(X)+\epsilon)}$, so:
+\[
+1 \ge \sum_{x^n \in A_\epsilon^{(n)}} p(x^n) \ge |A_\epsilon^{(n)}| \cdot 2^{-n(H(X)+\epsilon)},
+\]
+hence $|A_\epsilon^{(n)}| \le 2^{n(H(X)+\epsilon)}$. For (3), for sufficiently large $n$, $\Pr(A_\epsilon^{(n)}) > 1-\epsilon$, and for $x^n \in A_\epsilon^{(n)}$, $p(x^n) \le 2^{-n(H(X)-\epsilon)}$, so:
+\[
+1-\epsilon < \Pr(A_\epsilon^{(n)}) = \sum_{x^n \in A_\epsilon^{(n)}} p(x^n) \le |A_\epsilon^{(n)}| \cdot 2^{-n(H(X)-\epsilon)},
+\]
+hence $|A_\epsilon^{(n)}| \ge (1-\epsilon) 2^{n(H(X)-\epsilon)}$.
+\end{proof}
+
+\subsection{Jensen's Inequality and Concavity of Entropy}
+\label{sec:information:jensen}
+
+Jensen's inequality is the workhorse of information theory. It underlies almost every convexity argument.
+
+\begin{theorem}[Jensen's Inequality]
+For a convex function $f$, $f(\mathbb{E}[X]) \le \mathbb{E}[f(X)]$. For a concave function $f$, $f(\mathbb{E}[X]) \ge \mathbb{E}[f(X)]$.
+\end{theorem}
+
+\begin{proof}[Proof that Entropy Is Concave]
+The function $f(p) = -p\log p$ is concave in $p$ (its second derivative is $-1/(p\ln 2) < 0$). Entropy is the sum of concave functions, hence concave. This means mixing distributions reduces entropy: $H(\lambda p + (1-\lambda)q) \ge \lambda H(p) + (1-\lambda)H(q)$. Concavity of entropy is crucial for channel capacity — the maximum over $p(x)$ of $I(X;Y)$ is achieved at an extreme point of the input distribution simplex, and the capacity function is concave in the input distribution.
+\end{proof}
+
+\begin{theorem}[Log-Sum Inequality]
+For non-negative numbers $a_i, b_i$:
+\[
+\sum_{i=1}^n a_i \log \frac{a_i}{b_i} \ge \left(\sum_{i=1}^n a_i\right) \log \frac{\sum a_i}{\sum b_i}.
+\]
+Equality holds iff $a_i/b_i$ constant.
+\end{theorem}
+
+\begin{proof}
+Let $a = \sum a_i$, $b = \sum b_i$, and $\alpha_i = a_i/a$, $\beta_i = b_i/b$. Then:
+\[
+\sum a_i \log\frac{a_i}{b_i} = a\sum\alpha_i\log\frac{\alpha_i}{\beta_i} + a\log\frac{a}{b} \ge a\log\frac{a}{b},
+\]
+where the inequality uses $D(\alpha\|\beta) \ge 0$ (non-negativity of KL divergence).
+\end{proof}
+
+The log-sum inequality directly implies:
+\begin{itemize}
+\item $D(p\|q) \ge 0$ with equality iff $p=q$.
+\item $H(X|Y) \le H(X)$ (conditioning reduces entropy).
+\item $I(X;Y) \ge 0$ (mutual information non-negative).
+\end{itemize}
+
+\subsection{The Shannon--McMillan--Breiman Theorem}
+
+The AEP can be strengthened to almost-sure convergence:
+
+\begin{theorem}[Shannon--McMillan--Breiman Theorem]
+For a stationary ergodic source $\{X_n\}$:
+\[
+-\frac{1}{n}\log p(X_1,\dots,X_n) \to H(\mathcal{X}) \quad \text{almost surely},
+\]
+where $H(\mathcal{X})$ is the entropy rate of the source.
+\end{theorem}
+
+This extends the AEP far beyond i.i.d.\ sources to Markov chains, hidden Markov models, and any stationary ergodic process. It justifies the typical set approach for all realistic sources.
+
+The typical set has three key implications:
+\begin{enumerate}
+\item Almost all probability mass concentrates on a small set ($\sim 2^{nH}$ sequences out of $|\mathcal{X}|^n$ total).
+\item Within the typical set, all sequences are nearly equiprobable (hence ``equipartition'').
+\item The size of the typical set is approximately $2^{nH(X)}$.
+\end{enumerate}
+
+\subsection{The Data Processing Inequality}
+\label{sec:information:dpi}
+
+\begin{theorem}[Data Processing Inequality]
+If $X \to Y \to Z$ form a Markov chain (i.e., $p(x,y,z) = p(x)p(y|x)p(z|y)$), then:
+\[
+I(X;Y) \ge I(X;Z)
+\]
+with equality iff $I(X;Y|Z) = 0$ (i.e., $X \to Z \to Y$ also forms a Markov chain).
+\end{theorem}
+
+\begin{proof}
+By the chain rule for mutual information:
+\[
+I(X;Y,Z) = I(X;Y) + I(X;Z|Y) = I(X;Z) + I(X;Y|Z).
+\]
+Since $X \to Y \to Z$, we have $I(X;Z|Y)=0$ (conditioned on $Y$, $Z$ is independent of $X$). And $I(X;Y|Z) \ge 0$. Therefore $I(X;Y) = I(X;Z) + I(X;Y|Z) \ge I(X;Z)$.
+\end{proof}
+
+The data processing inequality is one of the most important results in information theory. It says: no amount of clever processing can increase the information about $X$ beyond what $Y$ provides. Processing can only destroy information, never create it. This has profound implications for statistics (you cannot extract more information from data than the data contains), machine learning (the information bottleneck), and cryptography (ciphertext cannot contain more information about the plaintext than the key).
+
+\subsection{Joint Typicality}
+\label{sec:information:jointtypicality}
+
+Joint typicality extends the AEP to pairs of sequences. It is the foundation of the channel coding theorem.
+
+\begin{definition}[Jointly Typical Set]
+For sequences $x^n$ and $y^n$ drawn i.i.d.\ from joint distribution $p(x,y)$, the jointly typical set $J_\epsilon^{(n)}$ is:
+\begin{equation*}
+\begin{aligned}
+J_\epsilon^{(n)} = \left\{ (x^n,y^n) : \;&
+\left|-\frac{1}{n}\log p(x^n)-H(X)\right| < \epsilon, \\
+&\left|-\frac{1}{n}\log p(y^n)-H(Y)\right| < \epsilon, \\
+&\left|-\frac{1}{n}\log p(x^n,y^n)-H(X,Y)\right| < \epsilon \;\right\}
+\end{aligned}
+\end{equation*}
+\end{definition}
+
+\begin{theorem}[Joint AEP]
+Let $(X_i,Y_i)$ be i.i.d.\ $\sim p(x,y)$. Then:
+\begin{enumerate}
+\item $\Pr((X^n,Y^n) \in J_\epsilon^{(n)}) > 1 - \epsilon$ for large $n$.
+\item $|J_\epsilon^{(n)}| \approx 2^{nH(X,Y)}$.
+\item If $(\tilde{X}^n,\tilde{Y}^n)$ are independent with the same marginals (i.e., $\tilde{X}^n\sim p(x^n)$, $\tilde{Y}^n\sim p(y^n)$), then:
+\[
+\Pr((\tilde{X}^n,\tilde{Y}^n) \in J_\epsilon^{(n)}) \le 2^{-n(I(X;Y)-3\epsilon)}.
+\]
+\end{enumerate}
+\end{theorem}
+
+The third property is crucial: the probability that two independent sequences are jointly typical is exponentially small in $n$, controlled by the mutual information. This is what makes random coding work — the correct codeword is jointly typical with the output, but any incorrect codeword (independent of the true message) is jointly typical with exponentially small probability.
+
+\subsection{Differential Entropy}
+\label{sec:information:differential}
+
+For continuous random variables, the discrete entropy formula diverges (as the bin width goes to zero), but the differential entropy provides a useful analog.
+
+\begin{definition}[Differential Entropy]
+For a continuous random variable $X$ with density $f(x)$:
+\[
+h(X) = -\int_{-\infty}^{\infty} f(x) \log f(x) \, dx.
+\]
+\end{definition}
+
+\begin{theorem}[Properties of Differential Entropy]
+\begin{enumerate}
+\item $h(X)$ can be negative (unlike discrete entropy). For example, a uniform distribution on $[0,1]$ has $h(X)=0$; on $[0,a]$ it has $h(X)=\log a$.
+\item $h(X+c) = h(X)$ (translation invariance).
+\item $h(aX) = h(X) + \log|a|$ (scaling property).
+\item For Gaussian $X \sim \mathcal{N}(\mu,\sigma^2)$: $h(X) = \frac{1}{2}\log(2\pi e \sigma^2)$.
+\item The Gaussian maximizes differential entropy for a given variance: $h(X) \le \frac{1}{2}\log(2\pi e \sigma^2)$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}[Gaussian Maximizes Entropy]
+Let $g(x)$ be Gaussian density $\mathcal{N}(\mu,\sigma^2)$ and $f(x)$ any density with variance $\sigma^2$. Then:
+\[
+0 \le D(f\|g) = \int f \log \frac{f}{g} = -h(f) - \int f \log g
+\]
+Since $\log g(x) = -\frac{1}{2}\log(2\pi\sigma^2) - \frac{(x-\mu)^2}{2\sigma^2}$, we have $-\int f\log g = \frac{1}{2}\log(2\pi\sigma^2) + \frac{1}{2\sigma^2}\mathbb{E}_f[(X-\mu)^2] = \frac{1}{2}\log(2\pi\sigma^2) + \frac{1}{2}$. Therefore $h(f) \le \frac{1}{2}\log(2\pi e\sigma^2) = h(g)$.
+\end{proof}
+
+\subsection{Source Coding Theorem (Compression)}
+\label{sec:information:source}
+
+\begin{definition}[Prefix Code]
+A code $C: \mathcal{X} \to \{0,1\}^*$ is \emph{prefix-free} if no codeword is a prefix of another. Uniquely decodable without separators.
+\end{definition}
+
+\begin{theorem}[Kraft Inequality]
+A prefix code with codeword lengths $\ell_1, \dots, \ell_n$ exists iff $\sum_i 2^{-\ell_i} \le 1$.
+\end{theorem}
+
+\begin{proof}[Proof of Kraft Inequality]
+Construct a binary tree where each codeword is a leaf. The leaf at depth $\ell_i$ eliminates $2^{L-\ell_i}$ leaves at depth $L$ (for large $L$). Summing over all codewords: $\sum_i 2^{L-\ell_i} \le 2^L$, hence $\sum_i 2^{-\ell_i} \le 1$. Conversely, given lengths satisfying the inequality, assign codewords by traversing the tree as long as free nodes remain — the inequality guarantees room.
+\end{proof}
+
+\begin{theorem}[Shannon's Source Coding Theorem (1948)]
+Let $X_1, X_2, \dots$ be i.i.d. $\sim p(x)$. For any $\epsilon > 0$, for sufficiently large $n$:
+\begin{itemize}
+\item There exists a code with expected length per symbol $< H(X) + \epsilon$.
+\item No code can achieve expected length per symbol $< H(X)$.
+\end{itemize}
+$H(X)$ is the \emph{fundamental limit of lossless compression}.
+\end{theorem}
+
+\begin{proof}[Proof of Achievability]
+Fix $\epsilon > 0$. Let $A_\epsilon^{(n)}$ be the typical set. For $n$ large enough, $\Pr(A_\epsilon^{(n)}) > 1-\epsilon$ and $|A_\epsilon^{(n)}| \le 2^{n(H+\epsilon)}$.
+
+Encoding scheme:
+\begin{enumerate}
+\item Enumerate the sequences in $A_\epsilon^{(n)}$ using $\lceil n(H+\epsilon)\rceil$ bits.
+\item Use a prefix (e.g., all 1's of length $\lceil n(H+\epsilon)\rceil+1$) followed by the raw $n\log|\mathcal{X}|$ bits for sequences outside $A_\epsilon^{(n)}$.
+\end{enumerate}
+
+Expected length per symbol:
+\[
+\frac{1}{n}\mathbb{E}[\ell] \le \frac{1}{n}\left[(1-\epsilon)n(H+\epsilon) + \epsilon(n\log|\mathcal{X}| + n(H+\epsilon)+1)\right]
+\]
+\[
+= H + \epsilon + \epsilon\log|\mathcal{X}| + \frac{\epsilon}{n}(H+\epsilon) + \frac{1}{n}
+\]
+which approaches $H + \epsilon'$ for some $\epsilon' \to 0$ as $\epsilon \to 0$ and $n \to \infty$.
+\end{proof}
+
+\begin{proof}[Proof of Converse]
+Any uniquely decodable code must satisfy the Kraft inequality. By the Gibbs inequality, the optimal expected length $L^*$ satisfies:
+\[
+L^* \ge -\sum_x p(x)\log p(x) = H(X).
+\]
+Specifically, for any prefix code with lengths $\ell_x$, let $r_x = 2^{-\ell_x}/\sum 2^{-\ell_x}$. Then:
+\[
+\mathbb{E}[\ell] - H(X) = \sum_x p(x)\log\frac{p(x)}{2^{-\ell_x}} \ge 0
+\]
+by the non-negativity of KL divergence. Equality requires $p(x) = 2^{-\ell_x}$, i.e., the optimal code assigns lengths $\ell_x = -\log p(x)$ — which is only achievable when these are integers.
+\end{proof}
+
+The Huffman coding algorithm achieves the optimal prefix code for any finite distribution, with expected length satisfying $H(X) \le L_{\text{Huffman}} < H(X) + 1$. By coding blocks of $n$ symbols, the overhead per symbol approaches $1/n$, giving the source coding theorem.
+
+\subsection{Channel Coding Theorem (Reliable Communication)}
+\label{sec:information:channel}
+
+\begin{definition}[Discrete Memoryless Channel (DMC)]
+Channel with input $X \in \mathcal{X}$, output $Y \in \mathcal{Y}$, transition probabilities $p(y|x)$. Memoryless: $p(y^n|x^n) = \prod_i p(y_i|x_i)$.
+\end{definition}
+
+\begin{definition}[Channel Capacity]
+\[
+C = \max_{p(x)} I(X;Y)
+\]
+\end{definition}
+
+\begin{theorem}[Shannon's Channel Coding Theorem (1948)]
+For a DMC with capacity $C$:
+\begin{enumerate}
+\item \textbf{Achievability:} For any $R < C$ and $\epsilon > 0$, there exists a block code of rate $R$ with error probability $< \epsilon$ for sufficiently large block length $n$.
+\item \textbf{Converse:} For any code with rate $R > C$, the error probability is bounded away from 0 (in fact $\to 1$ as $n \to \infty$).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}[Detailed Achievability Proof (Random Coding)]
+Let $p^*(x)$ be the distribution that achieves the capacity $C = I(X;Y)$. Fix $R < C$ and $\epsilon > 0$.
+
+\textbf{Random codebook generation:} Generate $M = 2^{nR}$ codewords, each independently according to $p^*(x^n) = \prod_{i=1}^n p^*(x_i)$. Label them $\mathbf{X}(1), \dots, \mathbf{X}(M)$. Reveal the codebook to both encoder and decoder.
+
+\textbf{Encoding:} To send message $w \in \{1,\dots,M\}$, transmit $\mathbf{X}(w)$.
+
+\textbf{Decoding (joint typicality decoder):} Upon receiving $\mathbf{Y}$, the decoder finds the unique $w$ such that $(\mathbf{X}(w), \mathbf{Y})$ is jointly $\epsilon$-typical. If no such $w$ exists or multiple exist, declare an error.
+
+\textbf{Error analysis:} Without loss of generality, assume message 1 was sent. Define the error event:
+\[
+\mathcal{E} = \mathcal{E}_1 \cup \mathcal{E}_2
+\]
+where $\mathcal{E}_1$: $(\mathbf{X}(1), \mathbf{Y})$ is not jointly typical; $\mathcal{E}_2$: $\exists w \neq 1$ s.t. $(\mathbf{X}(w), \mathbf{Y})$ is jointly typical.
+
+By the joint AEP, $\Pr(\mathcal{E}_1) \to 0$ as $n \to \infty$. For $\mathcal{E}_2$, for any $w \neq 1$, $\mathbf{X}(w)$ is independent of $\mathbf{Y}$ (since the codebook is generated independently of the message). By the joint AEP property for independent sequences:
+\[
+\Pr((\mathbf{X}(w), \mathbf{Y}) \in J_\epsilon^{(n)}) \le 2^{-n(I(X;Y)-3\epsilon)} = 2^{-n(C-3\epsilon)}.
+\]
+
+By the union bound over $M-1 < 2^{nR}$ codewords:
+\[
+\Pr(\mathcal{E}_2) \le 2^{nR} \cdot 2^{-n(C-3\epsilon)} = 2^{-n(C-R-3\epsilon)}.
+\]
+
+If $R < C$, choose $\epsilon < (C-R)/3$ so that $C-R-3\epsilon > 0$. Then $\Pr(\mathcal{E}_2) \to 0$ exponentially as $n \to \infty$. Therefore the total error probability $\Pr(\mathcal{E}) \le \Pr(\mathcal{E}_1) + \Pr(\mathcal{E}_2) \to 0$.
+
+Since the expected error probability over random codebooks goes to zero, there must exist at least one deterministic codebook with error probability $< \epsilon$ for sufficiently large $n$.
+\end{proof}
+
+\begin{proof}[Converse Proof (Fano's Inequality)]
+Let $W$ be uniformly distributed over $\{1,\dots,2^{nR}\}$, sent over $n$ uses of the DMC. Let $\hat{W}$ be the decoder's estimate. Define $P_e = \Pr(W \neq \hat{W})$.
+
+By Fano's inequality (proved below):
+\[
+H(W|\hat{W}) \le H(P_e) + P_e \log(2^{nR}-1) \le 1 + nR P_e.
+\]
+
+Now trace the information flow:
+\[
+nR = H(W) = I(W;\hat{W}) + H(W|\hat{W}) \le I(W;\hat{W}) + 1 + nR P_e.
+\]
+
+By the data processing inequality applied to the Markov chain $W \to X^n \to Y^n \to \hat{W}$, we have $I(W;\hat{W}) \le I(X^n;Y^n)$. And by the channel's memoryless property:
+\[
+I(X^n;Y^n) \le n C.
+\]
+
+Therefore:
+\[
+nR \le nC + 1 + nR P_e \quad \Longrightarrow \quad P_e \ge 1 - \frac{C}{R} - \frac{1}{nR}.
+\]
+
+If $R > C$, then for large $n$, $P_e \ge 1 - C/R > 0$, bounded away from zero. In fact, a stronger result (strong converse) shows $P_e \to 1$ as $n \to \infty$.
+\end{proof}
+
+\subsection{Fano's Inequality}
+\label{sec:information:fano}
+
+\begin{theorem}[Fano's Inequality]
+For any estimator $\hat{X}$ of $X$ (where $X \in \{1,\dots,m\}$), with error probability $P_e = \Pr(X \neq \hat{X})$:
+\[
+H(X|\hat{X}) \le H(P_e) + P_e \log(m-1).
+\]
+\end{theorem}
+
+\begin{proof}
+Define the error random variable $E = \mathbf{1}_{\{X \neq \hat{X}\}}$. By the chain rule for conditional entropy:
+\[
+H(E,X|\hat{X}) = H(X|\hat{X}) + H(E|X,\hat{X}) = H(E|\hat{X}) + H(X|E,\hat{X}).
+\]
+
+Since $E$ is determined by $X$ and $\hat{X}$, $H(E|X,\hat{X}) = 0$. So:
+\[
+H(X|\hat{X}) = H(E|\hat{X}) + H(X|E,\hat{X}).
+\]
+
+We bound each term. First, $H(E|\hat{X}) \le H(E) = H(P_e)$. Second, expand $H(X|E,\hat{X})$:
+\[
+H(X|E,\hat{X}) = \Pr(E=0) \cdot H(X|\hat{X},E=0) + \Pr(E=1) \cdot H(X|\hat{X},E=1).
+\]
+When $E=0$, $X=\hat{X}$ is deterministic, so $H(X|\hat{X},E=0) = 0$. When $E=1$, $X$ can take at most $m-1$ values (anything except $\hat{X}$), so $H(X|\hat{X},E=1) \le \log(m-1)$. Therefore:
+\[
+H(X|\hat{X}) \le H(P_e) + P_e \log(m-1).
+\]
+\end{proof}
+
+Fano's inequality is the primary tool for proving converses in information theory. Its intuition is clear: if you frequently guess wrong, the uncertainty about $X$ given your guess is large — and that uncertainty cannot exceed the channel capacity.
+
+\subsection{Worked Example: Binary Symmetric Channel}
+\label{sec:information:bsc}
+
+\begin{example}[BSC Capacity]
+The Binary Symmetric Channel (BSC) has input $X \in \{0,1\}$, output $Y \in \{0,1\}$, and crossover probability $p$:
+\[
+\Pr(Y \neq X) = p, \quad \Pr(Y = X) = 1-p.
+\]
+
+The capacity is:
+\[
+C = \max_{p(x)} I(X;Y) = 1 - H_b(p),
+\]
+where $H_b(p) = -p\log p - (1-p)\log(1-p)$ is the binary entropy function.
+
+\begin{proof}
+$H(Y|X) = \sum_x p(x)H(Y|X=x) = \sum_x p(x) H_b(p) = H_b(p)$. By the chain rule: $I(X;Y) = H(Y) - H(Y|X) = H(Y) - H_b(p)$. The output distribution $p(y) = \sum_x p(x)p(y|x)$ is maximally entropic ($H(Y)=1$) when the input is uniform, $p(0)=p(1)=1/2$. Hence $C = 1 - H_b(p)$.
+
+When $p=0$ (no noise), $C=1$ bit per channel use. When $p=1/2$ (output independent of input), $H_b(1/2)=1$, so $C=0$ — no communication is possible. When $p=1$ (always flip), $H_b(1)=0$, so $C=1$ — the bits are deterministically flipped, which is perfectly invertible.
+\end{proof}
+\end{example}
+
+\begin{example}[Binary Erasure Channel]
+The Binary Erasure Channel (BEC) has input $X \in \{0,1\}$, output $Y \in \{0,1,?\}$, and erasure probability $\epsilon$:
+\[
+\Pr(Y = X) = 1-\epsilon, \quad \Pr(Y = ?) = \epsilon.
+\]
+The capacity is $C = 1 - \epsilon$. Each bit is either received perfectly (with prob $1-\epsilon$) or erased entirely (with prob $\epsilon$). Unlike the BSC, errors are detected — erasures are locations we know are missing. This makes the BEC the simplest channel for which capacity-achieving codes (e.g., LT codes, Raptor codes) are known.
+\end{example}
+
+\subsection{Continuous Channels (Shannon-Hartley)}
+\label{sec:information:continuous}
+
+\begin{theorem}[Bandlimited AWGN Channel Capacity]
+Channel: $Y = X + Z$, $Z \sim \mathcal{N}(0, N_0/2)$, bandwidth $W$, power constraint $\mathbb{E}[X^2] \le P$.
+\[
+C = W \log_2 \left( 1 + \frac{P}{N_0 W} \right) \quad \text{bits/second}
+\]
+\end{theorem}
+
+\begin{proof}[Derivation]
+By the Nyquist--Shannon sampling theorem, a signal of bandwidth $W$ can be represented by $2W$ samples per second. The channel becomes a set of $2W$ independent AWGN channels per second, each with noise variance $N_0/2$.
+
+For a single AWGN channel use with input $X$, output $Y = X+Z$, $Z \sim \mathcal{N}(0,\sigma^2)$ and power constraint $\mathbb{E}[X^2] \le P$:
+\[
+C_{\text{single}} = \max_{p(x):\mathbb{E}[X^2]\le P} I(X;Y).
+\]
+
+We compute $I(X;Y) = h(Y) - h(Y|X) = h(Y) - h(Z) = h(Y) - \frac{1}{2}\log(2\pi e \sigma^2)$.
+To maximize $h(Y)$, note that $Y = X+Z$ has variance $\text{Var}(Y) = \text{Var}(X) + \text{Var}(Z) \le P + \sigma^2$. Since the Gaussian maximizes entropy for a given variance, $h(Y) \le \frac{1}{2}\log(2\pi e (P+\sigma^2))$, achieved when $X$ is Gaussian. Therefore:
+\[
+C_{\text{single}} = \frac{1}{2}\log\left(1 + \frac{P}{\sigma^2}\right) \quad \text{bits per channel use}.
+\]
+
+Substituting $\sigma^2 = N_0/2$ and multiplying by $2W$ samples/second:
+\[
+C = 2W \cdot \frac{1}{2} \log\left(1 + \frac{P}{N_0/2}\right) = W \log_2\left(1 + \frac{P}{N_0 W}\right).
+\]
+\end{proof}
+
+This is the famous $C = W \log_2(1 + \text{SNR})$ formula. It quantifies the \emph{fundamental tradeoff} between bandwidth, power, and noise. Key regimes:
+
+\begin{itemize}
+\item \textbf{Power-limited regime} (low SNR): $\log(1+\text{SNR}) \approx \text{SNR}/\ln 2$, so $C \approx 1.44 \cdot P/N_0$ — capacity grows linearly with power, independent of bandwidth.
+\item \textbf{Bandwidth-limited regime} (high SNR): $C \approx W \log_2(\text{SNR})$ — capacity grows logarithmically with power, linearly with bandwidth.
+\item \textbf{Spectral efficiency}: $\eta = C/W = \log_2(1+\text{SNR})$ bits/s/Hz — the fundamental limit on how many bits per second can be sent per Hertz of bandwidth.
+\end{itemize}
+
+\subsection{Rate-Distortion Theory}
+\label{sec:information:ratedistortion}
+
+Shannon's rate-distortion theory extends source coding to \emph{lossy} compression: how many bits are needed to represent a source within a given distortion level?
+
+\begin{definition}[Rate-Distortion Function]
+For a source $X$ with distribution $p(x)$ and distortion measure $d(x,\hat{x})$:
+\[
+R(D) = \min_{p(\hat{x}|x): \mathbb{E}[d(X,\hat{X})] \le D} I(X;\hat{X}).
+\]
+$R(D)$ is the minimum rate needed to achieve average distortion $\le D$.
+\end{definition}
+
+\begin{theorem}[Rate-Distortion Theorem (Shannon 1959)]
+For an i.i.d.\ source with distribution $p(x)$ and bounded distortion measure, $R(D)$ is the fundamental limit: for any $R > R(D)$, there exists a code with rate $R$ and distortion $\le D$; for $R < R(D)$, no code can achieve distortion $\le D$.
+\end{theorem}
+
+\begin{example}[Gaussian Source, Squared Error]
+For $X \sim \mathcal{N}(0,\sigma^2)$ with squared error distortion $d(x,\hat{x}) = (x-\hat{x})^2$:
+\[
+R(D) = \frac{1}{2}\log_2\left(\frac{\sigma^2}{D}\right) \quad \text{for } 0 \le D \le \sigma^2,
+\]
+and $R(D)=0$ for $D > \sigma^2$. This is the Shannon lower bound for continuous sources, achieved by Gaussian codebooks.
+\end{example}
+
+Rate-distortion theory is the foundation of lossy compression: JPEG (image), MP3 (audio), H.264/HEVC (video), and deep learning-based compression all operate in the rate-distortion framework.
+
+\begin{highlightbox}[The Blahut--Arimoto Algorithm]
+Computing $R(D)$ or $C = \max_{p(x)} I(X;Y)$ requires solving a convex optimization problem. The Blahut--Arimoto algorithm (1972) provides an iterative method that is guaranteed to converge to the optimal solution. It alternates between updating the conditional distribution $p(y|x)$ and the marginal distribution $p(x)$, using the fact that the mutual information is convex in one argument and concave in the other. The algorithm is widely used in practice to compute channel capacities and rate-distortion functions numerically.
+
+\end{highlightbox}
+
+\begin{example}[Reverse Water-Filling]
+For a Gaussian vector source $\mathbf{X} \sim \mathcal{N}(0,\Sigma)$ with squared error distortion, the optimal rate allocation follows a reverse water-filling rule: allocate bits to components proportional to $\max(0, \frac{1}{2}\log(\lambda_i/\theta))$, where $\lambda_i$ are the eigenvalues of $\Sigma$ and $\theta$ is chosen to satisfy the distortion constraint. Components with $\lambda_i < \theta$ receive zero bits (their contribution is below the noise floor). This is the information-theoretic justification for transform coding (DCT in JPEG, wavelet transforms in JPEG2000).
+\end{example}
+
+%======================================================================
+% SECTION 6: CONSEQUENCES
+%======================================================================
+\section{Consequences: What Became Possible}
+\label{sec:information:consequences}
+
+\begin{enumerate}
+\item \textbf{Error-Correcting Codes (Chapter 6):} Shannon's theorem proved codes \emph{exist} but didn't construct them. The 50-year quest for practical codes (Hamming, Reed-Solomon, Turbo, LDPC, Polar) was driven by the promise of approaching $C$. Today, LDPC codes operate within 0.1 dB of the Shannon limit in 5G and satellite communications.
+
+\item \textbf{Data Compression (ZIP, JPEG, MP3, H.264):} Source coding theorem $\to$ Huffman, Arithmetic, LZ77/78, DCT, perceptual coding. All practical compressors aim for $H(X)$. Modern compressors like ZSTD, Brotli, and WebP combine multiple techniques, achieving near-optimal compression for natural language and images.
+
+\item \textbf{Digital Communication (Modems, WiFi, 4G/5G, Satellite):} Every modern modem uses Shannon's framework: modulation + coding $\to$ spectral efficiency approaching $C$. The V.34 telephone modem (1994) operated within 1 dB of the Shannon limit for telephone lines. 5G NR uses adaptive modulation and coding (AMC) to track the instantaneous channel capacity.
+
+\item \textbf{CDMA and Spread Spectrum:} Qualcomm's CDMA systems (IS-95, 3G) use spreading codes to share bandwidth — the information-theoretic insight that many users can share a channel if their codes are nearly orthogonal. This traces directly to Shannon's work on multiple-access channels.
+
+\item \textbf{OFDM and 4G/5G:} Orthogonal Frequency Division Multiplexing (OFDM) divides bandwidth into many narrow subcarriers, each approaching its own Shannon capacity. This is used in WiFi (802.11a/g/n/ac/ax), LTE, and 5G NR.
+
+\item \textbf{Cryptography:} Perfect secrecy (Shannon 1949): $I(M;C) = 0$ (ciphertext reveals nothing about message). Requires key entropy $\ge$ message entropy (one-time pad). Shannon's framework also underlies modern computational security: a cipher is secure if no polynomial-time adversary can distinguish the ciphertext distribution from uniform.
+
+\item \textbf{Statistical Inference / Machine Learning:} Minimum Description Length (MDL), Bayesian inference, variational inference — all use entropy/mutual information as optimization objectives. The Information Bottleneck method frames representation learning as a rate-distortion problem. The ELBO in variational autoencoders is a mutual information lower bound.
+
+\item \textbf{Biology:} DNA as information storage (Watson-Crick 1953, Shannon-inspired). Neural coding: how many bits does a spike train carry? The genetic code's 4-letter alphabet and redundancy (codons) can be analyzed with Shannon's tools. The human genome is approximately 750 MB of unique information.
+
+\item \textbf{Physics:} Black hole entropy (Bekenstein-Hawking 1973): $S = k A/4 \ell_P^2$. Information is physical (Landauer 1961: erasing 1 bit costs $kT \ln 2$ energy). The holographic principle posits that the information content of a volume of space is bounded by its surface area.
+
+\item \textbf{Search Engines and Indexing:} Inverted index and TF-IDF weighting are built on information-theoretic principles. TF-IDF weighting uses entropy to measure term importance. Index compression (varint, delta encoding, PForDelta) directly applies Shannon's source coding theorem.
+
+\end{enumerate}
+
+\begin{connectionbox}[Connection to Gordon Moore]
+Moore's Law was about transistor count doubling every two years. But without Shannon, those transistors would have no theory of how to communicate. The Shannon limit set the target; Moore's Law provided the computational power to approach it. The information age is the product of both.
+
+\end{connectionbox}
+
+%======================================================================
+% SECTION 7: PHILOSOPHICAL SIGNIFICANCE
+%======================================================================
+\section{Philosophical Significance: What It Taught Us About Knowledge, Computation, or Reality}
+\label{sec:information:philosophy}
+
+\begin{enumerate}
+\item \textbf{Information Is Physical:} Landauer's principle (1961): erasing information dissipates heat. Computation has thermodynamic cost. Maxwell's demon is exorcised by the entropy cost of measurement/erasure. Information is not abstract — it's embodied in physical states. This connects information theory to thermodynamics and fundamental physics.
+
+\item \textbf{Meaning Is Emergent, Not Fundamental:} Shannon separated \emph{information} (syntactic, probabilistic) from \emph{meaning} (semantic, pragmatic). Meaning arises when information is \emph{interpreted} by an agent with a model of the world. This anticipates the syntax/semantics distinction in computer science and philosophy of mind.
+
+\item \textbf{Uncertainty Is Quantifiable:} Before Shannon, uncertainty was vague. After Shannon, uncertainty = entropy, measured in bits. This turned epistemology into a quantitative science. Questions like ``how much do we know about X?'' can be answered precisely.
+
+\item \textbf{Reliability Requires Redundancy:} The channel coding theorem says: to communicate reliably over noise, you \emph{must} add redundancy (coding). Perfect efficiency (rate = capacity) requires infinite block length. Engineering is the art of finite-block-length tradeoffs. This is deeply connected to the concept of error correction in evolution (DNA repair, immune system diversity).
+
+\item \textbf{The Bit as Universal Currency:} Any message — text, image, sound, video, DNA, quantum state — can be measured in bits. The bit is the universal unit of information, independent of medium. This unification enabled the digital revolution. A JPEG image, an MP3 file, and a Word document are all ultimately sequences of bits — their differences are in the coding, not the medium.
+
+\item \textbf{Information Is Symmetric:} Mutual information $I(X;Y) = I(Y;X)$ — the amount one variable tells us about another is symmetric. This has deep implications: in science, the data tells us about the world, but equally the world tells us about the data. In cryptography, if ciphertext reveals nothing about the plaintext, then the plaintext also reveals nothing about the ciphertext.
+
+\item \textbf{The KL Divergence as a Measure of Distance:} The Kullback--Leibler divergence $D(p\|q) = \sum p\log(p/q)$ measures how different two distributions are. It is not a metric (it is asymmetric), but it is the fundamental ``distance'' in information theory. Many statistical methods — maximum likelihood, Bayesian updating, variational inference — can be understood as minimizing KL divergence.
+\end{enumerate}
+
+%======================================================================
+% SECTION 8: MODERN LEGACY
+%======================================================================
+\section{Modern Legacy: Where This Idea Appears Today}
+\label{sec:information:legacy}
+
+\begin{itemize}
+\item \textbf{5G/6G Wireless:} Polar codes (5G control channel), LDPC (5G data), massive MIMO — all pushing spectral efficiency toward Shannon limit. 6G research targets terahertz frequencies and molecular communication, extending Shannon's framework to new physical regimes.
+
+\item \textbf{Data Centers / Cloud Storage:} Erasure coding (Reed-Solomon, LRC, XOR codes) for fault tolerance. Compression (ZSTD, Snappy, LZ4) for bandwidth/storage savings. Facebook's Warm Storage uses LRC codes to achieve storage efficiency within 1\% of the information-theoretic optimum.
+
+\item \textbf{Deep Learning:} Information bottleneck (Tishby 2015): $I(X;T) - \beta I(T;Y)$ as training objective. Mutual information neural estimation (MINE). Variational autoencoders (ELBO = mutual information). The wide success of deep learning has prompted attempts to explain generalization, representation, and optimization through information-theoretic lenses.
+
+\item \textbf{Federated Learning:} Communication-efficient training of models across distributed devices, minimizing the total bits exchanged. Techniques like gradient compression, quantization, and sparsification are direct applications of rate-distortion theory.
+
+\item \textbf{Quantum Information:} Von Neumann entropy $S(\rho) = -\mathrm{Tr}(\rho \log \rho)$. Quantum channel capacity, Holevo bound, quantum error correction (Shor 1995). Quantum Shannon theory. The quantum bit (qubit) carries up to 2 bits of classical information per qubit (Holevo's theorem: $\chi \le 1$ qubit carries at most 1 bit of classical information when measured).
+
+\item \textbf{Blockchain:} Proof-of-work as ``burning bits'' (energy $\to$ entropy). Information-theoretic security in MPC, secret sharing (Shamir 1979), and verifiable random functions (VRFs).
+
+\item \textbf{Neuroscience:} Spike train entropy, neural coding efficiency, predictive coding (free energy principle, Friston). The brain is increasingly understood as an information-processing organ: it compresses sensory data, predicts future inputs, and communicates via efficient neural codes.
+
+\item \textbf{Bioinformatics:} Sequence alignment, motif discovery, phylogenetic trees — all use information-theoretic scores (e.g., position-weight matrices, information content of binding sites). The ``conservation'' of a DNA or protein position is measured by its entropy across species.
+
+\item \textbf{Privacy and Anonymization:} Differential privacy (Dwork 2006) uses information-theoretic ideas — the privacy loss $\epsilon$ bounds the information leakage about an individual. $k$-anonymity, l-diversity, and other privacy models can be understood in terms of mutual information between database and query output.
+
+\item \textbf{Semantic Communication:} Recent work (2020s) revisits Shannon's decision to discard meaning, asking whether task-aware compression can go beyond Shannon limits by exploiting the \emph{meaning} of messages for a specific task. This ``semantic communication'' framework integrates information theory with deep learning and natural language understanding.
+
+\item \textbf{DNA Data Storage:} Storing digital information in synthetic DNA molecules. The theoretical limit is approximately 2 bits per nucleotide, but practical DNA storage must contend with synthesis errors, sequencing noise, and degradation — a classic channel coding problem. Recent demonstrations have achieved storage densities of $\sim$200 PB/g, far exceeding any conventional medium.
+
+\end{itemize}
+
+\begin{connectionbox}[Connections]
+\begin{itemize}
+\item Chapter 6 (Error Correction): The direct consequence of Channel Coding Theorem.
+\item Chapter 7 (Kolmogorov): Algorithmic entropy vs. Shannon entropy.
+\item Chapter 10 (Cryptography): Perfect secrecy = zero mutual information.
+\item Chapter 11 (Zero Knowledge): Proving knowledge without revealing information (mutual information with verifier = 0).
+\item Quantum Computing: Von Neumann entropy, quantum channel capacity.
+\end{itemize}
+
+\end{connectionbox}
+
+%======================================================================
+% SECTION 9: LESSONS FOR FUTURE SCIENTISTS
+%======================================================================
+\section{Summary}
+\label{sec:information:summary}
+
+This chapter developed Shannon's mathematical theory of information, establishing the quantitative foundations for communication and data compression. The chapter defined Shannon entropy $H(X) = -\sum_x p(x) \log p(x)$ as the fundamental measure of uncertainty in a random variable, and proved its key properties: non-negativity, concavity, and the chain rule $H(X,Y) = H(X) + H(Y|X)$. Mutual information $I(X;Y) = H(X) - H(X|Y)$ was introduced as a measure of statistical dependence, and the data processing inequality was established: for any Markov chain $X \to Y \to Z$, $I(X;Y) \geq I(X;Z)$. The source coding theorem was proven, showing that the minimum average code length per symbol for lossless compression equals the entropy $H(X)$, with Huffman coding achieving within one bit of optimality. The channel coding theorem established that reliable communication at any rate $R < C$ is possible over a discrete memoryless channel, where $C = \max_{p(x)} I(X;Y)$ is the channel capacity. The proof employed the random coding argument, showing that the average error probability over an ensemble of random codes decays exponentially with block length. Fano's inequality was derived as a key tool in the converse proof. The chapter also discussed the Shannon--Hartley theorem for bandlimited AWGN channels, rate--distortion theory for lossy compression, and the asymptotic equipartition property (AEP) characterizing the typical set.
+
+\section*{Key Takeaways}
+\begin{itemize}
+\item Shannon entropy $H(X)$ quantifies the minimum average number of bits required to represent a random variable, establishing the theoretical limit of lossless data compression.
+\item Mutual information $I(X;Y)$ measures statistical dependence between variables and is the central quantity in channel capacity $C = \max_{p(x)} I(X;Y)$.
+\item The channel coding theorem proves that reliable communication at any rate $R < C$ is achievable, via random coding arguments; the converse uses Fano's inequality.
+\item The source coding theorem establishes entropy as the fundamental limit of lossless compression; Huffman and arithmetic coding achieve near-optimal rates.
+\item Open problems include the capacity of multi-user channels (broadcast, multiple access, relay channels), the achievability gap for finite blocklengths, and the information-theoretic foundations of machine learning (information bottleneck theory).
+\end{itemize}
+
+%======================================================================
+% EXERCISES
+%======================================================================
+% EXERCISES
+%======================================================================
+\section{Exercises}
+\label{sec:information:exercises}
+
+\begin{exercise}[Basic]
+Calculate the entropy of a fair coin flip, a biased coin ($p=0.8$), a fair die, and a random variable with distribution $(0.5, 0.25, 0.125, 0.125)$. Verify $H(X) \le \log |\mathcal{X}|$.
+\end{exercise}
+
+\begin{exercise}[Basic]
+Prove the chain rule: $H(X,Y) = H(X) + H(Y|X)$. Prove $I(X;Y) = H(X) - H(X|Y)$.
+\end{exercise}
+
+\begin{exercise}[Basic]
+Plot the binary entropy function $H_b(p)$ for $p \in [0,1]$. Show it is concave, symmetric about $p=1/2$, and maximized at $p=1/2$. Find the value of $p$ where $H_b(p) = 0.5$ bits.
+\end{exercise}
+
+\begin{exercise}[Intermediate]
+Prove Fano's Inequality: For estimator $\hat{X}$ of $X$, $H(X|\hat{X}) \le H(P_e) + P_e \log(|\mathcal{X}|-1)$ where $P_e = \Pr(X \neq \hat{X})$. Use it to prove the converse of the Channel Coding Theorem.
+\end{exercise}
+
+\begin{exercise}[Intermediate]
+Compute the capacity of the Binary Symmetric Channel with crossover probability $p=0.1$ in bits per channel use. How many codewords can you send in $n=100$ channel uses if you want rate $R = 0.5$ bits/channel use? Is this below capacity?
+\end{exercise}
+
+\begin{exercise}[Intermediate]
+Derive the capacity of the Binary Erasure Channel (BEC) with erasure probability $\epsilon$. Show $C = 1-\epsilon$. Compare with the BSC: which has higher capacity for a given error/erasure probability?
+\end{exercise}
+
+\begin{exercise}[Intermediate]
+Prove the data processing inequality: if $X \to Y \to Z$ is a Markov chain, then $I(X;Y) \ge I(X;Z)$. Give an example where $I(X;Z) = 0$ but $I(X;Y) > 0$.
+\end{exercise}
+
+\begin{exercise}[Intermediate]
+Show that for any random variable $X$, the entropy satisfies $H(X) = \lim_{n\to\infty} \frac{1}{n} \log |A_\epsilon^{(n)}|$, where $A_\epsilon^{(n)}$ is the typical set. Interpret this as the ``growth rate'' of the number of typical sequences.
+\end{exercise}
+
+\begin{exercise}[Intermediate]
+Prove the log-sum inequality: for non-negative $a_i, b_i$, $\sum a_i \log(a_i/b_i) \ge (\sum a_i) \log(\sum a_i / \sum b_i)$. Use it to prove $D(p\|q) \ge 0$.
+\end{exercise}
+
+\begin{exercise}[Intermediate]
+Derive the Shannon-Hartley limit for a bandlimited AWGN channel with SNR = 20 dB and bandwidth $W = 1$ MHz. How many bits per second can be transmitted? If SNR drops to 10 dB, how much bandwidth is needed to maintain the same capacity?
+\end{exercise}
+
+\begin{exercise}[Intermediate]
+For a Gaussian source $X \sim \mathcal{N}(0,\sigma^2)$ with squared error distortion $d(x,\hat{x}) = (x-\hat{x})^2$, compute the rate-distortion function $R(D)$ for $D = \sigma^2/4$. What is the minimum number of bits per sample needed to achieve this distortion?
+\end{exercise}
+
+\begin{exercise}[Intermediate]
+Prove that for any random variable $X$ and function $f$, $H(f(X)) \le H(X)$. When does equality hold?
+\end{exercise}
+
+\begin{exercise}[Challenge]
+Research the \emph{Information Bottleneck} method (Tishby, Pereira, Bialek 1999). Derive the self-consistent equations for the optimal representation $p(t|x)$. Implement it for a simple clustering task.
+\end{exercise}
+
+\begin{exercise}[Challenge]
+Prove the strong converse of the channel coding theorem: for $R > C$, the error probability $P_e \to 1$ as $n \to \infty$. (Hint: use the method of types or the Chernoff bound.)
+\end{exercise}
+
+\begin{exercise}[Challenge]
+Derive the channel capacity for a $q$-ary symmetric channel (input/output alphabet of size $q$, error probability $p$ for any given symbol to be any other specific symbol). Show $C = \log q - H_q(p) - p\log(q-1)$.
+\end{exercise}
+
+\begin{exercise}[Computational]
+Implement Huffman coding and Arithmetic coding. Compress a text file (e.g., Project Gutenberg book). Compare achieved rate to empirical entropy. \url{https://github.com/...}
+\end{exercise}
+
+\begin{exercise}[Computational]
+Simulate random coding for the BSC($p=0.1$). Generate random codebooks of rate $R=0.5$ and block length $n=100, 200, 500, 1000$. Estimate the error probability by Monte Carlo. Plot $P_e$ vs.\ $n$ and verify it decays exponentially.
+\end{exercise}
+
+\begin{exercise}[Computational]
+Implement the Blahut--Arimoto algorithm for computing the capacity of a discrete memoryless channel. Test it on the BSC with crossover probability $p=0.1$ and the BEC with erasure probability $\epsilon=0.2$. Verify your numerical results match the analytical formulas $C_{\text{BSC}} = 1 - H_b(p)$ and $C_{\text{BEC}} = 1 - \epsilon$.
+\end{exercise}
+
+\begin{exercise}[Computational]
+Download a large text file (e.g., a Wikipedia dump or Project Gutenberg book). Compute the empirical 1-gram, 2-gram, and 3-gram entropies. Plot entropy vs.\ $n$-gram order and estimate the entropy rate of English. Compare your estimate to Shannon's famous 1951 result (Shannon estimated English entropy at about 1.0--1.5 bits per character using human prediction experiments).
+\end{exercise}
+
+%======================================================================
+% TIMELINE
+%======================================================================
+\section{Timeline}
+\label{sec:information:timeline}
+\addcontentsline{toc}{section}{Timeline}
+
+\begin{tabularx}{\linewidth}{|l|X|}
+\hline
+\textbf{Year} & \textbf{Event} \\ \hline
+1916 & Claude Shannon born in Petoskey, Michigan \\ \hline
+1924 & Nyquist: ``Certain Factors Affecting Telegraph Speed'' \\ \hline
+1928 & Hartley: ``Transmission of Information''; $H = n \log s$ \\ \hline
+1936 & Shannon BS, University of Michigan (EE and Math) \\ \hline
+1937 & Shannon MS: Boolean algebra = switching circuits \\ \hline
+1940 & Shannon PhD: ``An Algebra for Theoretical Genetics'' \\ \hline
+1941 & Shannon joins Bell Labs \\ \hline
+1943 & Shannon meets Turing at Bell Labs (cryptography) \\ \hline
+1948 & Shannon: ``A Mathematical Theory of Communication'' (two parts) \\ \hline
+1949 & Shannon: ``Communication Theory of Secrecy Systems'' (perfect secrecy) \\ \hline
+1950 & Hamming: First error-correcting codes (Hamming codes) \\ \hline
+1959 & Shannon: ``Coding Theorems for a Discrete Source with a Fidelity Criterion'' (rate-distortion) \\ \hline
+1960 & Reed-Solomon codes \\ \hline
+1961 & Landauer: ``Irreversibility and Heat Generation in Computing'' \\ \hline
+1973 & Bekenstein-Hawking: Black hole entropy $S = A/4$ \\ \hline
+1993 & Berrou, Glavieux, Thitimajshima: Turbo codes (near-capacity) \\ \hline
+1999 & Tishby: Information Bottleneck \\ \hline
+2001 & Claude Shannon dies at age 84 \\ \hline
+2009 & Arıkan: Polar codes (first provably capacity-achieving for symmetric channels) \\ \hline
+2015 & Deep learning meets information theory (Information Bottleneck for DNNs) \\ \hline
+2016 & DeepMind's AlphaGo uses Monte Carlo tree search and neural networks — a ``Shannon-style'' search (Shannon wrote an early chess program paper in 1950) \\ \hline
+\end{tabularx}
+
+%======================================================================
+% CITATIONS
+%======================================================================
+\section{Citations}
+\label{sec:information:citations}
+
+\begin{enumerate}
+  \item \cite{Shannon1948}
+  \item \cite{Shannon1949}
+  \item \cite{Shannon1959}
+  \item \cite{coverthomas2006}
+  \item \cite{mackay2003}
+  \item \cite{gallager1968}
+  \item \cite{Berrou1993}
+  \item \cite{Arikan2009}
+  \item \cite{tishby1999}
+  \item \cite{landauer1961}
+  \item \cite{stone2015}
+  \item \cite{slepian1973}
+  \item \cite{shannon1950}
+  \item \cite{golomb2001}
+\end{enumerate}
+
+%======================================================================
+% INDEX ENTRIES
+%======================================================================
+\index{Shannon, Claude}
+\index{information theory}
+\index{entropy}
+\index{binary entropy function}
+\index{mutual information}
+\index{channel capacity}
+\index{source coding theorem}
+\index{channel coding theorem}
+\index{Shannon-Hartley theorem}
+\index{rate-distortion theory}
+\index{data compression}
+\index{error-correcting codes}
+\index{bit}
+\index{nat}
+\index{Landauer principle}
+\index{information bottleneck}
+\index{asymptotic equipartition property}
+\index{typical set}
+\index{joint typicality}
+\index{data processing inequality}
+\index{Fano's inequality}
+\index{KL divergence}
+\index{differential entropy}
+\index{binary symmetric channel}
+\index{binary erasure channel}
+\index{AWGN channel}
+\index{spread spectrum}
+\index{OFDM}
+\index{federated learning}
+\index{differential privacy}
+\index{Huffman coding}
+\index{arithmetic coding}
+\index{random coding}
+\index{one-time pad}
+\index{concavity of entropy}

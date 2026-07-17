@@ -1,0 +1,1043 @@
+% Chapter 10: Cryptography
+% Part III: Difficulty
+
+\chapter{Cryptography}
+\label{ch:cryptography}
+
+%======================================================================
+% SECTION 1: THE QUESTION
+%======================================================================
+\section{The Question: What Problem Was Humanity Trying to Solve?}
+\label{sec:crypto:question}
+
+For millennia, cryptography meant \emph{secret writing}: Alice and Bob share a secret key $k$, Alice encrypts $m \to c = E_k(m)$, Bob decrypts $m = D_k(c)$. The central problem: \emph{How do Alice and Bob agree on $k$ without meeting?}
+
+The history of cryptography stretches back 4000 years. Egyptian hieroglyphs (1900 BCE) used non-standard glyphs to obscure meaning. The Caesar cipher (shift cipher, 50 BCE) is among the earliest known substitution ciphers. Arab mathematician Al-Kindi (9th century CE) invented frequency analysis, breaking monoalphabetic ciphers. The Vigenère cipher (1553) resisted frequency analysis for 300 years. The Enigma machine (WWII) was broken at Bletchley Park (Turing, Welchman, et al.), leading to the birth of modern computing. Throughout this entire history, every cipher shared one property: the same key that encrypted also decrypted. The key distribution problem was solved by physical means — couriers, dead drops, codebooks — a method that could not scale to the internet age.
+
+Before the digital age, key distribution was a logistical problem: couriers, diplomatic bags, physical meetings. With the advent of electronic communication (telegraph, radio, and later the internet), the problem became existential. Two parties who had never met, connected by an insecure channel, needed to establish a shared secret \emph{through that very channel}.
+
+The question that crystallized in the 1970s was deceptively simple:
+
+\begin{question}How can secrecy exist in a public world? Can two parties communicate securely over a channel that anyone can listen to — without any prior shared secret?\end{question}
+
+\begin{highlightbox}[The Core Question]
+Is \emph{public-key cryptography} possible? Can encryption and decryption use \emph{different} keys, where the encryption key is public but the decryption key remains private?
+
+This would overturn 3000 years of cryptographic assumptions. Every cipher from Caesar to Enigma required the sender and receiver to share a secret beforehand. Public-key cryptography would make secrecy available to anyone, anywhere, without prior arrangement.
+
+\end{highlightbox}
+
+The stakes were enormous. The US National Bureau of Standards (now NIST) had just standardized DES (Data Encryption Standard, 1977) — a symmetric cipher requiring pre-shared keys. For the internet (then ARPANET) to become a global commerce platform, strangers needed to transact securely. Without a solution, e-commerce, online banking, and private communication on the open internet would be impossible.
+
+The problem was not merely academic. By the early 1970s, organizations with geographically dispersed operations (banks, military, multinational corporations) faced a growing crisis: how to secure communication with remote offices without physically shipping keys. The US government alone distributed millions of cryptographic keys annually via armed couriers — a system that was slow, expensive, and imperfectly secure. The key distribution bottleneck was widely recognized as the single greatest obstacle to universal communication security.
+
+\begin{roadblockbox}[The Key Distribution Problem]
+For $n$ parties to communicate securely with symmetric cryptography, each pair needs a unique key: $\binom{n}{2} = O(n^2)$ keys. For $n = 1$ billion internet users, that is $\sim 5 \times 10^{17}$ keys. Distributing these securely seemed to require \emph{another} secure channel — a circular dependency. This is the \emph{key distribution problem}, and it appeared unsolvable for open networks.
+
+\end{roadblockbox}
+
+%======================================================================
+% SECTION 2: WHY IT SEEMED IMPOSSIBLE
+%======================================================================
+\section{Why It Seemed Impossible: What Barriers Blocked Progress}
+\label{sec:crypto:impossible}
+
+\begin{enumerate}
+\item \textbf{The Key Distribution Problem:} Symmetric crypto requires a shared secret. For $n$ parties, $O(n^2)$ keys. Distributing them securely seemed to require \emph{another} secure channel — circular. This is the \emph{chicken-and-egg} problem of cryptography: to establish a secure channel, you need a secure channel. No amount of clever coding seemed able to break this logical deadlock.
+
+\item \textbf{The Intuition of Symmetry:} Encryption and decryption were thought to be symmetric operations. If you know how to lock, you know how to unlock. The idea of a \emph{trapdoor} — easy one way, hard without a secret — had no precedent in mechanical locks. A padlock is symmetric: the key that locks is the same key that unlocks. The notion of a \emph{public} lock with a \emph{private} key seemed physically impossible.
+
+\item \textbf{Shannon's Perfect Secrecy (1949):} Claude Shannon proved that perfect secrecy requires $|k| \ge |m|$ (one-time pad). The key must be at least as long as the message, and can never be reused. This suggested keys must be as long as messages — making public-key crypto seem even more impossible: how can a short public key encrypt arbitrarily long messages securely? Shannon's information-theoretic framework offered no loophole for computational assumptions.
+
+\item \textbf{No Mathematical Foundation:} Before the 1970s, cryptography was an art (ciphers, rotors, Enigma). It was practiced by military and intelligence agencies, not by academic computer scientists. There was no \emph{complexity-theoretic} framework linking security to computational hardness. The tools of computational complexity (P, NP, one-way functions) did not yet exist. Without these concepts, there was no vocabulary even to \emph{describe} a public-key system.
+
+\item \textbf{The Belief That Secrecy Requires Physical Secrets:} The prevailing view, articulated by military cryptographers, was that secure communication ultimately depends on physical secrets (key material distributed by trusted couriers). The idea that mathematics alone could replace physical secrets was dismissed as naive. Even after the DH paper, the NSA reportedly called public-key cryptography ``a visionary idea, but impossible to implement.''
+
+\item \textbf{The Computational Gap:} In the 1970s, even if one conceived of a trapdoor function, the computational cost seemed prohibitive. Early RSA implementations on 1970s hardware took seconds per operation — far slower than symmetric ciphers. Skeptics argued that public-key crypto would never be practical. Moore's law ultimately proved them wrong (exponentially faster hardware closed the gap), but the concern was genuine at the time.
+\end{enumerate}
+
+\begin{roadblockbox}[The Symmetry Dogma]
+``Encryption and decryption are inverses. If the encryption algorithm is public, anyone can run it backwards.'' This was the prevailing view. The concept of a \emph{one-way function} — easy to compute, hard to invert without a trapdoor — was the missing conceptual breakthrough.
+
+Even after Diffie and Hellman published their key exchange, many experts doubted it could work. The NSA reportedly told industry partners that public-key cryptography was impossible. When Rivest, Shamir, and Adleman announced RSA in 1977, they offered a \$100 prize for breaking it (which stood until 1994, when a distributed effort factoring RSA-129 with 1600 computers over 8 months cracked it). The incredulity was so deep that even after the paper was published, many believed it was a hoax.
+
+\end{roadblockbox}
+
+%======================================================================
+% SECTION 3: HISTORICAL CONTEXT
+%======================================================================
+\section{Historical Context: What Was Known at the Time}
+\label{sec:crypto:context}
+
+\begin{historicalbox}[The 1970s Revolution]
+\begin{itemize}
+\item \textbf{1974:} Ralph Merkle (Berkeley undergrad) proposes \emph{public-key cryptography} in a class project (rejected initially). Publishes 1978.
+\item \textbf{1976:} Whitfield Diffie \& Martin Hellman (Stanford): ``New Directions in Cryptography'' — public-key key exchange (Diffie-Hellman), digital signatures, one-way functions.
+\item \textbf{1977:} Rivest, Shamir, Adleman (MIT): RSA — first practical public-key encryption + signatures.
+\item \textbf{1973--1977 (Classified):} James Ellis, Clifford Cocks, Malcolm Williamson (GCHQ, UK) independently invent public-key crypto, DH, RSA. Declassified 1997.
+\item \textbf{1985:} Koblitz, Miller: Elliptic Curve Cryptography (ECC) — smaller keys, faster.
+\item \textbf{1988:} ElGamal: Encryption variant of DH.
+\item \textbf{2000s:} Pairing-based crypto (Boneh-Franklin IBE, BLS signatures).
+\item \textbf{2010s:} Post-quantum crypto (lattices, isogenies, codes, hashes).
+\end{itemize}
+
+\end{historicalbox}
+
+The story of public-key cryptography is remarkable for its simultaneous discovery. Three groups — Merkle, Diffie-Hellman, and the classified GCHQ team — converged on the same concept within a few years, each approaching it from a different angle. This phenomenon (multiple discovery) is common in science (calculus, evolution by natural selection, the oxygen theory of combustion) but unusually condensed here: the GCHQ breakthroughs (1973-1977), Merkle's class project (1974), and Diffie-Hellman's academic publication (1976) all occurred within a span of four years, entirely independently.
+
+\begin{itemize}
+\item \textbf{Merkle} approached from the practical side: can two parties agree on a key by solving many small puzzles?
+\item \textbf{Diffie \& Hellman} approached from first principles: what mathematical properties would a public-key system need?
+\item \textbf{Ellis, Cocks, Williamson} (GCHQ) approached from the classified military side: they needed secure communication without pre-shared keys.
+\end{itemize}
+
+Key figures:
+
+\begin{itemize}
+\item \textbf{Diffie \& Hellman:} Visionaries who saw the \emph{concept} (key exchange, signatures).
+\item \textbf{Rivest, Shamir, Adleman:} Found the \emph{trapdoor} (factoring).
+\item \textbf{Merkle:} Invented Merkle puzzles (pre-DH key exchange) and Merkle trees.
+\item \textbf{GCHQ team:} Did it first, in secret. Ellis (concept), Cocks (RSA), Williamson (DH).
+\item \textbf{Koblitz \& Miller:} Independently proposed elliptic curve groups for crypto (1985).
+\end{itemize}
+
+\begin{historicalbox}[Biographical Sketch: Whitfield Diffie]
+Whitfield Diffie (b. 1944) began his career at MIT working on symbolic mathematics (MACSYMA). Fascinated by the key distribution problem, he independently began exploring public-key cryptography in the early 1970s. His famous 1976 paper with Martin Hellman, ``New Directions in Cryptography,'' is one of the most influential papers in computer science. Diffie served as Chief Security Officer at Sun Microsystems and later at ICANN. He won the Turing Award in 2015 with Hellman.
+
+\end{historicalbox}
+
+\begin{historicalbox}[Biographical Sketch: Martin Hellman]
+Martin Hellman (b. 1945) was a professor at Stanford when Diffie arrived as a visiting researcher. Hellman provided the mathematical rigor and group theory background that grounded Diffie's visionary ideas. Together they developed the Diffie-Hellman key exchange and the concept of digital signatures. After his pioneering crypto work, Hellman turned to studying existential risks (nuclear war, climate change). He received the Turing Award in 2015.
+
+\end{historicalbox}
+
+\begin{historicalbox}[Biographical Sketch: Ralph Merkle]
+Ralph Merkle (b. 1952) proposed public-key cryptography as an undergraduate at UC Berkeley in 1974. His professor deemed the idea impossible. Undeterred, Merkle developed \emph{Merkle's puzzles}, a protocol for two parties to agree on a secret key by solving many small cryptographic puzzles — a quadratic-cost protocol that anticipated public-key exchange. He also invented Merkle trees (hash trees), now fundamental to blockchains, Git, and certificate transparency. Merkle later worked on nanotechnology and space development.
+
+\end{historicalbox}
+
+\begin{historicalbox}[Biographical Sketch: Ron Rivest]
+Ron Rivest (b. 1947) is a professor at MIT and a founder of RSA Security. After reading Diffie and Hellman's 1976 paper, Rivest began trying to construct a practical trapdoor function. He made dozens of attempts — each broken by Adleman — until the RSA scheme emerged in April 1977. Beyond RSA, Rivest contributed to DES, RC4, MD4, MD5, and several other foundational algorithms. He was a co-founder of Verisign and is a Turing Award winner (2002).
+
+\end{historicalbox}
+
+\begin{historicalbox}[Biographical Sketch: Adi Shamir]
+Adi Shamir (b. 1952) is an Israeli cryptographer who co-invented RSA while a visiting scientist at MIT in 1977. He has made seminal contributions across cryptography: Shamir's secret sharing scheme, differential cryptanalysis (analytic attack on DES), the Boneh-Shamir visual cryptography scheme, and the TWINKLE factoring device. He is a Turing Award winner (2002) and continues to be active in cryptanalysis and post-quantum crypto.
+
+\end{historicalbox}
+
+\begin{historicalbox}[Biographical Sketch: Leonard Adleman]
+Leonard Adleman (b. 1945) is a theoretical computer scientist at USC. While at MIT in 1977, he played the role of the ``breaker'' — Rivest proposed schemes and Adleman found the attacks. The three went through 42 proposals before RSA. Beyond cryptography, Adleman co-invented the Miller-Adleman primality test (later Miller-Rabin) and founded the field of DNA computing. He is a Turing Award winner (2002).
+
+\end{historicalbox}
+
+\begin{historicalbox}[Biographical Sketch: Neal Koblitz]
+Neal Koblitz (b. 1948) is a mathematician at the University of Washington. In 1985, he independently proposed using elliptic curves for public-key cryptography, publishing ``Elliptic Curve Cryptosystems'' in Mathematics of Computation. Koblitz is also known for his textbooks on number theory and cryptography, his critiques of poorly designed cryptographic systems, and his role in developing hyperelliptic curve cryptography.
+
+\end{historicalbox}
+
+\begin{historicalbox}[Biographical Sketch: Victor Miller]
+Victor Miller (b. 1947) is an American mathematician and cryptographer who independently discovered elliptic curve cryptography in 1985 (a few months before Koblitz). At the time, Miller was at IBM Research. His paper ``Use of Elliptic Curves in Cryptography'' was presented at CRYPTO 1985. Miller also contributed to the development of the Weil pairing and made contributions to computational biology and automated theorem proving.
+
+\end{historicalbox}
+
+\begin{connectionbox}[Connection to Chapters 8 \& 9]
+Public-key crypto \emph{requires} computational hardness assumptions ($\mathsf{P} \neq \mathsf{NP}$, factoring $\notin \mathsf{P}$, DLP $\notin \mathsf{P}$). NP-completeness (Chapter 9) gives a framework: we base crypto on problems \emph{believed} hard on average, not worst-case. The \emph{average-case} vs \emph{worst-case} gap is central. The entire field depends on the existence of one-way functions — which Impagliazzo and Luby (1989) proved is equivalent to $\mathsf{P} \neq \mathsf{NP}$ in a distributional sense.
+
+\end{connectionbox}
+
+%======================================================================
+% SECTION 4: THE MENTAL LEAP
+%======================================================================
+\section{The Mental Leap: The Creative Insight That Changed Everything}
+\label{sec:crypto:leap}
+
+There are multiple leaps here, each overturning a different assumption:
+
+\begin{mentalLeap}
+\textbf{Leap 1 (Diffie-Hellman 1976):} \emph{Asymmetry.} Encryption and decryption need not be symmetric. A \emph{public key} $pk$ encrypts; a \emph{private key} $sk$ decrypts. $pk$ can be shouted from rooftops; only $sk$ unlocks. The mathematical primitive: a \emph{trapdoor one-way function} family. The asymmetry breaks 3000 years of cryptographic tradition at a stroke.
+\end{mentalLeap}
+
+\begin{mentalLeap}
+\textbf{Leap 2 (Diffie-Hellman 1976):} \emph{Key Exchange Without Secrets.} Alice and Bob can compute a shared secret over a public channel!
+\begin{enumerate}
+\item Public: group $G$, generator $g$.
+\item Alice picks $a$, sends $g^a$.
+\item Bob picks $b$, sends $g^b$.
+\item Shared secret: $g^{ab} = (g^a)^b = (g^b)^a$.
+\end{enumerate}
+An eavesdropper sees $g^a, g^b$ but cannot compute $g^{ab}$ (Computational Diffie-Hellman assumption). The beauty is in the commutativity: exponentiation commutes in the exponent, so both parties arrive at the same value despite broadcasting different intermediate values.
+\end{mentalLeap}
+
+\begin{mentalLeap}
+\textbf{Leap 3 (RSA 1977):} \emph{A Concrete Trapdoor.} The trapdoor is \emph{factoring}. $N = pq$ (public). $\phi(N) = (p-1)(q-1)$ (secret). $e$ public, $d = e^{-1} \bmod \phi(N)$ private. Encryption: $c = m^e \bmod N$. Decryption: $m = c^d \bmod N$. Factoring $N$ reveals $\phi(N)$ reveals $d$. But factoring is hard (believed). RSA gave the first practical implementation of the vision Diffie and Hellman had outlined.
+\end{mentalLeap}
+
+\begin{mentalLeap}
+\textbf{Leap 4 (Koblitz-Miller 1985):} \emph{Groups from Geometry.} Elliptic curves $E(\mathbb{F}_q)$ give groups where DLP is exponentially harder (no subexponential algorithms). 256-bit ECC $\approx$ 3072-bit RSA. Smaller keys, faster, same security. This leap showed that the group used for cryptography could be decoupled from the arithmetic of finite fields — opening the door to a rich variety of algebraic structures.
+\end{mentalLeap}
+
+\begin{mentalLeap}
+\textbf{Leap 5 (Gentry 2009):} \emph{Computation on Secrets.} Homomorphic encryption allows arbitrary computations on encrypted data without decrypting. Gentry's bootstrapping theorem showed that if a scheme can evaluate its own decryption circuit, it can compute anything — a self-referential leap reminiscent of Gödel's incompleteness theorems (Chapter 3). This was considered impossible since the invention of public-key crypto.
+\end{mentalLeap}
+
+Each leap replaced \emph{secrecy of mechanism} with \emph{secrecy of key} (Kerckhoffs's principle) and then replaced \emph{shared secret} with \emph{asymmetric mathematics}.
+
+\begin{connectionbox}[The Common Thread]
+What unites these five leaps? Each one discovers a form of \emph{asymmetry} — a difference between public and private, between forward and inverse, between easy and hard — and then exploits that asymmetry to eliminate the need for prior trust. Public-key cryptography is the art of finding asymmetry in mathematics and using it to break symmetry in communication.
+
+\end{connectionbox}
+
+%======================================================================
+% SECTION 5: THE MATHEMATICS
+%======================================================================
+\section{The Mathematics: Rigorous Development of the Theory}
+\label{sec:crypto:math}
+
+\subsection{One-Way Functions and Trapdoors}
+\label{sec:crypto:owf}
+
+\begin{definition}[One-Way Function (OWF)]
+A function $f: \{0,1\}^* \to \{0,1\}^*$ is \emph{one-way} if:
+\begin{enumerate}
+\item $f$ is computable in polynomial time.
+\item For every PPT adversary $\mathcal{A}$, $\Pr[\mathcal{A}(f(x)) \in f^{-1}(f(x))] \le \mathsf{negl}(n)$, where $x \gets \{0,1\}^n$.
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[Trapdoor One-Way Function]
+A family $\{f_{pk}\}$ with trapdoor $sk$ such that:
+\begin{enumerate}
+\item Given $pk$, $f_{pk}(x)$ is easy to compute.
+\item Given $sk$, $f_{pk}^{-1}(y)$ is easy to compute.
+\item Without $sk$, inverting $f_{pk}$ is hard (OWF).
+\end{enumerate}
+\end{definition}
+
+\textbf{Candidate one-way functions.} Despite decades of research, we do not \emph{know} that OWFs exist (this would prove $\mathsf{P} \neq \mathsf{NP}$). However, several candidates are widely believed to be one-way:
+
+\begin{itemize}
+\item \textbf{Multiplication/Factoring:} $f(p,q) = p \cdot q$ where $p,q$ are large primes. Easy to compute, believed hard to invert (no polynomial-time factoring algorithm known). Used by RSA.
+\item \textbf{Discrete Logarithm:} $f(x) = g^x$ in a cyclic group $G$. Easy to compute via repeated squaring, believed hard to invert (DLP). Used by DH, ElGamal, DSA.
+\item \textbf{RSA Function:} $f_{N,e}(x) = x^e \bmod N$. Inversion requires computing $e$-th roots modulo $N$, believed hard without the factorization. Used by RSA encryption and signatures.
+\item \textbf{Learning With Errors (LWE):} $f(A, s, e) = (A, As + e)$. Inversion requires finding $s$ from noisy linear equations. Believed quantum-resistant.
+\item \textbf{Cryptographic Hash Functions:} $H(m)$ is believed preimage-resistant and collision-resistant. SHA-256, SHA-3 are practical OWFs.
+\item \textbf{McEliece / Code-based:} $f(G, m, e) = mG + e$ where $G$ is a generator matrix of a Goppa code. Inverting requires solving a general decoding problem, which is NP-hard. Used in Classic McEliece PQC candidate.
+\item \textbf{Subset Sum (knapsack):} $f(a_1,\dots,a_n, x) = \sum x_i a_i$ where $x \in \{0,1\}^n$. Inverting is the subset sum problem (NP-complete). Broken Merkle-Hellman knapsack (1978) showed that trapdoor structure can be exploited; but the general problem remains hard.
+\end{itemize}
+
+\begin{theorem}[Impagliazzo-Luby 1989]
+OWFs exist $\iff$ $\mathsf{P} \neq \mathsf{NP}$ (in a distributional/average-case sense). Pseudorandom generators, symmetric encryption, signatures, commitments all equivalent to OWFs.
+\end{theorem}
+
+This theorem is fundamental: it tells us that the entire edifice of cryptography rests on the same assumption as the $\mathsf{P}$ vs $\mathsf{NP}$ problem. If $\mathsf{P} = \mathsf{NP}$, most cryptography collapses. However, the converse is also interesting: most cryptographic primitives (PRGs, signatures, encryption) are \emph{all equivalent} to OWFs, suggesting a deep unity beneath the apparent diversity of cryptographic tools.
+
+\textbf{Hard-core bits:} A one-way function $f$ may still leak some information about its input $x$. A \emph{hard-core predicate} $h(x)$ is a bit that is unpredictable given $f(x)$. Goldreich-Levin (1989): for any OWF $f$, the function $f'(x, r) = (f(x), r)$ has a hard-core bit $h(x, r) = \langle x, r \rangle \bmod 2$. This elegant construction enables the extraction of pseudorandom bits from any OWF, forming the foundation of pseudorandom generators (PRGs) via the Blum-Micali construction (1984) and the HILL theorem (Håstad-Impagliazzo-Levin-Luby 1999): PRGs exist if and only if OWFs exist.
+
+\begin{highlightbox}[Average-Case vs Worst-Case Hardness]
+OWFs require hardness \emph{on average}: a random instance must be hard to invert with high probability. This is stronger than NP-hardness, which only guarantees worst-case hardness. Bridging this gap — constructing average-case hard problems from worst-case ones — is a central achievement of lattice-based cryptography (Regev 2005). The LWE problem is \emph{provably} as hard on average as certain worst-case lattice problems (GapSVP, SIVP).
+
+\end{highlightbox}
+
+\subsection{Symmetric Encryption and the Symmetric-Key Landscape}
+\label{sec:crypto:symmetric}
+
+Before diving into public-key primitives, it is useful to understand the symmetric-key building blocks that public-key crypto complements (rather than replaces). In modern protocols, public-key crypto is used for key exchange and authentication; the bulk data encryption uses symmetric algorithms because they are 1000-10000$\times$ faster.
+
+\textbf{Block ciphers:} AES (Rijndael, standardized 2001) operates on 128-bit blocks with 128/192/256-bit keys. AES uses a substitution-permutation network (SPN) with 10/12/14 rounds. Each round applies: SubBytes (S-box nonlinear substitution), ShiftRows (transposition), MixColumns (linear mixing), and AddRoundKey (XOR with round key). AES is implemented in hardware (AES-NI instructions on x86) achieving throughputs of $\sim 1$ GB/s/core.
+
+\textbf{Block cipher modes:} Electronic Codebook (ECB, insecure — same plaintext block $\to$ same ciphertext), Cipher Block Chaining (CBC, requires random IV), Counter mode (CTR, parallelizable, turns block cipher into stream cipher), Galois/Counter mode (GCM, combines CTR encryption with GHASH authentication). AES-GCM is the dominant authenticated encryption mode for TLS 1.3.
+
+\textbf{Stream ciphers:} ChaCha20 (Bernstein 2008) is a fast stream cipher designed for software (no hardware acceleration needed). Combined with Poly1305 MAC, ChaCha20-Poly1305 is the mandatory cipher suite for TLS 1.3 (RFC 8439). Used by SSH, Signal, and Google.
+
+\textbf{Authenticated Encryption (AEAD):} Encrypt-then-MAC provides both confidentiality and integrity. GCM and ChaCha20-Poly1305 are AEAD ciphers: encryption produces ciphertext plus an authentication tag. The receiver verifies the tag before decrypting, preventing chosen-ciphertext attacks. Nonce reuse in AEAD is catastrophic (confidentiality + integrity lost), which is why deterministic nonce generation (EdDSA's approach) is essential.
+
+\textbf{Key derivation from DH:} The DH shared secret $g^{ab}$ is not uniformly random and should not be used directly as an encryption key. HKDF (RFC 5869) extracts and expands the shared secret into the appropriate number of key bytes. TLS 1.3 uses HKDF to derive up to 7 distinct keys per handshake (handshake traffic keys, application traffic keys, exporter secrets, resumption keys).
+
+\subsection{Diffie-Hellman Key Exchange}
+\label{sec:crypto:dh}
+
+Let $G$ be a cyclic group of prime order $q$, generator $g$. The Discrete Logarithm Problem (DLP): given $g^a$, find $a$. DDH assumption: $(g^a, g^b, g^{ab}) \approx_c (g^a, g^b, g^c)$ for random $a,b,c$.
+
+\begin{theorem}[Security of DH]
+Under the \emph{Computational Diffie-Hellman (CDH)} assumption in $G$, the DH key exchange is secure against passive eavesdroppers.
+\end{theorem}
+
+Active attacks (Man-in-the-Middle) require \emph{authentication} (signatures, PKI). In the basic DH protocol, an active adversary can intercept $g^a$ and $g^b$, replace them with $g^{a'}$ and $g^{b'}$, establishing independent keys with Alice and Bob. This is why authenticated key exchange (AKE) protocols combine DH with digital signatures.
+
+\subsubsection*{Group Choices for DH}
+\begin{itemize}
+\item \textbf{Multiplicative group $\mathbb{F}_p^*$:} Need $p \ge 3072$ bits for 128-bit security. Subexponential index calculus ($L_p[1/3]$).
+\item \textbf{Elliptic curves $E(\mathbb{F}_q)$:} Need $q \approx 256$ bits for 128-bit security. Pollard's rho $O(\sqrt{q})$. No index calculus!
+\item \textbf{Class groups / Isogenies:} Post-quantum alternatives (CSIDH, SQISign).
+\end{itemize}
+
+\subsubsection*{Concrete Example: DH with Small Numbers}
+Let $p = 23$, $g = 5$ (a primitive root modulo 23). Alice picks $a = 6$, computes $g^a = 5^6 \bmod 23 = 15625 \bmod 23 = 8$. Bob picks $b = 15$, computes $g^b = 5^{15} \bmod 23 = 30517578125 \bmod 23 = 19$. Alice receives 19, computes $19^6 \bmod 23 = 47045881 \bmod 23 = 2$. Bob receives 8, computes $8^{15} \bmod 23 = 35184372088832 \bmod 23 = 2$. Shared secret: $g^{ab} = 2$. An eavesdropper sees only $g^a = 8$ and $g^b = 19$; computing $g^{ab}$ from these requires solving the DLP, which for $p=23$ is easy (by exhaustive search), but for $p \approx 2^{2048}$ is infeasible.
+
+\subsection{RSA}
+\label{sec:crypto:rsa}
+
+RSA is built on Euler's theorem: for any $a$ coprime to $N$, $a^{\phi(N)} \equiv 1 \pmod N$, where $\phi(N) = N \prod_{p|N} (1 - 1/p)$. For $N = pq$, $\phi(N) = (p-1)(q-1)$.
+
+\begin{enumerate}
+\item \textbf{KeyGen:} Choose primes $p,q$. $N = pq$. $\phi(N) = (p-1)(q-1)$. Choose $e$ with $\gcd(e,\phi(N))=1$. Compute $d = e^{-1} \bmod \phi(N)$. $pk = (N,e)$, $sk = (N,d)$.
+\item \textbf{Encrypt:} $c = m^e \bmod N$ (with padding: OAEP).
+\item \textbf{Decrypt:} $m = c^d \bmod N$.
+\item \textbf{Sign:} $s = H(m)^d \bmod N$. \textbf{Verify:} $s^e \stackrel{?}{=} H(m) \bmod N$.
+\end{enumerate}
+
+\textbf{Why it works:} $c^d = (m^e)^d = m^{ed} = m^{1 + k\phi(N)} = m \cdot (m^{\phi(N)})^k \equiv m \pmod N$ by Euler's theorem.
+
+The \textbf{Chinese Remainder Theorem (CRT)} is used to speed up RSA decryption by a factor of ~4. Instead of computing $m = c^d \bmod N$ directly, compute $m_p = c^{d \bmod (p-1)} \bmod p$ and $m_q = c^{d \bmod (q-1)} \bmod q$, then reconstruct $m$ via CRT: $m = m_p \cdot q \cdot (q^{-1} \bmod p) + m_q \cdot p \cdot (p^{-1} \bmod q) \bmod N$.
+
+Security is based on \emph{RSA assumption}: inverting $x \mapsto x^e \bmod N$ without $\phi(N)$ is hard. Factoring $\to$ RSA, but RSA $\not\to$ Facturing (open — it is not known whether breaking RSA is equivalent to factoring).
+
+\subsubsection*{Concrete Example: RSA with Small Primes}
+Let $p = 61$, $q = 53$. Then $N = 61 \times 53 = 3233$, $\phi(N) = 60 \times 52 = 3120$. Choose $e = 17$ (coprime to 3120). Compute $d = 17^{-1} \bmod 3120 = 2753$ (since $17 \times 2753 = 46801 = 15 \times 3120 + 1$). Public key: $(3233, 17)$. Private key: $(3233, 2753)$. Encrypt $m = 42$: $c = 42^{17} \bmod 3233 = 2557$. Decrypt: $m = 2557^{2753} \bmod 3233 = 42$. (In practice, $p,q$ are $\sim 2048$ bits; this example uses numbers small enough to verify by hand.)
+
+\subsubsection*{Attacks and Countermeasures}
+\begin{itemize}
+\item \textbf{Small $e$ attacks (Håstad 1988):} Broadcast attack if $e=3$ and no padding. Counter: OAEP padding.
+\item \textbf{Wiener's attack (1990):} Small $d$ ($d < N^{0.25}$) breaks RSA. Counter: use large $d$ or CRT.
+\item \textbf{Boneh-Durfee (1999):} Small $d$ up to $N^{0.292}$.
+\item \textbf{Coppersmith (1996):} Small roots of polynomials modulo $N$. Used for partial key exposure.
+\item \textbf{Side channels:} Timing (Kocher 1996), power, cache. Counter: constant-time implementation, blinding.
+\end{itemize}
+
+\begin{roadblockbox}[Textbook RSA is Insecure]
+RSA as described above (without padding) is \emph{deterministic} and \emph{malleable}: the same plaintext always encrypts to the same ciphertext, and given $c = m^e \bmod N$, an adversary can compute $c' = (2m)^e \bmod N$ and obtain the encryption of $2m$. Modern RSA uses OAEP (Optimal Asymmetric Encryption Padding, Bellare-Rogaway 1994) to add randomness and achieve IND-CCA security.
+
+\end{roadblockbox}
+
+\subsection{ElGamal Encryption}
+\label{sec:crypto:elgamal}
+
+DH + message masking. Public key: $h = g^x$ where $x$ is the secret key. Encrypt $m$: choose random $r \stackrel{\$}{\gets} \mathbb{Z}_q$, send $(c_1, c_2) = (g^r, m \cdot h^r)$. Decrypt: compute the shared secret $s = c_1^x = g^{rx} = h^r$, then recover $m = c_2 \cdot s^{-1}$ (division in the group).
+
+ElGamal is \emph{probabilistic}: the same plaintext encrypts to different ciphertexts each time (depending on $r$). Its security is equivalent to the DDH assumption in $G$. Under DDH, the pair $(g^r, h^r)$ is indistinguishable from random, so $c_2$ masks the message perfectly. ElGamal is \emph{malleable}: given $(c_1, c_2)$ encrypting $m$, anyone can compute $(c_1, c_2 \cdot t)$ encrypting $m \cdot t$. This malleability is why ElGamal requires CCA-secure transforms (like the Fujisaki-Okamoto transform) for practical use.
+
+ElGamal can also be used as a signature scheme (ElGamal signatures). The signer picks $k$ with $\gcd(k, q-1) = 1$, computes $r = g^k$, and $s = k^{-1}(H(m) - xr) \bmod (q-1)$.
+
+\subsubsection*{Concrete Example}
+Let $G = \mathbb{F}_{23}^*$ with generator $g = 5$. Secret key $x = 7$, public key $h = 5^7 \bmod 23 = 17$. Encrypt $m = 12$ with random $r = 3$: $c_1 = 5^3 \bmod 23 = 10$, $h^r = 17^3 \bmod 23 = 4913 \bmod 23 = 14$, $c_2 = 12 \times 14 \bmod 23 = 168 \bmod 23 = 7$. Ciphertext: $(10, 7)$. Decrypt: compute shared secret $c_1^x = 10^7 \bmod 23 = 10^4 \times 10^2 \times 10^1 = 18 \times 8 \times 10 = 1440 \bmod 23 = 14$, then $m = 7 \times 14^{-1} \bmod 23 = 7 \times 5 \bmod 23 = 12$.
+
+\subsection{Digital Signatures}
+\label{sec:crypto:signatures}
+
+\begin{definition}[Signature Scheme]
+$\mathsf{KeyGen} \to (sk, pk)$, $\mathsf{Sign}(sk, m) \to \sigma$, $\mathsf{Verify}(pk, m, \sigma) \to \{0,1\}$.
+\end{definition}
+
+Security: \emph{EUF-CMA} (Existential Unforgeability under Chosen Message Attack). Adversary gets signatures on $q$ chosen messages, tries to forge a new one.
+
+\begin{itemize}
+\item \textbf{RSA Signatures:} $s = H(m)^d \bmod N$. Verify: $s^e \stackrel{?}{=} H(m) \bmod N$. Hash-then-sign paradigm. Must use PSS (Probabilistic Signature Scheme) padding to prevent existential forgeries. Textbook RSA signatures are existentially forgeable: given signatures on $m_1$ and $m_2$, the product $\sigma_1 \cdot \sigma_2 \bmod N$ is a valid signature on $m_1 \cdot m_2 \bmod N$. PSS prevents this by encoding redundancy and randomness.
+
+\item \textbf{DSA/ECDSA:} Based on DLP. $s = k^{-1}(H(m) + xr) \bmod q$ where $r = (g^k \bmod p) \bmod q$, $x$ is the private key, and $k$ is a random nonce. Requires good randomness: nonce reuse \emph{directly reveals the private key}. If two signatures $(r, s_1)$ and $(r, s_2)$ share the same $k$, then $k = (H(m_1) - H(m_2)) / (s_1 - s_2)$ and $x = (sk - H(m))/r$. This attack was used against the Playstation 3 (2010) and against Bitcoin's ECDSA implementations.
+
+\item \textbf{Schnorr:} Simple, linear, provably secure in ROM. Signature: $(R, s)$ where $R = g^k$, $s = k + x \cdot H(R, m) \bmod q$ (where $x$ is the private key). Verification: $g^s \stackrel{?}{=} R \cdot pk^{H(R,m)}$. Linear structure enables signature aggregation (MuSig, FROST) and threshold variants. Basis for EdDSA and BLS.
+
+  \textbf{Concrete Schnorr example:} Let $G$ be the group $\mathbb{F}_{23}^*$ with generator $g = 5$, order $q = 22$. Private key $x = 7$, public key $pk = 5^7 \bmod 23 = 17$. Sign $m$ with hash $H(m) = 5$ (simplified). Pick $k = 9$: $R = 5^9 \bmod 23 = 1953125 \bmod 23 = 11$. Compute $s = 9 + 7 \cdot 5 \bmod 22 = 9 + 35 \bmod 22 = 44 \bmod 22 = 0$. Signature: $(R=11, s=0)$. Verify: $g^s \cdot pk^{H(R,m)} = 5^0 \cdot 17^5 \bmod 23 = 1 \cdot 1419857 \bmod 23 = 1419857 \bmod 23 = 11 = R$. Valid. (Note: $s=0$ is undesirable in practice; real implementations check $s \neq 0$ to prevent trivial forgeries.)
+
+\item \textbf{BLS (Boneh-Lynn-Shacham 2001):} Pairing-based. $\sigma = H(m)^x$. Verify: $e(\sigma, g) \stackrel{?}{=} e(H(m), pk)$. Signatures are very short (single group element). \emph{Aggregate signatures}: $\sigma_1 \cdot \sigma_2 = (H(m_1) \cdot H(m_2))^x$ for the same signer, or $e(\sigma_1, g) \cdot e(\sigma_2, g) = e(H(m_1), pk_1) \cdot e(H(m_2), pk_2)$ for different signers. Used in Ethereum 2.0 consensus.
+
+\item \textbf{EdDSA (Ed25519):} Deterministic nonce ($k = H(x, m)$), high-speed twisted Edwards curve, constant-time implementation. No nonce misuse possible. Bernstein's Curve25519 family (X25519 for DH, Ed25519 for signatures) is the de facto standard for modern protocols.
+\end{itemize}
+
+\begin{highlightbox}[The Nonce Reuse Catastrophe]
+In DSA/ECDSA, the random nonce $k$ must be \emph{unique} per signature. Reusing $k$ reveals the private key algebraically. The 2010 Sony Playstation 3 firmware used a static $k$, allowing attackers to extract Sony's ECDSA signing key. This is why EdDSA uses a \emph{deterministic} nonce derived from the private key and message — eliminating the need for a secure random number generator.
+
+\end{highlightbox}
+
+\subsection{Hash Functions}
+\label{sec:crypto:hash}
+
+\begin{definition}[Cryptographic Hash Function]
+$H: \{0,1\}^* \to \{0,1\}^n$ (e.g., SHA-256 output is 256 bits, SHA-3/Keccak is configurable).
+Properties:
+\begin{enumerate}
+\item \textbf{Preimage resistance:} Given $y$, hard to find $x$ with $H(x) = y$.
+\item \textbf{Second preimage resistance:} Given $x$, hard to find $x' \neq x$ with $H(x) = H(x')$.
+\item \textbf{Collision resistance:} Hard to find any $x \neq x'$ with $H(x) = H(x')$.
+\end{enumerate}
+\end{definition}
+
+\textbf{Merkle-Damgård construction (MD5, SHA-1, SHA-2/SHA-256):} The message is padded to a multiple of the block size and split into blocks $m_1, \dots, m_k$. A compression function $f: \{0,1\}^{n+b} \to \{0,1\}^n$ iterates: $h_0 = IV$, $h_i = f(h_{i-1}, m_i)$. Output $h_k$. If $f$ is collision-resistant, the whole construction is collision-resistant (Merkle-Damgård theorem). However, MD constructions are vulnerable to length-extension attacks (given $H(m)$, compute $H(m || \text{padding} || \text{extra})$ without knowing $m$).
+
+\textbf{Sponge construction (SHA-3/Keccak):} A fixed-permutation $P: \{0,1\}^{b} \to \{0,1\}^{b}$ operates on a state of $b = r + c$ bits ($r$ = rate, $c$ = capacity). Two phases:
+\begin{enumerate}
+\item \textbf{Absorb:} XOR message blocks into the first $r$ bits, apply $P$ after each block.
+\item \textbf{Squeeze:} Output the first $r$ bits, apply $P$, repeat until desired output length.
+\end{enumerate}
+The sponge is provably secure in the \emph{ideal permutation model}. It is not vulnerable to length extension, making it suitable for MACs, stream ciphers, and authenticated encryption directly. Keccak won the NIST SHA-3 competition in 2012.
+
+\textbf{SHA-256 details:} The compression function $f$ operates on a 256-bit state (8 words of 32 bits: $a, b, c, d, e, f, g, h$) and a 512-bit message block. It uses 64 rounds of bitwise operations:
+\begin{itemize}
+\item $\Sigma_0(a) = (a \ggg 2) \oplus (a \ggg 13) \oplus (a \ggg 22)$
+\item $\Sigma_1(e) = (e \ggg 6) \oplus (e \ggg 11) \oplus (e \ggg 25)$
+\item $\text{Ch}(e,f,g) = (e \land f) \oplus (\lnot e \land g)$
+\item $\text{Maj}(a,b,c) = (a \land b) \oplus (a \land c) \oplus (b \land c)$
+\end{itemize}
+Each round mixes a message word $W_t$ (expanded from the 16-block message via a linear recurrence $W_t = \sigma_1(W_{t-2}) + W_{t-7} + \sigma_0(W_{t-15}) + W_{t-16}$) with the state and a round constant $K_t$. The Davies-Meyer construction feeds the output back into the state: $h_i = f(h_{i-1}, m_i) + h_{i-1}$. After processing all blocks, the output is the final state $h_k$, which becomes the message digest.
+
+\textbf{Known attacks:} SHA-1 collisions (SHAttered, 2017: Google demonstrated the first practical collision for \$110k of cloud compute). MD5 collisions are trivial (chosen-prefix collisions in seconds). SHA-256 remains unbroken, though reduced-round variants show weaknesses. The lesson: hash functions have finite lifetimes; SHA-3 was designed as a backup even before SHA-2 was broken.
+
+\textbf{SHA-3/Keccak details:} The Keccak-$f[1600]$ permutation operates on a $5 \times 5 \times 64$ bit state (1600 bits total). Each round applies five step mappings ($\theta, \rho, \pi, \chi, \iota$) — a design deliberately different from MD/SHA family to provide diversity. SHAKE128 and SHAKE256 are \emph{extendable-output functions} (XOFs) that produce arbitrary-length output. This flexibility makes SHA-3 suitable for Fiat-Shamir transforms, key derivation, and random oracles.
+
+\textbf{The Random Oracle Model (ROM):} A security proof technique where hash functions are modeled as truly random functions (random oracles). In ROM, the adversary cannot predict $H(x)$ without explicitly querying the oracle. This allows proofs of security for many practical schemes (OAEP, FDH signatures, Schnorr, BLS) that cannot be proved in the standard model alone. Critically, a proof in ROM does not guarantee security when the random oracle is instantiated with a concrete hash function (e.g., SHA-256) — counterexamples exist (Canetti-Goldreich-Halevi 1998). Nonetheless, ROM proofs are widely accepted as evidence of security. The Quantum Random Oracle Model (QROM) accounts for quantum adversaries who can query the oracle in superposition.
+
+\textbf{Key derivation and HKDF:} Hash functions are used to derive cryptographic keys from Diffie-Hellman shared secrets. HKDF (RFC 5869, Krawczyk 2010) consists of two phases: \emph{extract} (compress the DH shared secret using HMAC to produce a pseudorandom key) and \emph{expand} (generate the desired number of key bytes). HKDF is used in TLS 1.3, Signal, WPA2, and IPsec.
+
+\subsection{Elliptic Curve Cryptography}
+\label{sec:crypto:ecc}
+
+$E: y^2 = x^3 + ax + b$ over a field $\mathbb{F}_p$ (with $p \neq 2,3$) or $\mathbb{F}_{2^m}$. The discriminant $\Delta = -16(4a^3 + 27b^2) \neq 0$ ensures the curve is non-singular.
+
+\textbf{Group law:} The points on $E(\mathbb{F}_p)$ (including the point at infinity $\mathcal{O}$) form an abelian group under the chord-and-tangent rule:
+\begin{itemize}
+\item \textbf{Negation:} $-(x, y) = (x, -y)$.
+\item \textbf{Addition:} For $P = (x_1, y_1)$, $Q = (x_2, y_2)$, $P + Q = (x_3, y_3)$ where:
+  \begin{itemize}
+  \item If $P \neq \pm Q$ (chord): $\lambda = (y_2 - y_1) / (x_2 - x_1)$, $x_3 = \lambda^2 - x_1 - x_2$, $y_3 = \lambda(x_1 - x_3) - y_1$.
+  \item If $P = Q$ (tangent): $\lambda = (3x_1^2 + a) / (2y_1)$, $x_3 = \lambda^2 - 2x_1$, $y_3 = \lambda(x_1 - x_3) - y_1$.
+  \item $P + \mathcal{O} = \mathcal{O} + P = P$.
+  \end{itemize}
+\end{itemize}
+
+ECDLP: Given $P, Q = kP$, find $k$. Best classical attack: Pollard's rho $O(\sqrt{q})$ (where $q$ is the largest prime subgroup order). No index calculus attack exists for elliptic curves, so key sizes are much smaller than RSA/DH for equivalent security.
+
+\textbf{Concrete example:} Let $E: y^2 = x^3 + 2x + 3$ over $\mathbb{F}_5$. Points: $\mathcal{O}, (1,1), (1,4), (3,1), (3,4)$. Compute $(1,1) + (3,4)$: slope $\lambda = (4 - 1) / (3 - 1) = 3 \cdot 2^{-1} \bmod 5 = 3 \cdot 3 = 9 \bmod 5 = 4$. $x_3 = 4^2 - 1 - 3 = 16 - 4 = 12 \bmod 5 = 2$; $y_3 = 4 \cdot (1 - 2) - 1 = 4 \cdot (-1) - 1 = -4 - 1 = -5 \bmod 5 = 0$. Result: $(1,1) + (3,4) = (2,0)$.
+
+Double $P = (1,1)$: $\lambda = (3\cdot 1^2 + 2) / (2\cdot 1) = 5 \cdot 2^{-1} \bmod 5 = 0 \cdot 3 = 0$. $x_3 = 0^2 - 2\cdot 1 = -2 \bmod 5 = 3$; $y_3 = 0 \cdot (1 - 3) - 1 = -1 \bmod 5 = 4$. Result: $2P = (3,4)$. Verify: $4P = 2 \cdot (3,4) = (3,4) + (3,4)$: $\lambda = (3\cdot 3^2 + 2) / (2\cdot 4) = (27+2) \cdot 8^{-1} \bmod 5 = 29 \cdot 1 \bmod 5 = 4$ (since $8 \equiv 3 \bmod 5$, $3^{-1}=2$, $29 \cdot 2 \bmod 5 = 58 \bmod 5 = 3$, wait let me recompute: $2y_1 = 2\cdot 4 = 8 \equiv 3 \bmod 5$, $3^{-1} \bmod 5 = 2$, $\lambda = 4 \cdot 2 = 8 \equiv 3 \bmod 5$). $x_3 = 9 - 6 = 3 \bmod 5 = 3$; $y_3 = 3\cdot(3 - 3) - 4 = -4 \bmod 5 = 1$. So $4P = (3,1)$. The group order is 5 (including $\mathcal{O}$): $P, 2P, 3P, 4P, 5P = \mathcal{O}$.
+
+Standard curves: NIST P-256 (secp256r1), Curve25519 (Bernstein), secp256k1 (Bitcoin), BLS12-381 (pairing-friendly). Curve25519 is designed for constant-time implementation with a twisted Edwards form $x^2 + y^2 = 1 + dx^2y^2$. The Montgomery form $y^2 = x^3 + Ax^2 + x$ enables the Montgomery ladder: a constant-time scalar multiplication that resists timing and simple power analysis. Ed25519 signatures use a birationally equivalent Edwards curve for fast, verifiable implementation.
+
+\textbf{Security levels compared:} A 256-bit ECC key provides an estimated 128 bits of security (Pollard's rho requires $2^{128}$ operations). To match this with RSA, you need a 3072-bit modulus; with classical DH over $\mathbb{F}_p^*$, a 3072-bit prime. This dramatic key-size reduction makes ECC dominant in constrained environments (smart cards, IoT, blockchain).
+
+\textbf{Curve selection criteria:} Safe curves avoid cofactor anomalies, twists vulnerabilities, and transfer attacks. Bernstein's ``SafeCurves'' criteria require: $p \approx 2^{256}$ (reasonable size), $c \leq 8$ (small cofactor), $\rho \approx 1$ (high embedding degree, preventing MOV attack), rigid generation (nothing-up-my-sleeve numbers), twist security (constant-time ladder works on both curve and twist), and complete addition laws. NIST P-256 passes many but not all of these; Curve25519 was designed to pass all.
+
+\subsubsection*{Pairing-Based Cryptography}
+Bilinear map $e: \mathbb{G}_1 \times \mathbb{G}_2 \to \mathbb{G}_T$ with:
+\begin{itemize}
+\item \textbf{Bilinearity:} $e(aP, bQ) = e(P,Q)^{ab}$ for all $a,b \in \mathbb{Z}_q$.
+\item \textbf{Non-degeneracy:} $e(P,Q) \neq 1$ for generators $P,Q$.
+\item \textbf{Computability:} $e(P,Q)$ is efficiently computable (Miller's algorithm, 1986).
+\end{itemize}
+
+Pairings come in three types: Type 1 ($\mathbb{G}_1 = \mathbb{G}_2$), Type 2 ($\mathbb{G}_1 \neq \mathbb{G}_2$ with efficient homomorphism), Type 3 ($\mathbb{G}_1 \neq \mathbb{G}_2$, no efficient homomorphism). Type 3 (e.g., BLS12-381) is the modern standard.
+
+Applications:
+\begin{itemize}
+\item \textbf{IBE (Boneh-Franklin 2001):} $pk = \text{email address}$. Encrypt using $pk$ and a master public key; decrypt using a private key obtained from a trusted authority. No certificates needed!
+\item \textbf{BLS signatures:} Short aggregate signatures. Single group element per signature ($\sim 48$ bytes at 128-bit security).
+\item \textbf{Verifiable Random Functions (VRF):} Unique output + proof. Used in Algorand, Ethereum 2.0 (RANDAO + VDF).
+\item \textbf{zk-SNARKs (Groth16, PLONK):} Pairing-based trusted setup. Verification requires $O(1)$ pairings.
+\end{itemize}
+
+\subsection{Zero-Knowledge Proofs as Cryptographic Primitives}
+\label{sec:crypto:zkprimitives}
+
+Many cryptographic protocols rely on zero-knowledge proofs (ZKP) as building blocks. A ZKP allows a prover to convince a verifier of a statement's truth without revealing any information beyond the statement's validity (see Chapter 11 for the full treatment). Key ZKP constructions used in cryptography:
+
+\begin{itemize}
+\item \textbf{Schnorr proof of knowledge (1989):} Prover knows $x$ such that $h = g^x$. Protocol: prover sends $t = g^r$, verifier sends challenge $c$, prover sends $s = r + xc$. Verifier checks $g^s = t \cdot h^c$. This is the basis for Schnorr signatures (via Fiat-Shamir transform) and anonymous credentials.
+
+\textbf{The Fiat-Shamir Transform:} Converts any $\Sigma$-protocol (three-move interactive proof) into a non-interactive signature. Replace the verifier's random challenge $c$ with $H(\text{context} || t)$, where $H$ is a cryptographic hash function. The prover computes $c = H(m || t)$ themselves, producing $(t, s)$ as the signature. Security is proved in the random oracle model. This transform is used in Schnorr signatures, DSA, and numerous other protocols. The name comes from Fiat and Shamir (1986), who first used it for identification schemes.
+
+\item \textbf{$\Sigma$-protocols:} Three-move protocols (commit-challenge-response) that are honest-verifier zero-knowledge. Can be made non-interactive via Fiat-Shamir. Used for: proof of discrete log equality (Chaum-Pedersen), proof of DH tuple (used in DDH-based protocols), and range proofs.
+
+\item \textbf{Non-interactive ZK (NIZK) in the Common Reference String model:} Used in CCA-secure encryption (Naor-Yung paradigm), verifiable encryption, and group signatures. Pairing-based NIZKs are especially efficient: Groth-Sahai proofs (2008) can prove quadratic equations in bilinear groups with constant-size proofs.
+
+\item \textbf{ZK-SNARKs (Groth16, PLONK):} Succinct non-interactive arguments. Used in zk-Rollups (Chapter 11) for blockchain scaling. The proving system relies on: (1) arithmetic circuit representation of the statement, (2) polynomial commitment schemes (KZG, Bulletproofs, FRI), (3) linear PCP or interactive oracle proof (IOP) techniques. Verification is $O(1)$ pairings.
+\end{itemize}
+
+The connection between ZKP and cryptography is bidirectional: cryptography provides the assumptions (groups, pairings, hash functions) that ZKPs build on; ZKPs in turn enable more advanced cryptographic protocols (anonymous credentials, e-cash, verifiable computation, threshold cryptography).
+
+\subsection{Side-Channel Attacks and Countermeasures}
+\label{sec:crypto:sidechannel}
+
+Cryptographic algorithms are mathematically secure, but their implementations leak information through physical channels:
+
+\begin{itemize}
+\item \textbf{Timing attacks (Kocher 1996):} Key-dependent variations in execution time reveal secret bits. RSA exponentiation with square-and-multiply: if the $i$-th bit of $d$ is 1, an extra multiplication is performed. Measuring time reveals $d$ bit by bit.
+  \begin{itemize}
+  \item Countermeasure: \emph{Constant-time code} — ensure every execution path takes the same time regardless of secret data. Use Montgomery ladder for scalar multiplication.
+  \end{itemize}
+\item \textbf{Power analysis (SPA/DPA):} Simple Power Analysis (SPA) observes the power trace during a single operation; Differential Power Analysis (DPA) statistically analyzes many traces to extract secrets.
+  \begin{itemize}
+  \item Countermeasure: \emph{Blinding} — mask the secret with a random value before computation, then unmask. For RSA: compute $m' = m \cdot r^e \bmod N$, decrypt $m'$, multiply by $r^{-1}$.
+  \end{itemize}
+\item \textbf{Cache attacks:} Prime+Probe, Flush+Reload observe which cache lines the victim accesses, revealing secret-dependent memory access patterns.
+  \begin{itemize}
+  \item Countermeasure: \emph{Secret-independent memory access} — always access the same pattern regardless of data.
+  \end{itemize}
+\item \textbf{Electromagnetic (EM) emanations:} Van Eck phreaking (1985) — CRT displays leak readable content via EM emissions. Modern: EM analysis of CPU operations.
+  \begin{itemize}
+  \item Countermeasure: Shielding, randomized execution.
+  \end{itemize}
+\item \textbf{Fault attacks:} Inducing errors (voltage glitches, laser shots) during computation produces faulty results that reveal secrets (e.g., Bellcore attack on RSA-CRT: one faulty CRT component reveals $p$).
+  \begin{itemize}
+  \item Countermeasure: Redundancy — compute twice, verify consistency; use error-detecting codes.
+  \end{itemize}
+\end{itemize}
+
+\begin{roadblockbox}[The Implementation Gap]
+A mathematically perfect cryptosystem can be completely broken through implementation flaws. The OpenSSL Heartbleed bug (2014) leaked private keys from memory. Rowhammer attacks (2014) flip bits in DRAM to break security. The lesson: cryptography is a system property, not just an algorithm property. Formal verification (fiat-crypto, hacspec) is increasingly used to produce provably correct implementations.
+
+\end{roadblockbox}
+
+\subsection{Merkle Puzzles and Merkle Trees}
+\label{sec:crypto:merkle}
+
+Ralph Merkle's 1974 class project proposed the first public-key cryptosystem. His approach was conceptually different from Diffie-Hellman:
+
+\textbf{Merkle's puzzles:} Alice generates $n$ puzzles. Each puzzle is an encryption of a pair $(i, k_i)$ under a different weak key $K_i$, sent to Bob. Bob picks one puzzle at random, solves it by brute force ($O(n)$ work), and obtains $(i, k_i)$. Bob sends $i$ to Alice. Alice looks up $k_i$. Eavesdropper must solve all $n$ puzzles ($O(n^2)$ work in expectation). This quadratic gap is the first provable public-key primitive, though less efficient than DH (which gives exponential gap).
+
+\textbf{Merkle trees (hash trees):} A binary tree where each leaf is a hash of a data block, and each internal node is the hash of its two children concatenated: $h_{\text{node}} = H(h_{\text{left}} || h_{\text{right}})$. The root is a commitment to all $n$ leaves. To prove a leaf is in the tree, provide the sibling path consisting of $\log_2 n$ hashes (the siblings of each node on the path from leaf to root). The verifier recomputes the path hashes and checks against the root. An inclusion proof is $O(\log n)$ size and $O(\log n)$ time to verify.
+
+A variant — the \emph{Merkle proof of exclusion} — proves a leaf is \emph{not} in the tree by showing a neighbor's inclusion proof with adjacent leaves. Sorted Merkle trees (as used in Certificate Transparency) enable non-membership proofs: the prover shows the two consecutive leaves that bracket the query value.
+
+Applications:
+\begin{itemize}
+\item \textbf{Bitcoin:} Each block header commits to a Merkle tree of transactions. Light clients verify transactions without downloading the entire block.
+\item \textbf{Certificate Transparency (RFC 6962):} Merkle trees log all SSL/TLS certificates. Auditors verify inclusion and monitor for misissued certificates.
+\item \textbf{Git:} Commits are organized as a Merkle DAG (Directed Acyclic Graph). Each commit hash commits to the entire repository state.
+\item \textbf{Ethereum:} Patricia Merkle tries (modified Merkle trees with path compression) store the global state. Account balances, contract storage, and transaction receipts are all Merkle-committed.
+\item \textbf{File systems (ZFS, IPFS):} Content-addressed storage using Merkle DAGs for integrity verification.
+\end{itemize}
+
+\subsection{Post-Quantum Cryptography}
+\label{sec:crypto:pqc}
+
+Shor's algorithm (1994) runs in polynomial time on a quantum computer, breaking RSA, DH, ECC, and all pairing-based crypto. A fault-tolerant quantum computer with $\sim 4000$ logical qubits could factor a 2048-bit RSA modulus. Grover's algorithm gives quadratic speedup for symmetric key search (128-bit AES becomes 64-bit security). NIST's PQC Standardization (started 2017, finalized 2024) was a multi-round competition evaluating security, performance, and implementation characteristics of candidate quantum-resistant primitives:
+
+\textbf{NIST process overview:} Round 1 (2017): 69 candidates accepted. Round 2 (2019): 26 candidates advanced. Round 3 (2020): 15 finalists and alternates. Round 4 (2023): remaining candidates evaluated for additional diversity. Final standards (2024): ML-KEM (FIPS 203), ML-DSA (FIPS 204), SLH-DSA (FIPS 205), FN-DSA (FIPS 206). The process was notable for its transparency: all submissions were public, all cryptanalysis was open, and the community collectively eliminated broken schemes through peer review.
+
+PQC candidates fall into five families:
+
+\begin{itemize}
+\item \textbf{Lattice-based (ML-KEM = Kyber, ML-DSA = Dilithium):} Based on Module-LWE and Module-SIS assumptions. Small keys ($\sim 1$ KB), fast, well-studied. Kyber is the primary KEM; Dilithium the primary signature. Both use structured lattices over $R_q = \mathbb{Z}_q[X]/(X^n+1)$ with Number Theoretic Transform (NTT) for fast polynomial multiplication.
+  \begin{itemize}
+  \item Kyber-512: 128-bit security, public key 800 bytes, ciphertext 768 bytes. Uses $k=2$ module rank, $n=256$, $q=3329$.
+  \item Kyber-768: 192-bit security, public key 1184 bytes, ciphertext 1088 bytes. NIST-recommended baseline. Uses $k=3$ module rank.
+  \item Kyber-1024: 256-bit security, public key 1568 bytes, ciphertext 1568 bytes. Uses $k=4$ module rank.
+  \item Kyber IND-CCA transform: Uses a FO (Fujisaki-Okamoto) transform to convert the basic IND-CPA public-key encryption into an IND-CCA-secure KEM. This involves re-encryption during decapsulation to detect malicious ciphertexts.
+  \item Dilithium-2: 128-bit security, public key 1312 bytes, signature 2420 bytes. Uses ``Fiat-Shamir with Aborts'': the signer samples a masking vector, computes a challenge, and may reject and retry if the signature leaks information about the secret key.
+  \item Dilithium-3: 192-bit security, public key 1952 bytes, signature 3293 bytes.
+  \item Dilithium-5: 256-bit security, public key 2592 bytes, signature 4595 bytes.
+  \end{itemize}
+\item \textbf{Code-based (Classic McEliece):} Niederreiter variant of McEliece encryption using Goppa codes. Extremely conservative (1980s-era assumption). Large public keys ($\sim 1$ MB for 256-bit security), but very small ciphertexts ($\sim 100$ bytes). NIST is standardizing but deployment is limited by key size.
+
+\item \textbf{Hash-based (SLH-DSA = SPHINCS+):} Only relies on the security of the underlying hash function. Stateless (unlike earlier Merkle signature schemes). Large signatures ($\sim 8$ KB for 128-bit security). Conservative: no quantum vulnerability beyond Grover's algorithm.
+
+\item \textbf{Isogeny-based (SQISign):} Security based on the hardness of finding isogenies between supersingular elliptic curves. Smallest keys among post-quantum signatures ($\sim 64$ bytes), but slow signing (tens of milliseconds). SIKE (earlier isogeny scheme) was broken by Castryck-Decru (2022) using a new attack.
+
+\item \textbf{Multivariate (Rainbow, broken):} Hardness of solving systems of multivariate quadratic equations over finite fields. Rainbow was a NIST Round 3 finalist but was broken by Beullens (2022). Several other multivariate schemes have been broken or significantly weakened.
+\end{itemize}
+
+\subsubsection*{Learning With Errors (LWE)}
+Given $(A, As + e)$ where $A \in \mathbb{Z}_q^{m \times n}$, $s \in \mathbb{Z}_q^n$ secret, $e \leftarrow \chi$ small error. Distinguish from uniform? Hard if $\chi$ is Gaussian. Security is based on worst-case lattice problems (GapSVP, SIVP) via a quantum reduction (Regev 2005). This means: breaking LWE on average is at least as hard as solving certain lattice problems in the worst case — a strong theoretical foundation.
+
+\textbf{Regev encryption:} Public key: $pk = (A, b = As + e)$ where $A \in \mathbb{Z}_q^{m \times n}$ is random, $s \in \mathbb{Z}_q^n$ is the secret key, $e \leftarrow \chi^m$ is a small error vector drawn from a discrete Gaussian. To encrypt a bit $m \in \{0,1\}$: choose $r \in \{0,1\}^m$, compute $u = A^T r \in \mathbb{Z}_q^n$, $v = b^T r + \lfloor q/2 \rfloor m \in \mathbb{Z}_q$. Ciphertext: $(u, v)$ — a pair consisting of a vector and a scalar. Decrypt: compute $m' = v - s^T u = (b^T r - s^T A^T r) + \lfloor q/2 \rfloor m = e^T r + \lfloor q/2 \rfloor m$. Since $e$ and $r$ consist of small entries, the inner product $e^T r$ is bounded by $\approx m \cdot B_e$ (where $B_e$ is the Gaussian standard deviation). Choosing parameters so that $|e^T r| < q/4$ ensures correct decryption: round $m'$ to the nearest multiple of $\lfloor q/2 \rfloor$ to recover $m$.
+
+\textbf{LWE parameter selection:} Parameters $n, q, \chi$ must balance security and efficiency. $n$ is the dimension (typically 256--1024). $q$ is the modulus (typically a prime of 10--32 bits). The error distribution $\chi$ is a discrete Gaussian with standard deviation $\sigma \approx 3$--$8$. Security estimators (lattice-estimator, LWE estimator) compute the cost of known attacks (BKZ lattice reduction, primal attack, dual attack) to determine concrete security levels.
+
+\begin{itemize}
+\item \textbf{Module-LWE (MLWE, used in Kyber):} $A$ is a matrix of polynomials over $R_q = \mathbb{Z}_q[X]/(X^n+1)$ with $X^n+1$ a cyclotomic polynomial (power-of-two $n$). The ``module'' rank $k$ (typically 2, 3, or 4) interpolates between LWE ($k$ large $\approx n$) and Ring-LWE ($k=1$). Kyber uses $k=2,3,4$ for security levels 1, 3, 5. NTT multiplication runs in $O(n \log n)$ time.
+\item \textbf{Ring-LWE:} $A, s, e$ are all polynomial elements in $R_q$. Even more structured than MLWE, enabling faster multiplication and smaller keys. However, the additional algebraic structure raises concerns about potential attacks (e.g., the Arora-Ge attack on LWE with small noise, though not yet practical for standard parameters).
+\end{itemize}
+
+\subsection{Fully Homomorphic Encryption (FHE)}
+\label{sec:crypto:fhe}
+
+Gentry (2009): First FHE from ideal lattices. The idea: a somewhat homomorphic encryption (SHE) scheme can evaluate low-degree polynomials on ciphertexts, but each multiplication adds noise. Eventually the noise grows too large for correct decryption.
+
+\textbf{Bootstrapping:} The central insight. Given a ciphertext $c$ with large noise, homomorphically evaluate the decryption circuit $D_{sk}(c)$ using an \emph{encrypted secret key} $\widehat{sk}$. This produces a \emph{new} ciphertext $c'$ encrypting the same message with \emph{fresh} (small) noise. If the decryption circuit is within the scheme's noise tolerance, bootstrapping is possible — yielding a \emph{fully homomorphic} scheme capable of evaluating arbitrary circuits.
+
+Gentry's original bootstrapping worked as follows: (1) the secret key $sk$ is encrypted under the public key to produce $\widehat{sk} = \mathsf{Enc}_{pk}(sk)$; (2) the ciphertext $c = \mathsf{Enc}_{pk}(m)$ is given; (3) homomorphically compute $c' = \mathsf{Dec}_{\widehat{sk}}(c)$ using the encrypted secret key. The decryption circuit is shallow enough that the noise in $\widehat{sk}$ and $c$ does not overwhelm the scheme. The result $c'$ encrypts $m$ with noise reset to the level of a fresh encryption.
+
+The self-referential nature of bootstrapping — using encryption to refresh encryption — echoes Gödel's self-referential sentences (Chapter 3). Both use self-reference to break out of a system's limitations: Gödel broke completeness; Gentry broke depth-bounded homomorphism.
+
+\begin{itemize}
+\item \textbf{Schemes:}
+  \begin{itemize}
+  \item \textbf{BGV (Brakerski-Gentry-Vaikuntanathan 2011):} Based on Ring-LWE. Uses modulus switching to control noise growth. The modulus decreases as depth increases (``leveled''). Can be made bootstrappable.
+  \item \textbf{BFV (Brakerski-Fan-Vercauteren 2012):} Similar to BGV but uses a different noise management technique (scaling). Exact integer arithmetic over $\mathbb{Z}_t$. Suitable for AES, comparisons, and database lookups.
+  \item \textbf{CKKS (Cheon-Kim-Kim-Song 2017):} Approximate arithmetic over real/complex numbers. Noise is treated as part of the approximation error (like floating-point rounding). Dominant for privacy-preserving machine learning (logistic regression, neural network inference). Rescaling manages noise vs precision tradeoff.
+  \item \textbf{TFHE (Chillotti et al. 2016):} Fast boolean operations (NAND, XOR, MUX). Ciphertexts are small ($\sim 2$ KB) and bootstrapping is fast ($\sim 0.1$ ms per gate). Programmable Bootstrapping: can evaluate arbitrary functions during the bootstrap itself. Used for private database lookups (any% speed records), secure control flow, and FHE-based consensus.
+  \end{itemize}
+\item \textbf{Noise management:} The central challenge in all FHE schemes. Each multiplication doubles the noise; additions increase it linearly. Levelled FHE (no bootstrapping) chooses parameters so that the scheme can evaluate a circuit of known depth $L$: ciphertext modulus $q$ grows exponentially with $L$. Full FHE uses bootstrapping to become depth-independent, at the cost of significant computation.
+\item \textbf{Applications:} ML on encrypted data (privacy-preserving inference — Microsoft SEAL, IBM HELib, Google FHE), private database queries (any% speed competitive with plaintext SQL for small databases), secure aggregation (federated learning with encrypted updates), sealed-bid auctions, private voting. FHE is 4-6 orders of magnitude slower than plaintext for general computation, but heavily optimized for specific operations.
+\end{itemize}
+
+\subsection{Multi-Party Computation (MPC)}
+\label{sec:crypto:mpc}
+
+Compute $f(x_1,\dots,x_n)$ without revealing inputs.
+
+\begin{itemize}
+\item \textbf{Yao's Garbled Circuits (1982):} Two-party protocol. The \emph{garbler} encrypts a boolean circuit: for each wire, two random labels $(w_0, w_1)$; for each gate, a garbled truth table (encrypted with input wire labels). The \emph{evaluator} obtains input labels via Oblivious Transfer (OT) and evaluates the garbled circuit, learning only the output. Communication: $O(|C|)$ ciphertexts. Constant rounds.
+
+\item \textbf{GMW (Goldreich-Micali-Wigderson 1987):} Multi-party. Each party additively secret-shares its input. Parties evaluate gates by local computation and interaction (OT for AND gates). $O(\text{depth})$ rounds. Information-theoretic security in the OT-hybrid model.
+
+\item \textbf{SPDZ (2011):} Preprocessing (offline) + online model. In the offline phase, parties generate \emph{Beaver triples}: shared random $([a], [b], [c])$ where $c = a \cdot b$. These are generated without knowing the function inputs. In the online phase, multiplication uses Beaver triples: to compute $[x] \cdot [y]$, parties reveal $[x] - [a]$ and $[y] - [b]$ (masking the real values), then compute $[z] = [c] + (x - a)[b] + (y - b)[a] + (x - a)(y - b)$. The online phase is very fast (linear in circuit size) and information-theoretic. SPDZ is used in industry for secure computation (Sharemind, MP-SPDZ library).
+
+\item \textbf{Threshold ECDSA/EdDSA:} FROST (Flexible Round-Optimized Schnorr Threshold), Lindell 2017, Canetti et al. 2020. Split signing key into $n$ shares; any $t$ parties can sign without reconstructing the key. Used for cryptocurrency custody, validator signing (Ethereum 2.0), and decentralized key management. The challenge: ECDSA is not linear like Schnorr, so threshold ECDSA requires more complex protocols (Paillier encryption, zero-knowledge proofs). FROST for Schnorr is simpler: each party produces a partial signature $s_i = k_i + x_i \cdot H(R, m)$; the signature is $s = \sum s_i$.
+
+\item \textbf{Secret sharing:} Shamir secret sharing (1979) splits a secret $s$ into $n$ shares such that any $t$ shares reconstruct $s$ but $t-1$ reveal nothing. The share for party $i$ is $s_i = f(i)$ where $f$ is a random polynomial of degree $t-1$ with $f(0) = s$. Additive secret sharing: $s = s_1 + s_2 + \dots + s_n$ over a finite field. Both are linear: $[x] + [y] = [x+y]$, $c[x] = [cx]$. Multiplication requires interaction (Beaver triples).
+
+\item \textbf{Security models:} MPC protocols are categorized by adversary model. \emph{Honest-but-curious (semi-honest)}: parties follow the protocol but try to learn extra information from messages. \emph{Malicious}: parties may deviate arbitrarily. Defending against malicious adversaries requires additional cryptographic machinery (zero-knowledge proofs, commitments, consistency checks). The cost difference is significant: semi-honest protocols can be 10-100$\times$ faster.
+
+\item \textbf{Communication models:} \emph{Dishonest majority} (up to $n-1$ corrupt parties) requires computational assumptions (oblivious transfer, garbled circuits). \emph{Honest majority} ($< n/2$ or $< n/3$ corrupt) can achieve information-theoretic security using secret sharing alone, but requires more rounds (BGW protocol).
+\end{itemize}
+
+%======================================================================
+% SECTION 6: CONSEQUENCES
+%======================================================================
+\section{Consequences: What Became Possible}
+\label{sec:crypto:consequences}
+
+\begin{enumerate}
+\item \textbf{Internet Security (TLS/SSL):} HTTPS = DH/ECDH key exchange + RSA/ECDSA auth + AES-GCM. Every secure website uses public-key crypto. Over 80\% of web traffic is now encrypted (vs \textless 30\% in 2014). Let's Encrypt issues certificates for 300+ million domains. The IETF TLS working group continues to evolve the protocol: TLS 1.3 (RFC 8446) reduced handshake latency, removed legacy crypto, and mandated forward secrecy. The emergence of Encrypted Client Hello (ECH) encrypts the SNI field, hiding \emph{which} website the client is connecting to — the last plaintext field in TLS.
+
+\item \textbf{Digital Signatures:} Code signing (authentic software updates, app stores), document signing (DocuSign, Adobe Sign), certificates (X.509), blockchain transactions (every cryptocurrency transaction is a signed message). The European Union's eIDAS regulation gives digital signatures legal force equivalent to handwritten signatures.
+
+\item \textbf{PKI / Certificate Authorities:} Trust chains rooted in ~150 CAs globally. Let's Encrypt (automated certs via ACME protocol) dramatically reduced the cost of TLS. Web of Trust (PGP) offers decentralized alternative.
+
+\item \textbf{Email Encryption:} PGP/GPG, S/MIME. Signal Protocol (Double Ratchet, X3DH) for forward secrecy. Signal's cryptographic design influenced WhatsApp, Facebook Messenger, and Skype. \emph{Forward secrecy} ensures that compromising today's keys does not reveal yesterday's messages.
+
+\item \textbf{Cryptocurrencies:} Bitcoin (ECDSA/secp256k1, SHA-256), Ethereum (ECDSA, Keccak), Zcash (zk-SNARKs), Monero (RingCT, Bulletproofs). Total market capitalization exceeded \$3 trillion at peak. Cryptography enables decentralized digital scarcity — a previously impossible concept.
+
+\item \textbf{Zero-Knowledge Proofs (Chapter 11):} Built on crypto primitives (commitments, pairings, hash functions). Enables privacy-preserving authentication, verifiable computation, and scalable blockchains (ZK-rollups). ZK proofs are themselves a cryptographic primitive: they use commitments (hash-based or Pedersen), hash functions (for Fiat-Shamir), and pairings (for efficient verification). The relationship is recursive: cryptography enables ZK, and ZK enables more advanced cryptography.
+
+\item \textbf{Secure Multi-Party Computation (MPC):} Yao's Garbled Circuits, GMW, SPDZ. Compute $f(x_1,\dots,x_n)$ without revealing inputs. Used for key management (Gemini, Coinbase), privacy-preserving analytics (Google, Meta), and secure auctions (Danish sugar beet auctions).
+
+\item \textbf{Homomorphic Encryption:} Gentry 2009 (ideal lattices). Compute on ciphertexts. CKKS (approximate), TFHE (boolean). ML on encrypted data (privacy-preserving inference), private information retrieval.
+
+\item \textbf{Private Information Retrieval (PIR):} Query database without revealing which item. Single-server (computational, FHE-based) vs multi-server (information-theoretic). Used for certificate transparency monitoring, private media queries.
+
+\item \textbf{Password Authenticated Key Exchange (PAKE):} OPAQUE, SPAKE2, CPace. Authenticate with a low-entropy password without revealing it to the server (no password-equivalent stored). Standardized by IETF (RFC 9381, 9382). PAKE eliminates the risk of server-side password database breaches revealing plaintext passwords.
+
+\item \textbf{Hardware Security Modules (HSM) and Secure Enclaves:} Physical devices that protect cryptographic keys from software attacks. Used in payment systems (HSMs for PIN verification), mobile devices (Apple Secure Enclave, Android TEE), cloud HSM (AWS CloudHSM, Azure Key Vault), and smart cards (EMV chip cards). The hardware/software boundary is the new frontier of cryptographic security.
+
+\item \textbf{Post-Quantum Transition:} NIST PQC standards (2024) are being deployed. Google Chrome, Cloudflare, SSH, and Signal have run hybrid PQC experiments. The US and EU have mandated transition to PQC by 2030. The transition involves migrating billions of devices, every TLS certificate, every code-signing key, and every blockchain consensus mechanism.
+
+\item \textbf{Proofs of Work and Cryptographic Consensus:} Bitcoin's proof-of-work uses SHA-256 hash inversion as a ``physical'' resource: finding a nonce such that $H(\text{block}) < \text{target}$ requires $\approx 2^{\text{difficulty}}$ hash computations. This was the first large-scale deployment of a \emph{useful} one-way function outside of traditional secrecy. Ethereum shifted to proof-of-stake (2022), which uses BLS signature aggregation and VRF-based leader election — both direct descendants of the 1976 DH revolution.
+
+\item \textbf{WebAuthn / FIDO2:} Passwordless authentication using public-key cryptography. The user's device generates a key pair for each website; the private key never leaves the device. Authentication is a signature verification. Phishing-resistant because the signature binds to the website origin (no credential reuse across fake sites). Deployed in all major browsers and platforms (Apple, Google, Microsoft). Over 4 billion devices support WebAuthn.
+
+\item \textbf{Signal's Sealed Sender and Private Contact Discovery:} Signal uses cryptographic protocols (SGX enclaves, OPRF-based private set intersection) to determine which contacts use Signal without revealing the user's address book — a privacy innovation built on the foundation of public-key crypto and secure computation.
+\end{enumerate}
+
+%======================================================================
+% SECTION 7: PHILOSOPHICAL SIGNIFICANCE
+%======================================================================
+\section{Philosophical Significance: What It Revealed About Limits of Formal Systems}
+\label{sec:crypto:philosophy}
+
+\begin{enumerate}
+\item \textbf{Trust Can Be Replaced by Mathematics:} No trusted third party needed for key exchange (DH). No central authority needed for signatures (PKI distributes trust). \emph{Code is law.} For the first time in human history, two strangers can communicate privately and authentically without trusting each other or any intermediary. This is arguably the most profound social consequence of a mathematical discovery.
+
+\item \textbf{Hardness as a Resource:} Computational difficulty is not a bug — it's a \emph{feature}. We \emph{build} systems on the assumption that certain problems are hard. Cryptography \emph{mines} hardness. This is the opposite of the usual engineering goal (making things efficient). Cryptographers deliberately slow down computation.
+
+\item \textbf{Secrecy Without Secrets:} Public-key crypto lets you \emph{publish} your encryption key. The secret is never transmitted, never shared. It exists only in your mind (or secure hardware). This is a philosophical revolution: in prior systems, security required \emph{withholding} information; in public-key systems, security requires \emph{publishing} information.
+
+\item \textbf{The Definition of Security Evolved:} Shannon (perfect secrecy) $\to$ Goldwasser-Micali (semantic security, 1982) $\to$ IND-CPA/CCA $\to$ UC (Universal Composability). Security is a \emph{game} between adversary and challenger. Each definition reveals hidden assumptions in earlier definitions. This evolution shows that \emph{what we mean by security} is itself a scientific discovery.
+
+\item \textbf{Quantum Changes Everything:} Shor's algorithm breaks RSA, DH, ECC. Post-quantum crypto (lattices: Kyber, Dilithium; codes: Classic McEliece; isogenies: SIKE (broken); hashes: SPHINCS+) is a complete reinvention of the mathematical foundations. The transition is among the largest engineering efforts in computer science history: every device, every protocol, every certificate must be updated.
+
+\item \textbf{Security is a Spectrum, Not a Binary:} No system is perfectly secure. Security is defined relative to adversary model (passive vs active, online vs offline, quantum vs classical). Cryptography teaches us to think in terms of \emph{security parameters}, \emph{advantage}, and \emph{negligible functions} — a quantitative approach to what was once a qualitative concern.
+
+\item \textbf{The Fundamental Tension Between Privacy and Accountability:} Cryptography enables strong privacy (encryption, anonymity) but also complicates accountability (law enforcement, abuse prevention). This is not a technical problem but a social one — cryptography is a double-edged sword. The ''Crypto Wars'' of the 1990s (Clipper chip, key escrow) and the 2020s (client-side scanning, E2EE backdoors) reflect this ongoing tension.
+
+\item \textbf{Kerckhoffs's Principle Extended:} Kerckhoffs (1883) stated that a cryptosystem should be secure even if everything about the system (except the key) is public knowledge. This principle extends beyond cryptography: security through obscurity is a fallacy in any domain. The lesson: assume your adversary knows your algorithms, your code, your hardware — design accordingly.
+
+\item \textbf{The Provable Security Revolution:} Modern cryptography demands \emph{proofs} of security under precise assumptions. A scheme is not considered secure until it comes with a reduction: ``if an adversary breaks this scheme, then we can solve problem $X$ (which is believed hard).'' This standard of proof — unprecedented in engineering — has transformed cryptography from an art into a science. The same standard is gradually spreading to other areas of security (secure protocols, differential privacy).
+
+\item \textbf{The Quantum Era as a Forcing Function:} The coming quantum threat has forced cryptography to prepare for a world where all current public-key assumptions are false. This has been a massive positive force: it drove investment in lattice-based crypto, formal verification of implementations, protocol agility, and hybrid deployments. The crypto community's response to quantum — not denial, but proactive reinvention — is a model for how science should respond to paradigm shifts.
+\end{enumerate}
+
+\begin{connectionbox}[Connection to the Philosophy of Mathematics]
+Public-key cryptography gives a practical example of the difference between \emph{existence} and \emph{construction}. We know that trapdoor functions must exist if $\mathsf{P} \neq \mathsf{NP}$, but constructing concrete candidates (RSA, ElGamal, ECC, LWE) required deep mathematical insight. The bridge between abstract existence and concrete construction is the art of cryptography.
+
+\end{connectionbox}
+
+%======================================================================
+% SECTION 8: MODERN LEGACY
+%======================================================================
+\section{Modern Legacy: Where This Idea Appears Today}
+\label{sec:crypto:legacy}
+
+\begin{itemize}
+\item \textbf{TLS 1.3 (RFC 8446, 2018):} Mandatory forward secrecy (ECDHE), 0-RTT, simplified handshake (1-RTT vs 2-RTT). Deprecated RSA key transport, static DH, and all legacy ciphers. The most significant cryptographic protocol deployment in history, protecting trillions of dollars in transactions daily.
+
+\item \textbf{Signal Protocol:} Double Ratchet (forward secrecy + post-compromise security). X3DH for initial key agreement. Used by WhatsApp (2 billion users), Signal, Facebook Messenger, Skype. The first large-scale deployment of \emph{self-healing} security: after a key compromise, future messages automatically regain security.
+
+\item \textbf{Post-Quantum (NIST 2024):} \textbf{ML-KEM (Kyber)} for KEM, \textbf{ML-DSA (Dilithium)} for signatures, \textbf{SLH-DSA (SPHINCS+)} for hash-based sigs. FN-DSA (Falcon) for lattice-based signatures with smaller bandwidth. CROSS and LESS for additional signature diversity. Deployments already underway: Google Chrome hybrid Kyber+X25519, Cloudflare, SSH, Signal.
+
+\item \textbf{Zero-Knowledge (Chapter 11):} zk-SNARKs (Groth16, PLONK), zk-STARKs (no trusted setup, post-quantum), Bulletproofs (range proofs), zk-VMs (zkEVM, RISC Zero). Blockchain scaling (ZK-rollups: zkSync, StarkNet, Scroll, Polygon zkEVM), privacy (Zcash, Tornado Cash, Aztec), verifiable computation.
+
+\item \textbf{Threshold Cryptography:} Split $sk$ into $n$ shares, $t$ needed to sign/decrypt. FROST (Schnorr threshold), DKG (Distributed Key Generation). Used for cryptocurrency custody (Coinbase, Gemini, Fireblocks), blockchain validators (Ethereum 2.0 DVT with SSV, Obol), and decentralized key management.
+
+\item \textbf{Verifiable Delay Functions (VDF):} Sequential function easy to verify, hard to parallelize. Constructed from class groups (Wesolowski 2019, Pietrzak 2019) or isogenies (De Feo et al.). Used in Ethereum beacon chain randomness (RANDAO + VDF), Chia blockchain (proof of space + VDF).
+
+\item \textbf{Identity-Based Encryption (IBE):} $pk = \text{email}$. Boneh-Franklin (pairings). No certificates needed! Used in secure email (Voltage, now Micro Focus), encrypted messaging, and key management systems. Standardized as RFC 5091.
+
+\item \textbf{Attribute-Based Encryption (ABE):} Decrypt if attributes satisfy policy (KP-ABE, CP-ABE). Fine-grained access control for cloud storage, IoT. Used in AWS KMS and Azure AD for policy-based key release.
+
+\item \textbf{Web3 / Blockchain Infrastructure:} VRFs (Algorand, Ethereum 2.0), ZK-rollups (zkSync, StarkNet, Scroll, Polygon), EigenLayer (restaking), MEV protection (Flashbots, MEV-boost), Account Abstraction (ERC-4337), Threshold wallets (Safe, ZenGo). Cryptographic primitives are the building blocks of decentralized systems.
+
+\item \textbf{Formal Verification of Crypto:} The provable security movement (Bellare, Rogaway, Shoup, et al.) has evolved into machine-checked proofs: EasyCrypt (formal verification of cryptographic constructions), fiat-crypto (verified field arithmetic producing constant-time C code), hacspec (specification language for crypto standards), and Project Everest (verified TLS 1.3 implementation in F*). The dawn of provably correct cryptography: AWS s2n-tls uses formal verification for its record layer; EverCrypt provides verified implementations of hashing, signing, and key exchange.
+
+\item \textbf{Cryptographic APIs and Developer Experience:} Modern cryptographic libraries (libsodium, Google Tink, AWS Encryption SDK) enforce safe defaults and prevent common misuse. The principle: make it easy to do the right thing and hard to do the wrong thing. `libsodium` provides high-level operations (crypto\_box, crypto\_secretbox) that combine key exchange, encryption, and authentication into a single call — eliminating the need for developers to understand protocol composition. This represents a fundamental shift from ''crypto as a collection of primitives'' to ''crypto as a service.''
+
+\item \textbf{Oblivious HTTP and Privacy Protocols:} OHTTP (RFC 9230) splits the connection between a relay and a gateway such that neither sees both the client's identity and the request content. Oblivious DNS (ODNS) and Oblivious DoH (ODoH) extend this to DNS privacy. These protocols use hybrid public-key encryption (HPKE, RFC 9180) and demonstrate how public-key crypto enables new privacy architectures that were impossible in the pre-1976 era.
+
+\item \textbf{Continuous Key Evolution and Messaging Layer Security (MLS):} RFC 9420 (MLS) provides group E2EE for large dynamic groups (up to 50,000 participants). Unlike pairwise Signal sessions (which scale $O(n^2)$), MLS uses a binary tree (ratchet tree) where each node has a key pair. When a member joins or leaves, only $O(\log n)$ keys are updated, enabling efficient group key agreement. MLS is being deployed by Zoom, Cisco, and Wire for group messaging.
+
+\item \textbf{Cryptographic Agility and Protocol Negotiation:} Modern protocols (TLS 1.3, MLS) negotiate cryptographic algorithms at connection setup, enabling graceful migration when algorithms are deprecated. This is a direct response to the lesson that assumptions fall: TLS 1.3 removed RSA key transport, static DH, and all CBC-mode ciphers in one version revision. The industry learned from the painful decade-long migration from SSL 3.0 to TLS 1.2. Agility is now a design requirement for any new cryptographic protocol.
+
+\item \textbf{Differential Privacy and Cryptographic Building Blocks:} Differential privacy (Dwork et al. 2006) uses cryptographic concepts (randomness, indistinguishability, composition) to define and achieve privacy in statistical databases. While not a cryptographic primitive itself, DP's formal definition of privacy as indistinguishability between adjacent databases draws directly from the semantic security paradigm. Techniques like secure aggregation (used by Apple, Google in federated learning) combine DP with MPC to protect individual data contributions.
+\end{itemize}
+
+\begin{connectionbox}[Connections]
+\begin{itemize}
+\item Chapter 8/9 (Complexity): Security = average-case hardness assumptions; P vs NP underpins all of cryptography.
+\item Chapter 11 (ZK): ZK proofs use commitments, hash functions, pairings, groups — all primitives introduced here.
+\item Chapter 13 (Consensus): BFT consensus uses threshold signatures, VRFs, VDFs for leader election and finality.
+\item Chapter 5/6 (Information): Error-correcting codes (Chapter 6) and cryptography share finite fields and group theory; Shannon's information theory provides the impossibility results that cryptography circumvents with computational assumptions.
+\item Chapter 2 (Halting): Undecidability as a resource? Cryptography uses undecidability-adjacent hardness; the halting problem is a reminder that some things are provably impossible regardless of computational power.
+\item Chapter 7 (Kolmogorov Complexity): OWFs relate to incompressibility; cryptographic security relies on the computational indistinguishability of true randomness from pseudorandomness.
+\end{itemize}
+
+\end{connectionbox}
+
+%======================================================================
+% SECTION 9: LESSONS FOR FUTURE SCIENTISTS
+%======================================================================
+\section{Summary}
+\label{sec:crypto:summary}
+
+This chapter developed the mathematical foundations of modern cryptography, transitioning from classical symmetric-key schemes to public-key cryptography. The Diffie--Hellman key exchange (1976) was presented as the first practical method for secure key agreement over an insecure channel, based on the hardness of the discrete logarithm problem in cyclic groups. RSA (Rivest, Shamir, Adleman 1978) was derived from the hardness of integer factorization, with the Euler--Tonelli theorem establishing the trapdoor one-way permutation underlying its security. The chapter formalized semantic security (Goldwasser--Micali 1982), proving that deterministic encryption cannot achieve indistinguishability under chosen-plaintext attacks (IND-CPA), and presented probabilistic encryption schemes (OAEP for RSA, ElGamal encryption). Digital signatures were covered: DSA, ECDSA, BLS aggregate signatures, and Schnorr signatures, with security proofs in the random oracle model. The chapter discussed post-quantum cryptography, presenting the Learning With Errors (LWE) problem (Regev 2005) as a quantum-resistant hardness assumption, and described lattice-based encryption and signature schemes. Secure multi-party computation was introduced via Yao's garbled circuits and the GMW protocol. Side-channel attacks (timing, power analysis) and constant-time implementation techniques were analyzed. The chapter concluded with a survey of the NIST post-quantum cryptography standardization process (ML-KEM/Kyber, ML-DSA/Dilithium, SLH-DSA/SPHINCS+).
+
+\section*{Key Takeaways}
+\begin{itemize}
+\item Public-key cryptography (Diffie--Hellman, RSA) enables secure communication without pre-shared secrets, based on computational hardness assumptions (discrete logarithm, integer factorization).
+\item Semantic security (IND-CPA) requires probabilistic encryption; deterministic encryption is inherently insecure against chosen-plaintext attacks.
+\item Digital signatures (DSA, ECDSA, Schnorr, BLS) provide authentication and integrity, with security proofs typically in the random oracle model.
+\item Post-quantum cryptography based on LWE and lattice problems provides quantum-resistant alternatives to traditional number-theoretic assumptions.
+\item Open problems include the construction of fully homomorphic encryption with practical efficiency, the development of quantum key distribution protocols, the formal security of cryptographic protocols under concurrent execution (UC framework), and the migration to post-quantum standards.
+\end{itemize}
+
+%======================================================================
+% EXERCISES
+%======================================================================
+% EXERCISES
+%======================================================================
+\section{Exercises}
+\label{sec:crypto:exercises}
+
+\begin{exercise}[Basic]
+Implement Diffie-Hellman key exchange in Python. Use a 2048-bit safe prime. Verify both parties compute the same shared secret.
+\end{exercise}
+
+\begin{exercise}[Basic]
+Implement RSA encryption/decryption with OAEP padding. Encrypt a message, decrypt it. Try encrypting without padding — show malleability.
+\end{exercise}
+
+\begin{exercise}[Basic]
+Compute by hand the Diffie-Hellman shared secret for $p = 13$, $g = 2$, $a = 5$, $b = 8$. Verify the result using a calculator. Then demonstrate why small groups like $\mathbb{F}_{13}^*$ are insecure (brute-force the DLP).
+\end{exercise}
+
+\begin{exercise}[Basic]
+Build a Merkle tree from 8 data blocks. Write code to generate the tree, compute the root, and generate/verify inclusion proofs. Discuss how this is used in Bitcoin light clients.
+\end{exercise}
+
+\begin{exercise}[Intermediate]
+Implement ECDSA signing/verification on Curve25519 (or secp256k1). Demonstrate nonce reuse attack: sign two messages with same $k$, recover private key.
+\end{exercise}
+
+\begin{exercise}[Intermediate]
+Implement the Signal Protocol's Double Ratchet (or X3DH) in Python. Demonstrate forward secrecy and post-compromise security.
+\end{exercise}
+
+\begin{exercise}[Intermediate]
+Implement ElGamal encryption and decryption over a small finite field. Show that the scheme is semantically secure under DDH by demonstrating that ciphertexts of the same plaintext (with different randomness) are indistinguishable from random.
+\end{exercise}
+
+\begin{exercise}[Intermediate]
+Implement Schnorr signatures. Show that signatures are linear: given $(R_1, s_1)$ signing $m_1$ and $(R_2, s_2)$ signing $m_2$ with the same key, $(R_1 R_2, s_1 + s_2)$ is a valid signature for $m_1 \oplus m_2$ (under the right hash). Discuss security implications.
+\end{exercise}
+
+\begin{exercise}[Intermediate]
+Implement a padding oracle attack on CBC-mode encryption. Given an oracle that reveals whether a ciphertext has valid padding, recover the plaintext byte by byte. Demonstrate that authenticated encryption (AES-GCM) prevents this.
+\end{exercise}
+
+\begin{exercise}[Intermediate]
+Implement BLS signature aggregation. Generate two keypairs, sign two different messages, aggregate the signatures, and verify the aggregate. Measure signature size savings vs standard ECDSA.
+\end{exercise}
+
+\begin{exercise}[Challenge]
+Research the \emph{Learning With Errors (LWE)} problem. Explain how Regev's encryption scheme works. Why is LWE believed quantum-resistant? Implement Regev encryption for small parameters and demonstrate correctness.
+\end{exercise}
+
+\begin{exercise}[Challenge]
+Research \emph{Fully Homomorphic Encryption}. Explain the bootstrapping procedure in Gentry's original scheme. Compare BFV, CKKS, and TFHE for different use cases. Implement a simple homomorphic operation (e.g., encrypted addition with BFV using a library like SEAL or OpenFHE).
+\end{exercise}
+
+\begin{exercise}[Challenge]
+Implement a side-channel timing attack on a naive RSA exponentiation (square-and-multiply where the operation depends on the key bit). Show that timing measurements reveal the key. Then implement the Montgomery ladder as a constant-time countermeasure.
+\end{exercise}
+
+\begin{exercise}[Challenge]
+Implement Yao's garbled circuits for a simple function (e.g., millionaires' problem: compare two private integers). Explain the OT protocol used for input label transfer. Discuss communication complexity.
+\end{exercise}
+
+\begin{exercise}[Challenge]
+Implement a lattice-based encryption scheme (Regev's scheme or a simplified Kyber). Generate parameters, encrypt, decrypt, and demonstrate noise growth with multiple operations. Discuss why bootstrapping is needed for FHE.
+\end{exercise}
+
+\begin{exercise}[Computational]
+Use the \texttt{cryptography} or \texttt{pycryptodome} library to implement a simple TLS-like handshake: DH key exchange $\to$ derive AES key $\to$ encrypt/decrypt. \url{https://github.com/...}
+\end{exercise}
+
+\begin{exercise}[Computational]
+Implement a simple MPC protocol (e.g., additive secret sharing + Beaver triples) for secure multiplication of two private inputs.
+\end{exercise}
+
+\begin{exercise}[Computational]
+Use a post-quantum library (liboqs, pyoqs) to generate Kyber-512 and Kyber-1024 keypairs, encapsulate/decapsulate, and compare key sizes with RSA-2048 and ECDSA P-256.
+\end{exercise}
+
+\begin{exercise}[Computational]
+Implement the Merkle-Damgård construction from scratch using a simple compression function (e.g., AES as a compression function). Verify that the construction is collision-resistant if the compression function is. Demonstrate a length-extension attack.
+\end{exercise}
+
+\begin{exercise}[Computational]
+Implement Ed25519 signatures using the \texttt{nacl} or \texttt{cryptography} library. Sign a file, verify the signature. Compare signature size, key size, and signing speed vs RSA-2048 and ECDSA P-256. Discuss why Ed25519 is preferred in modern protocols.
+\end{exercise}
+
+\begin{exercise}[Computational]
+Implement a zero-knowledge proof of knowledge of a discrete logarithm (Schnorr's protocol). Demonstrate the honest-verifier zero-knowledge property by showing that the simulator can produce indistinguishable transcripts.
+\end{exercise}
+
+\begin{exercise}[Research]
+Survey the NIST PQC standardization process. Compare ML-KEM (Kyber), ML-DSA (Dilithium), and SLH-DSA (SPHINCS+) on: security level, key size, signature size, performance, and deployment readiness. Write a recommendation for a hypothetical company migrating from RSA-2048.
+\end{exercise}
+
+\begin{exercise}[Research]
+Trace the history of the crypto wars (1990s Clipper chip, 2010s Apple-FBI, 2020s client-side scanning). Analyze the cryptographic, political, and ethical arguments. Write a position paper arguing for or against mandated backdoors in encryption.
+\end{exercise}
+
+\begin{exercise}[Challenge]
+Implement a threshold Schnorr signature scheme using FROST. Generate $n$ key shares, have $t$ parties produce partial signatures, and aggregate them into a full Schnorr signature. Verify the aggregate signature against the group public key.
+\end{exercise}
+
+\begin{exercise}[Computational]
+Implement the GMW protocol for secure two-party computation of the AND function using oblivious transfer. Two parties have private bits $x$ and $y$; they should both learn $x \land y$ without revealing their private inputs. Measure communication and round complexity.
+\end{exercise}
+
+\begin{exercise}[Intermediate]
+Implement a constant-time comparison function (string equality) that runs in the same time regardless of where the first mismatch occurs. Show that a naive byte-by-byte comparison leaks timing information. Measure the timing difference.
+\end{exercise}
+
+
+%======================================================================
+% TIMELINE
+%======================================================================
+\section{Timeline}
+\label{sec:crypto:timeline}
+\addcontentsline{toc}{section}{Timeline}
+
+\begin{tabularx}{\linewidth}{|l|X|}
+\hline
+\textbf{Year} & \textbf{Event} \\ \hline
+$\sim$1900 BCE & Egyptian non-standard hieroglyphs (earliest known cryptographic writing) \\ \hline
+$\sim$50 BCE & Caesar cipher (shift cipher) used by Julius Caesar for military communication \\ \hline
+$\sim$800 CE & Al-Kindi invents frequency analysis, breaking monoalphabetic ciphers \\ \hline
+1553 & Vigenère cipher invented (resisted cryptanalysis for 300 years) \\ \hline
+1790s & Jefferson disk (wheel cipher) invented by Thomas Jefferson \\ \hline
+1854 & Wheatstone invents Playfair cipher (first digraph substitution) \\ \hline
+1917 & Gilbert Vernam invents the one-time pad (perfect secrecy) \\ \hline
+1949 & Shannon: Perfect secrecy, one-time pad, information-theoretic security framework \\ \hline
+1973 & Ellis (GCHQ): Concept of public-key cryptography (classified) \\ \hline
+1974 & Merkle: Puzzles protocol (public-key concept, rejected as class project) \\ \hline
+1975 & Diffie and Hellman begin collaboration at Stanford \\ \hline
+1975 & DES standardized by NBS (now NIST), 56-bit key, block cipher \\ \hline
+1976 & Diffie-Hellman: ``New Directions in Cryptography'' — key exchange, signatures \\ \hline
+1977 & Cocks (GCHQ): RSA invention (classified) \\ \hline
+1977 & Rivest-Shamir-Adleman: RSA (independent, public) \\ \hline
+1978 & Merkle: PhD thesis (Merkle trees, puzzles) \\ \hline
+1979 & Diffie-Hellman-Merkle key exchange patent \\ \hline
+1982 & Goldwasser-Micali: Semantic security, probabilistic encryption \\ \hline
+1984 & ElGamal: Encryption, signatures \\ \hline
+1985 & Koblitz, Miller: Elliptic Curve Cryptography \\ \hline
+1985 & Chaum: Blind signatures, digital cash \\ \hline
+1986 & Miller: Algorithm for Weil/Tate pairings \\ \hline
+1988 & Shamir: Secret sharing, IBE concept \\ \hline
+1991 & PGP (Zimmermann): First mass-market public-key crypto \\ \hline
+1994 & Shor: Quantum algorithm for factoring and DLP \\ \hline
+1996 & Kocher: Timing attacks on RSA \\ \hline
+1997 & GCHQ declassifies Ellis/Cocks/Williamson \\ \hline
+1998 & NIST: DSA standardized (FIPS 186) \\ \hline
+1999 & Boneh-Durfee: Improved small-$d$ attack on RSA \\ \hline
+2000 & ECDSA standardized (FIPS 186-2) \\ \hline
+2000 & AES (Rijndael) selected as NIST block cipher standard \\ \hline
+2001 & Boneh-Franklin: Identity-Based Encryption (pairings) \\ \hline
+2001 & BLS: Short signatures, aggregation \\ \hline
+2001 & Canetti: Universal Composability framework \\ \hline
+2008 & Bitcoin: ECDSA, SHA-256, Nakamoto consensus \\ \hline
+2009 & Gentry: Fully Homomorphic Encryption \\ \hline
+2009 & Bernstein: Curve25519, Ed25519 \\ \hline
+2011 & SPDZ: Preprocessing MPC protocol \\ \hline
+2012 & SHA-3/Keccak wins NIST competition \\ \hline
+2013 & Snowden revelations: mass surveillance exposed \\ \hline
+2013 & Signal Protocol (Double Ratchet) \\ \hline
+2014 & Heartbleed: OpenSSL vulnerability \\ \hline
+2016 & TLS 1.3 RFC 8446 \\ \hline
+2017 & NIST PQC Standardization begins \\ \hline
+2017 & SHA-1 collision (SHAttered, Google) \\ \hline
+2018 & Tandon et al.: Leaking of SIM cards, ROCA vulnerability \\ \hline
+2019 & NIST selects Round 2 PQC candidates \\ \hline
+2019 & Facebook Libra/Diem: Move language, EdDSA \\ \hline
+2020 & Ethereum 2.0: BLS signatures, VDF, threshold cryptography \\ \hline
+2021 & SIKE (isogeny PQC) selected as NIST alternate \\ \hline
+2022 & Castryck-Decru: SIKE broken (isogeny attack) \\ \hline
+2023 & Apple iMessage PQ3: Post-quantum E2EE in production \\ \hline
+2024 & NIST PQC Standardization: ML-KEM, ML-DSA, SLH-DSA \\ \hline
+2024 & Ethereum Dencun upgrade: EIP-4844 proto-danksharding, KZG commitments \\ \hline
+2025 & PQ migration begins: US, EU mandates; Chrome/Cloudflare hybrid PQC \\ \hline
+2026 & RSA-2048 deprecated by major CAs for new certificates \\ \hline
+2027 & Estimated timeline for 2048-bit RSA factoring via quantum computer (optimistic) \\ \hline
+\end{tabularx}
+
+%======================================================================
+% CITATIONS
+%======================================================================
+\section{Citations}
+\label{sec:crypto:citations}
+
+\begin{enumerate}
+  \item \cite{Shannon1949}
+  \item \cite{DiffieHellman1976}
+  \item \cite{RSA1978}
+  \item \cite{ElGamal1985}
+  \item \cite{Koblitz1987}
+  \item \cite{Miller1985}
+  \item \cite{GoldwasserMicali1984}
+  \item \cite{BonehFranklin2001}
+  \item \cite{Gentry2009}
+  \item \cite{NISTPQC2024}
+  \item \cite{Merkle1978}
+  \item \cite{Regev2005}
+  \item \cite{BonehLynnShacham2001}
+  \item \cite{Yao1982}
+  \item \cite{GoldreichMicaliWigderson1987}
+  \item \cite{Damgard1991}
+  \item \cite{Bernstein2006}
+  \item \cite{Canetti2001}
+  \item \cite{BellareRogaway1994}
+  \item \cite{Kocher1996}
+  \item \cite{Shor1994}
+  \item \cite{ImpagliazzoLuby1989}
+  \item \cite{Beullens2022}
+  \item \cite{CastryckDecru2022}
+\end{enumerate}
+
+%======================================================================
+% INDEX ENTRIES
+%======================================================================
+\index{cryptography}
+\index{public-key cryptography}
+\index{Diffie-Hellman}
+\index{RSA}
+\index{ElGamal}
+\index{elliptic curve cryptography}
+\index{ECC}
+\index{digital signatures}
+\index{ECDSA}
+\index{BLS signatures}
+\index{Schnorr signatures}
+\index{EdDSA}
+\index{hash functions}
+\index{SHA-256}
+\index{SHA-3}
+\index{Merkle-Damgård construction}
+\index{sponge construction}
+\index{one-way function}
+\index{trapdoor function}
+\index{post-quantum cryptography}
+\index{LWE}
+\index{Regev encryption}
+\index{Kyber}
+\index{Dilithium}
+\index{SPHINCS+}
+\index{homomorphic encryption}
+\index{bootstrapping}
+\index{Signal Protocol}
+\index{Double Ratchet}
+\index{TLS}
+\index{zero-knowledge proofs}
+\index{threshold cryptography}
+\index{FROST}
+\index{IBE}
+\index{ABE}
+\index{VDF}
+\index{pairing-based cryptography}
+\index{MPC}
+\index{Yao's garbled circuits}
+\index{SPDZ}
+\index{side-channel attack}
+\index{timing attack}
+\index{Merkle tree}
+\index{Merkle puzzle}
+\index{certificate transparency}
+\index{secret sharing}
+\index{Shamir secret sharing}
+\index{Beaver triples}
+\index{OAEP}
+\index{PSS}
+\index{ACME}
+\index{Let's Encrypt}
+\index{fuzzy extractors}
+\index{ChaCha20}
+\index{AES-GCM}
+\index{HKDF}
+\index{Fiat-Shamir transform}
+\index{random oracle model}
+\index{WebAuthn}
+\index{FIDO2}
+\index{DES}
+\index{AES}
+\index{ML-KEM}
+\index{ML-DSA}
+\index{classic McEliece}
+\index{MP-SPDZ}
+\index{constant-time implementation}
+\index{Montgomery ladder}
+\index{Edwards curve}
+\index{Curve25519}
+\index{BLS12-381}
+\index{secp256k1}
+\index{proof-of-work}
+\index{proof-of-stake}
+\index{blind signature}
+\index{secret sharing!Shamir}
+\index{secret sharing!additive}
+\index{oblivious transfer}
+\index{Beaver triples}
+\index{Diffie-Hellman!MITM attack}
+\index{RSA!attacks}
+\index{ElGamal!malleability}
+\index{ECDSA!nonce reuse}
+\index{Schnorr!aggregation}
+\index{BLS!aggregation}
+\index{SHA-256!compression function}
+\index{SHA-3!Keccak}
+\index{lattice-based cryptography}
+\index{isogeny-based cryptography}
+\index{hash-based cryptography}
+\index{code-based cryptography}
+\index{multivariate cryptography}
+

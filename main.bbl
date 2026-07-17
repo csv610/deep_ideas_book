@@ -1,0 +1,1249 @@
+\begin{thebibliography}{100}
+
+\bibitem{aaronson2020}
+Scott Aaronson.
+\newblock Shtetl-optimized: The blog of scott aaronson, 2005--2020.
+\newblock Blog.
+
+\bibitem{Ajtai1983}
+Mikl{\'o}s Ajtai.
+\newblock $\sigma^1_1$-formulae on finite structures.
+\newblock {\em Annals of Pure and Applied Logic}, 24(1):1--48, 1983.
+
+\bibitem{Arikan2009}
+Erdal Ar{\i}kan.
+\newblock Channel polarization: A method for constructing capacity-achieving
+  codes for symmetric binary-input memoryless channels.
+\newblock {\em IEEE Transactions on Information Theory}, 55(7):3051--3073,
+  2009.
+
+\bibitem{arorabarack2009}
+Sanjeev Arora and Boaz Barak.
+\newblock Computational complexity: A modern approach.
+\newblock In {\em Book}. Cambridge University Press, 2009.
+
+\bibitem{AroraEtAl1992}
+Sanjeev Arora, Carsten Lund, Rajeev Motwani, Madhu Sudan, and Mario Szegedy.
+\newblock Proof verification and the complexity of generating hard instances.
+\newblock In {\em Proceedings of the 33rd Annual IEEE Symposium on Foundations
+  of Computer Science}, pages 12--22, 1992.
+
+\bibitem{AroraSafra1992}
+Sanjeev Arora and Shmuel Safra.
+\newblock Probabilistic checking of proofs: A new characterization of {NP}.
+\newblock In {\em Proceedings of the 33rd Annual IEEE Symposium on Foundations
+  of Computer Science}, pages 1--10, 1992.
+
+\bibitem{arorasafra1998}
+Sanjeev Arora and Shmuel Safra.
+\newblock Probabilistic checking of proofs: A new characterization of {NP}.
+\newblock In {\em Journal of the ACM}, volume~45, pages 70--122, 1998.
+
+\bibitem{raftcorrect2020}
+The~Raft Authors.
+\newblock Raft: In search of an understandable consensus algorithm, 2020.
+\newblock https://raft.github.io/.
+
+\bibitem{Babai1985}
+L{'a}szl{'o} Babai.
+\newblock Trading group theory for randomness.
+\newblock In {\em Proceedings of the 17th Annual ACM Symposium on Theory of
+  Computing}, pages 421--429, 1985.
+
+\bibitem{Babai2016}
+L{\'a}szl{\'o} Babai.
+\newblock Graph isomorphism in quasipolynomial time.
+\newblock {\em Proceedings of the 48th Annual ACM Symposium on Theory of
+  Computing (STOC)}, pages 684--697, 2016.
+
+\bibitem{BabaiFortnowLund1991}
+L{\'a}szl{\'o} Babai, Lance Fortnow, and Carsten Lund.
+\newblock Non-deterministic exponential time has two-prover interactive
+  protocols.
+\newblock In {\em Computational Complexity}, volume~1, pages 3--40, 1991.
+
+\bibitem{BabaiMoran1988}
+L{'a}szl{'o} Babai and Shlomo Moran.
+\newblock Arthur-merlin games: A randomized proof system, and a hierarchy of
+  complexity classes.
+\newblock volume~36, pages 254--276, 1988.
+
+\bibitem{BakerGillSolovay1975}
+Theodore Baker, John Gill, and Robert Solovay.
+\newblock Relativizations of the {P =? NP} question.
+\newblock {\em SIAM Journal on Computing}, 4(4):431--442, 1975.
+
+\bibitem{BellareRogaway1994}
+Mihir Bellare and Phillip Rogaway.
+\newblock Random oracles are practical: A paradigm for designing efficient
+  protocols.
+\newblock In {\em Proceedings of the 1st ACM Conference on Computer and
+  Communications Security (CCS)}, pages 62--73, 1993.
+
+\bibitem{benor1983}
+Michael Ben-Or.
+\newblock Another advantage of free choice: Completely asynchronous agreement
+  protocols.
+\newblock In {\em Proceedings of the 2nd Annual ACM Symposium on Principles of
+  Distributed Computing (PODC)}, pages 27--30, 1983.
+
+\bibitem{BenSasson2018}
+Eli Ben-Sasson, Iddo Bentov, Yinon Horesh, and Michael Riabzev.
+\newblock Scalable, transparent, and post-quantum secure computational
+  integrity.
+\newblock In {\em IACR Cryptology ePrint Archive}, 2018.
+
+\bibitem{BenSassonEtAl2019}
+Eli Ben-Sasson, Ido Bentov, Yinon Horesh, and Michael Riabzev.
+\newblock Fast rectangular matrix multiplication and compression.
+\newblock {\em Annual International Cryptology Conference}, page 269.
+
+\bibitem{BenSassonEtAl2016}
+Eli Ben-Sasson, Alessandro Chiesa, Ariel Gabizon, Mary Virza, and Daniel
+  Wingfield.
+\newblock Supersingular curves and the security of {ECDSA}.
+\newblock {\em Annual International Cryptology Conference}, pages 3--33, 2016.
+\newblock STARKs: Scalable Transparent ARguments of Knowledge.
+
+\bibitem{BenSasson2013}
+Eli Ben-Sasson, Alessandro Chiesa, Daniel Genkin, Eran Tromer, and Madars
+  Virza.
+\newblock {SNARKs} for {C}: Verifying program executions succinctly and in zero
+  knowledge.
+\newblock In {\em Advances in Cryptology -- CRYPTO 2013}, pages 90--108, 2013.
+
+\bibitem{BenSassonWigderson2001}
+Eli Ben-Sasson and Avi Wigderson.
+\newblock Short proofs are narrow -- resolution made simple.
+\newblock In {\em Journal of the ACM}, volume~48, pages 149--169, 2001.
+
+\bibitem{bennett1988}
+Charles~H. Bennett.
+\newblock Logical reversibility of computation.
+\newblock {\em IBM Journal of Research and Development}, 32(1):78--88, 1988.
+
+\bibitem{Bernstein2006}
+Daniel~J. Bernstein.
+\newblock Curve25519: New diffie-hellman speed records.
+\newblock {\em Public Key Cryptography -- PKC 2006}, pages 207--228, 2006.
+
+\bibitem{Berrou1993}
+Claude Berrou, Alain Glavieux, and Punya Thitimajshima.
+\newblock Near shannon limit error-correcting coding and decoding: Turbo-codes.
+\newblock In {\em Proceedings of the IEEE International Conference on
+  Communications (ICC)}, pages 1064--1070, 1993.
+
+\bibitem{Beullens2022}
+Ward Beullens.
+\newblock Breaking rainbow takes a weekend on a laptop, 2022.
+\newblock IACR Cryptology ePrint Archive, Report 2022/214.
+
+\bibitem{bloom1970}
+Burton~H. Bloom.
+\newblock Space/time trade-offs in hash coding with allowable errors.
+\newblock {\em Communications of the ACM}, 13(7):422--426, 1970.
+
+\bibitem{bohrer1982}
+Robert Bohrer and Harold Schervish.
+\newblock An error-balancing criterion for the construction of optimal response
+  surface designs.
+\newblock {\em Journal of Statistical Planning and Inference}, 6(1):13--23,
+  1982.
+
+\bibitem{BonehFranklin2001}
+Dan Boneh and Matthew~K. Franklin.
+\newblock Identity-based encryption from the weil pairing.
+\newblock In {\em Advances in Cryptology -- CRYPTO 2001}, pages 213--229, 2001.
+
+\bibitem{BonehLynnShacham2001}
+Dan Boneh, Ben Lynn, and Hovav Shacham.
+\newblock Short signatures from the weil pairing.
+\newblock In {\em Advances in Cryptology -- ASIACRYPT 2001}, pages 514--532,
+  2001.
+
+\bibitem{boolos1993}
+George Boolos, John~P. Burgess, and Richard~C. Jeffrey.
+\newblock {\em Computability and Logic}.
+\newblock Cambridge University Press, 3rd edition, 1993.
+
+\bibitem{boone1954}
+William~W. Boone.
+\newblock The word problem.
+\newblock {\em Proceedings of the National Academy of Sciences},
+  40(5):347--352, 1954.
+
+\bibitem{Bowe2019}
+Sean Bowe, Jack Grigg, and Daira Hopwood.
+\newblock Halo: Recursive proof composition without a trusted setup.
+\newblock In {\em IACR Cryptology ePrint Archive}, 2019.
+
+\bibitem{brewer2000}
+Eric~A. Brewer.
+\newblock Towards robust distributed systems.
+\newblock {\em Proceedings of the 19th Annual ACM Symposium on Principles of
+  Distributed Computing (PODC)}, page~7, 2000.
+
+\bibitem{Bringmann2014}
+Karl Bringmann.
+\newblock Faster algorithms for finding the longest common subsequence.
+\newblock In {\em Proceedings of the 55th Annual IEEE Symposium on Foundations
+  of Computer Science (FOCS)}, pages 82--91, 2014.
+
+\bibitem{tendermint2018}
+Ethan Buchman.
+\newblock Tendermint: Byzantine fault tolerance in the age of blockchains.
+\newblock In {\em PhD Thesis, University of Guelph}, 2018.
+
+\bibitem{Bunz2018}
+Benedikt B{\"u}nz, Jonathan Bootle, Dan Boneh, Andrew Poelstra, Pieter Wuille,
+  and Gregory Maxwell.
+\newblock Bulletproofs: Short proofs for confidential transactions and more.
+\newblock In {\em Proceedings of the 2018 IEEE Symposium on Security and
+  Privacy (SP)}, pages 315--334, 2018.
+
+\bibitem{buteringriffith2017}
+Vitalik Buterin and Virgil Griffith.
+\newblock Casper the friendly finality gadget.
+\newblock {\em arXiv preprint arXiv:1710.09437}, 2017.
+
+\bibitem{calcagno2015}
+Cristiano Calcagno, Dino Distefano, Jeremy Dubreil, Dominik Gabi, Pieter
+  Hooimeijer, Martina Luca, Peter O'Hearn, Irene Papakonstantinou, Jim
+  Purbrick, and Dulma Rodriguez.
+\newblock Moving fast with software verification.
+\newblock In {\em NASA Formal Methods Symposium}, pages 3--11, 2015.
+
+\bibitem{Canetti2001}
+Ran Canetti.
+\newblock Universally composable security: A new paradigm for cryptographic
+  protocols.
+\newblock In {\em Proceedings of the 42nd Annual IEEE Symposium on Foundations
+  of Computer Science (FOCS)}, pages 136--145, 2001.
+
+\bibitem{carterwegman1979}
+J.~Lawrence Carter and Mark~N. Wegman.
+\newblock Universal classes of hash functions.
+\newblock {\em Journal of Computer and System Sciences}, 18(2):143--154, 1979.
+
+\bibitem{castroliskov1999}
+Miguel Castro and Barbara Liskov.
+\newblock Practical byzantine fault tolerance.
+\newblock In {\em Proceedings of the 3rd Symposium on Operating Systems Design
+  and Implementation (OSDI)}, pages 173--186, 1999.
+
+\bibitem{CastryckDecru2022}
+Wouter Castryck and Thomas Decru.
+\newblock An efficient key recovery attack on {SIDH}.
+\newblock {\em IACR Cryptology ePrint Archive}, 2022.
+
+\bibitem{chaitin1966}
+Gregory~J. Chaitin.
+\newblock On the length of programs for computing finite binary sequences.
+\newblock {\em Journal of the ACM}, 13(4):547--569, 1966.
+
+\bibitem{chaitin1975}
+Gregory~J. Chaitin.
+\newblock A theory of program size formally identical to information theory.
+\newblock {\em Journal of the ACM}, 22(3):329--340, 1975.
+
+\bibitem{chandra1996}
+Ashok~K. Chandra and Vijaya Ramachandran.
+\newblock Computable algorithms for the longest common subsequence problem.
+\newblock {\em Journal of the ACM}, 43(2):279--302, 1996.
+
+\bibitem{chandratoueg1996}
+Tushar~Deepak Chandra and Sam Toueg.
+\newblock Unreliable failure detectors for reliable distributed systems.
+\newblock In {\em Journal of the ACM}, volume~43, pages 225--267, 1996.
+
+\bibitem{Chiesa2020}
+Alessandro Chiesa, Lynn Chua, and Matthew Weidner.
+\newblock On the (in)security of probabilistic data structures.
+\newblock In {\em IACR Cryptology ePrint Archive}, 2020.
+
+\bibitem{church1936}
+Alonzo Church.
+\newblock An unsolvable problem of elementary number theory.
+\newblock {\em American Journal of Mathematics}, 58(2):345--363, 1936.
+
+\bibitem{clarke1981}
+Edmund~M. Clarke and E.~Allen Emerson.
+\newblock Design and synthesis of synchronization skeletons using branching
+  time temporal logic.
+\newblock In {\em Logic of Programs}, pages 52--71, 1981.
+
+\bibitem{cobham1965}
+Alan Cobham.
+\newblock The intrinsic computational difficulty of functions.
+\newblock {\em Proceedings of the 1964 International Congress for Logic,
+  Methodology, and Philosophy of Science}, pages 24--30, 1965.
+
+\bibitem{cohen1963}
+Paul~J. Cohen.
+\newblock The independence of the continuum hypothesis.
+\newblock {\em Proceedings of the National Academy of Sciences},
+  50(6):1143--1148, 1963.
+
+\bibitem{mysticeti2024}
+Mysticeti Contributors.
+\newblock Mysticeti: A fast and secure {BFT} consensus protocol.
+\newblock In {\em Proceedings of the 2024 ACM Symposium on Principles of
+  Distributed Computing (PODC)}, 2024.
+
+\bibitem{Cook1971}
+Stephen~A. Cook.
+\newblock The complexity of theorem-proving procedures.
+\newblock {\em Proceedings of the 3rd Annual ACM Symposium on Theory of
+  Computing}, pages 151--158, 1971.
+
+\bibitem{cook2004}
+Stephen~A. Cook.
+\newblock The {P} vs. {NP} problem.
+\newblock {\em Clay Mathematics Institute}, 2004.
+
+\bibitem{CookReckhow1979}
+Stephen~A. Cook and Robert~A. Reckhow.
+\newblock The relative efficiency of propositional proof systems.
+\newblock {\em Journal of Symbolic Logic}, 44(1):36--50, 1979.
+
+\bibitem{cooleytukey1965}
+James~W. Cooley and John~W. Tukey.
+\newblock An algorithm for the machine calculation of complex fourier series.
+\newblock {\em Mathematics of Computation}, 19(90):297--301, 1965.
+
+\bibitem{spanner2012}
+James~C. Corbett, Jeffrey Dean, Michael Epstein, Andrew Fikes, Christopher
+  Frost, J.~J. Furman, Sanjay Ghemawat, Andrey Gubarev, Christopher Heiser,
+  Peter Hochschild, Wilson Hsieh, Sebastian Kanthak, Eugene Kogan, Hongyi Li,
+  Alexander Lloyd, Sergey Melnik, David Mwaura, David Nagle, Sean Quinlan,
+  Rajesh Rao, Lindsay Rolig, Yasushi Saito, Michal Szymaniak, Christopher
+  Taylor, Ruth Wang, and Dale Woodford.
+\newblock Spanner: Google's globally distributed database.
+\newblock In {\em ACM Transactions on Computer Systems}, volume~31, page~8,
+  2013.
+
+\bibitem{cousot1977}
+Patrick Cousot and Radhia Cousot.
+\newblock Abstract interpretation: A unified lattice model for static analysis
+  of programs by construction or approximation of fixpoints.
+\newblock {\em Proceedings of the 4th ACM SIGACT-SIGPLAN Symposium on
+  Principles of Programming Languages (POPL)}, pages 238--252, 1977.
+
+\bibitem{coverthomas2006}
+Thomas~M. Cover and Joy~A. Thomas.
+\newblock {\em Elements of Information Theory}.
+\newblock Wiley-Interscience, 2nd edition, 2006.
+
+\bibitem{Damgard1991}
+Ivan Damg{\aa}rd.
+\newblock Towards practical public key systems secure against chosen ciphertext
+  attacks.
+\newblock In {\em Advances in Cryptology -- CRYPTO 1991}, pages 445--456, 1991.
+
+\bibitem{narwhal2021}
+George Danezis, Lefteris Kokoris-Kogias, Alberto Sonnino, and Alexander
+  Spiegelman.
+\newblock Narwhal and tusk: A {DAG}-based mempool and efficient {BFT}
+  consensus.
+\newblock In {\em Proceedings of the 28th ACM Symposium on Operating Systems
+  Principles (SOSP)}, pages 123--140, 2021.
+
+\bibitem{dantzig1947}
+George~B. Dantzig.
+\newblock Maximization of a linear function of variables subject to linear
+  inequalities.
+\newblock {\em Activity Analysis of Production and Allocation}, pages 339--347,
+  1947.
+
+\bibitem{Daskalakis2006}
+Constantinos Daskalakis, Paul~W. Goldberg, and Christos~H. Papadimitriou.
+\newblock The complexity of computing a nash equilibrium.
+\newblock In {\em Proceedings of the 38th Annual ACM Symposium on Theory of
+  Computing (STOC)}, pages 71--78, 2006.
+
+\bibitem{davis2000}
+Martin Davis.
+\newblock {\em The Universal Computer: The Road from Leibniz to Turing}.
+\newblock W. W. Norton \& Company, 2000.
+
+\bibitem{deutsch1985}
+David Deutsch.
+\newblock Quantum theory, the church-turing principle and the universal quantum
+  computer.
+\newblock {\em Proceedings of the Royal Society of London A},
+  400(1818):97--117, 1985.
+
+\bibitem{DiffieHellman1976}
+Whitfield Diffie and Martin~E. Hellman.
+\newblock New directions in cryptography.
+\newblock {\em IEEE Transactions on Information Theory}, 22(6):644--654, 1976.
+
+\bibitem{Dinur2007}
+Irit Dinur.
+\newblock The {PCP} theorem by gap amplification.
+\newblock {\em Journal of the ACM}, 54(3):12, 2007.
+
+\bibitem{dolevstrong1983}
+Danny Dolev and H.~Raymond Strong.
+\newblock Authenticated algorithms for byzantine agreement.
+\newblock {\em SIAM Journal on Computing}, 12(4):656--666, 1983.
+
+\bibitem{DowneyFellows1999}
+Rodney~G. Downey and Michael~R. Fellows.
+\newblock {\em Parameterized Complexity}.
+\newblock Springer-Verlag, 1999.
+
+\bibitem{DowneyFellows2013}
+Rodney~G. Downey and Michael~R. Fellows.
+\newblock {\em Fundamentals of Parameterized Complexity}.
+\newblock Springer, 2013.
+
+\bibitem{dwork2006}
+Cynthia Dwork.
+\newblock Differential privacy.
+\newblock In {\em Proceedings of the 33rd International Colloquium on Automata,
+  Languages and Programming (ICALP)}, pages 1--12, 2006.
+
+\bibitem{dworklynch1988}
+Cynthia Dwork, Nancy Lynch, and Larry Stockmeyer.
+\newblock Consensus in the presence of partial synchrony.
+\newblock In {\em Journal of the ACM}, volume~35, pages 288--323, 1988.
+
+\bibitem{edmonds1965}
+Jack Edmonds.
+\newblock Paths, trees, and flowers.
+\newblock {\em Canadian Journal of Mathematics}, 17:449--467, 1965.
+
+\bibitem{ElGamal1985}
+Taher ElGamal.
+\newblock A public key cryptosystem and a signature scheme based on discrete
+  logarithms.
+\newblock In {\em IEEE Transactions on Information Theory}, volume~31, pages
+  469--472, 1985.
+
+\bibitem{eyalsirer2014}
+Ittay Eyal and Emin~G{\"u}n Sirer.
+\newblock Majority is not enough: Bitcoin mining is vulnerable.
+\newblock In {\em Financial Cryptography and Data Security}, pages 436--454,
+  2014.
+
+\bibitem{Fagin1974}
+Ronald Fagin.
+\newblock Generalized first-order spectra and polynomial-time recognizable
+  sets.
+\newblock {\em Complexity of Computation, SIAM-AMS Proceedings}, 7:43--73,
+  1974.
+
+\bibitem{feferman1960}
+Solomon Feferman.
+\newblock Arithmetization of metamathematics in a general setting.
+\newblock {\em Fundamenta Mathematicae}, 49:35--92, 1960.
+
+\bibitem{Feige1998}
+Uriel Feige.
+\newblock A threshold of $\ln n$ for approximating set cover.
+\newblock {\em Journal of the ACM}, 45(4):634--652, 1998.
+
+\bibitem{FeigeFiatShamir1987}
+Uriel Feige, Amos Fiat, and Adi Shamir.
+\newblock Zero-knowledge proofs of identity.
+\newblock In {\em Journal of Cryptology}, volume~1, pages 77--94, 1988.
+
+\bibitem{FiatShamir1986}
+Amos Fiat and Adi Shamir.
+\newblock How to prove yourself: Practical solutions to identification and
+  signature problems.
+\newblock In {\em Proceedings of CRYPTO 1986}, pages 186--194, 1986.
+
+\bibitem{flp1985}
+Michael~J. Fischer, Nancy~A. Lynch, and Michael~S. Paterson.
+\newblock Impossibility of distributed consensus with one faulty process.
+\newblock {\em Journal of the ACM}, 32(2):374--382, 1985.
+
+\bibitem{floyd1967}
+Robert~W. Floyd.
+\newblock Assigning meanings to programs.
+\newblock {\em Proceedings of Symposia in Applied Mathematics}, 19:19--32,
+  1967.
+
+\bibitem{Fortnow1990}
+Lance Fortnow.
+\newblock The complexity of promises with applications to computation,
+  cryptography, and quantum mechanics.
+\newblock {\em Journal of Computer and System Sciences}, 47(2):221--244, 1993.
+\newblock Preliminary version in STOC 1989.
+
+\bibitem{franzen2005}
+Torkel Franz{\'e}n.
+\newblock {\em G{\"o}del's Theorem: An Incomplete Guide to Its Use and Abuse}.
+\newblock A K Peters, 2005.
+
+\bibitem{FurstSaxeSipser1984}
+Merrick Furst, James~B. Saxe, and Michael Sipser.
+\newblock Parity, circuits, and the polynomial-time hierarchy.
+\newblock In {\em Mathematical Systems Theory}, volume~17, pages 13--27, 1984.
+
+\bibitem{Gabizon2019}
+Ariel Gabizon, Zachary~J. Williamson, and Oana Ciobotaru.
+\newblock {PLONK}: Permutations over lagrange-bases for oecumenical
+  noninteractive arguments of knowledge.
+\newblock In {\em IACR Cryptology ePrint Archive}, 2019.
+
+\bibitem{Gallager1963}
+Robert~G. Gallager.
+\newblock Low-density parity-check codes.
+\newblock {\em MIT Press}, 1963.
+
+\bibitem{gallager1968}
+Robert~G. Gallager.
+\newblock {\em Information Theory and Reliable Communication}.
+\newblock John Wiley \& Sons, 1968.
+
+\bibitem{gareyjohnson1979}
+Michael~R. Garey and David~S. Johnson.
+\newblock {\em Computers and Intractability: A Guide to the Theory of
+  {NP}-Completeness}.
+\newblock W. H. Freeman, 1979.
+
+\bibitem{Gentry2009}
+Craig Gentry.
+\newblock Fully homomorphic encryption using ideal lattices.
+\newblock {\em Proceedings of the 41st Annual ACM Symposium on Theory of
+  Computing (STOC)}, pages 169--178, 2009.
+
+\bibitem{gentzen1936}
+Gerhard Gentzen.
+\newblock Die widerspruchsfreiheit der reinen zahlentheorie.
+\newblock {\em Mathematische Annalen}, 112:493--565, 1936.
+
+\bibitem{gilbertlynch2002}
+Seth Gilbert and Nancy~A. Lynch.
+\newblock Brewer's conjecture and the feasibility of consistent, available,
+  partition-tolerant web services.
+\newblock In {\em ACM SIGACT News}, volume~33, pages 51--59, 2002.
+
+\bibitem{godel1931b}
+Kurt G{\"o}del.
+\newblock Discussion zur grundlegung der intuitionistischen mathematik.
+\newblock {\em Monatshefte f{\"u}r Mathematik und Physik}, 38:173--198, 1931.
+
+\bibitem{godel1931}
+Kurt G{\"o}del.
+\newblock {\"U}ber formal unentscheidbare s{\"a}tze der principia mathematica
+  und verwandter systeme {I}.
+\newblock {\em Monatshefte f{\"u}r Mathematik und Physik}, 38:173--198, 1931.
+
+\bibitem{Golay1949}
+Marcel J.~E. Golay.
+\newblock Notes on digital coding.
+\newblock Technical report, US Army Signal Corps, 1949.
+
+\bibitem{goldreich2004}
+Oded Goldreich.
+\newblock {\em The Foundations of Cryptography}, volume~2.
+\newblock Cambridge University Press, 2004.
+
+\bibitem{GoldreichMicaliWigderson1986}
+Oded Goldreich, Silvio Micali, and Avi Wigderson.
+\newblock Proofs that yield nothing but their validity and a methodology of
+  cryptographic protocol design.
+\newblock In {\em Proceedings of the 27th Annual IEEE Symposium on Foundations
+  of Computer Science (FOCS)}, pages 174--187, 1986.
+
+\bibitem{GoldreichMicaliWigderson1987}
+Oded Goldreich, Silvio Micali, and Avi Wigderson.
+\newblock How to play any mental game, or a completeness theorem for protocols
+  with honest majority.
+\newblock In {\em Proceedings of the 19th Annual ACM Symposium on Theory of
+  Computing (STOC)}, pages 218--229, 1987.
+
+\bibitem{goldreichmicaliwigderson1991}
+Oded Goldreich, Silvio Micali, and Avi Wigderson.
+\newblock Proofs that yield nothing but their validity.
+\newblock In {\em Proceedings of the 32nd Annual Symposium on Foundations of
+  Computer Science (FOCS)}, pages 156--167, 1991.
+
+\bibitem{goldwasser1989}
+Shafi Goldwasser.
+\newblock Interactive proof systems.
+\newblock In {\em Proceedings of Symposia in Applied Mathematics}, volume~38,
+  pages 59--77, 1989.
+
+\bibitem{GoldwasserMicali1984}
+Shafi Goldwasser and Silvio Micali.
+\newblock Probabilistic encryption.
+\newblock In {\em Journal of Computer and System Sciences}, volume~28, pages
+  270--299, 1984.
+
+\bibitem{GoldwasserMicaliRackoff1985}
+Shafi Goldwasser, Silvio Micali, and Charles Rackoff.
+\newblock The knowledge complexity of interactive proof systems.
+\newblock {\em SIAM Journal on Computing}, 18(1):186--208, 1989.
+
+\bibitem{GoldwasserSipser1986}
+Shafi Goldwasser and Michael Sipser.
+\newblock Private coins, public coins and the complexity of interactive proof
+  systems.
+\newblock In {\em Proceedings of the 18th Annual ACM Symposium on Theory of
+  Computing}, pages 45--53, 1986.
+
+\bibitem{golomb2001}
+Solomon~W. Golomb.
+\newblock {\em Shift Register Sequences}.
+\newblock Aegean Park Press, 2nd edition, 2001.
+
+\bibitem{Groth2010}
+Jens Groth.
+\newblock Short pairing-based non-interactive zero-knowledge arguments.
+\newblock In {\em Advances in Cryptology -- ASIACRYPT 2010}, pages 321--340,
+  2010.
+
+\bibitem{Grover1996}
+Lov~K. Grover.
+\newblock A fast quantum mechanical algorithm for database search.
+\newblock {\em Proceedings of the 28th Annual ACM Symposium on Theory of
+  Computing (STOC)}, pages 212--219, 1996.
+
+\bibitem{hadamard1945}
+Jacques Hadamard.
+\newblock {\em The Psychology of Invention in the Mathematical Field}.
+\newblock Princeton University Press, 1945.
+
+\bibitem{Hamming1950}
+Richard~W. Hamming.
+\newblock Error detecting and error correcting codes.
+\newblock {\em Bell System Technical Journal}, 29(2):147--160, 1950.
+
+\bibitem{HartmanisStearns1965}
+Juris Hartmanis and Richard~E. Stearns.
+\newblock On the computational complexity of algorithms.
+\newblock {\em Transactions of the American Mathematical Society},
+  117:285--306, 1965.
+
+\bibitem{hastad2001}
+Johan H{\aa}stad.
+\newblock Some optimal inapproximability results.
+\newblock {\em Journal of the ACM}, 48(4):798--859, 2001.
+
+\bibitem{herlihy1991}
+Maurice Herlihy.
+\newblock Wait-free synchronization.
+\newblock In {\em ACM Transactions on Programming Languages and Systems
+  (TOPLAS)}, volume~13, pages 124--149, 1991.
+
+\bibitem{hoare1969}
+C.~A.~R. Hoare.
+\newblock An axiomatic basis for computer programming.
+\newblock {\em Communications of the ACM}, 12(10):576--580, 1969.
+
+\bibitem{hodges1983}
+Andrew Hodges.
+\newblock {\em Alan Turing: The Enigma}.
+\newblock Simon \& Schuster, 1983.
+
+\bibitem{Hrubes2019}
+Pavel Hrube{\v{s}}, Nutan Limaye, and Srikanth Srinivasan.
+\newblock Lower bounds for constant-depth arithmetic circuits.
+\newblock In {\em Proceedings of the 60th Annual IEEE Symposium on Foundations
+  of Computer Science (FOCS)}, pages 1289--1304, 2019.
+
+\bibitem{ImpagliazzoLuby1989}
+Russell Impagliazzo and Michael Luby.
+\newblock One-way functions are essential for complexity-based cryptography.
+\newblock {\em Proceedings of the 30th Annual IEEE Symposium on Foundations of
+  Computer Science (FOCS)}, pages 230--235, 1989.
+
+\bibitem{ImpagliazzoWigderson1997}
+Russell Impagliazzo and Avi Wigderson.
+\newblock {P} = {BPP} if {E} requires exponential circuits: Derandomizing the
+  {XOR} lemma.
+\newblock In {\em Proceedings of the 29th Annual ACM Symposium on Theory of
+  Computing (STOC)}, pages 220--229, 1997.
+
+\bibitem{jinek2012}
+Martin Jinek, Krzysztof Chylinski, Ines Fonfara, Michael Hauer, Jennifer~A.
+  Doudna, and Emmanuelle Charpentier.
+\newblock A programmable dual-rna-guided {DNA} endonuclease in adaptive
+  bacterial immunity.
+\newblock {\em Science}, 337(6096):816--821, 2012.
+
+\bibitem{jones2008}
+Michael~T. Jones.
+\newblock Google's {MapReduce} and its applications.
+\newblock {\em ACM Queue}, 6(1):46--54, 2008.
+
+\bibitem{Forney1966}
+G.~David~Forney Jr.
+\newblock Concatenated codes.
+\newblock {\em MIT Research Laboratory of Electronics Technical Report}, 440,
+  1966.
+
+\bibitem{rogers1967}
+Hartley~Rogers Jr.
+\newblock {\em Theory of Recursive Functions and Effective Computability}.
+\newblock McGraw-Hill, 1967.
+
+\bibitem{jumper2021}
+John Jumper, Richard Evans, Alexander Pritzel, Tim Green, Michael Figurnov,
+  Olaf Ronneberger, Kathryn Tunyasuvunakool, Russ Bates, Augustin
+  {\v{Z}}{\'\i}{dek}, Alex Potapenko, Alex Bridgland, Clemens Meyer, Simon
+  A.~A. Kohl, Andrew~J. Ballard, Andrew Cowie, Bernardino Romera-Paredes,
+  Stanislav Nikolov, Rishub Jain, Jonas Adler, Trevor Back, Stig Petersen,
+  David Reiman, Ellen Clancy, Michal Zielinski, Martin Steinegger, Michalina
+  Pacholska, Tamas Berghammer, Sebastian Bodenstein, David Silver, Oriol
+  Vinyals, Andrew~W. Senior, Koray Kavukcuoglu, Pushmeet Kohli, and Demis
+  Hassabis.
+\newblock Highly accurate protein structure prediction with {AlphaFold}, 2021.
+
+\bibitem{kalman1960}
+Rudolf~E. Kalman.
+\newblock A new approach to linear filtering and prediction problems.
+\newblock {\em Journal of Basic Engineering}, 82(1):35--45, 1960.
+
+\bibitem{Karp1972}
+Richard~M. Karp.
+\newblock Reducibility among combinatorial problems.
+\newblock {\em Complexity of Computer Computations}, pages 85--103, 1972.
+
+\bibitem{khot2002}
+Subhash Khot.
+\newblock On the power of unique 2-prover 1-round games.
+\newblock {\em Proceedings of the 34th Annual ACM Symposium on Theory of
+  Computing (STOC)}, pages 767--775, 2002.
+
+\bibitem{Kilian1992}
+Joe Kilian.
+\newblock A note on efficient zero-knowledge proofs and arguments.
+\newblock In {\em Proceedings of the 24th Annual ACM Symposium on Theory of
+  Computing (STOC)}, pages 723--732, 1992.
+
+\bibitem{king1976}
+S.~H. King.
+\newblock {\em Programming for People}.
+\newblock Van Nostrand Reinhold, 1976.
+
+\bibitem{kirby1982}
+Laurie Kirby and Jeff Paris.
+\newblock Accessible independence results for peano arithmetic.
+\newblock {\em Bulletin of the London Mathematical Society}, 14:285--293, 1982.
+
+\bibitem{kleenerosser1935}
+S.~C. Kleene and J.~B. Rosser.
+\newblock Interesting propositions and what is wrong with them.
+\newblock {\em Journal of Symbolic Logic}, 1:115--116, 1935.
+
+\bibitem{kleene1936}
+Stephen~C. Kleene.
+\newblock General recursive functions of natural numbers.
+\newblock {\em Mathematische Annalen}, 112:727--742, 1936.
+
+\bibitem{kleene1943}
+Stephen~C. Kleene.
+\newblock Recursive predicates and quantifiers.
+\newblock {\em Transactions of the American Mathematical Society},
+  53(1):41--73, 1943.
+
+\bibitem{Koblitz1987}
+Neal Koblitz.
+\newblock Elliptic curve cryptosystems.
+\newblock In {\em Mathematics of Computation}, volume~48, pages 203--209, 1987.
+
+\bibitem{Kocher1996}
+Paul~C. Kocher.
+\newblock Timing attacks on implementations of diffie-hellman, {RSA}, {DSS},
+  and other systems.
+\newblock In {\em Advances in Cryptology -- CRYPTO 1996}, pages 104--113, 1996.
+
+\bibitem{koestler1964}
+Arthur Koestler.
+\newblock {\em The Act of Creation}.
+\newblock Hutchinson, 1964.
+
+\bibitem{kolmogorov1965}
+Andrey~N. Kolmogorov.
+\newblock Three approaches to the quantitative definition of information.
+\newblock {\em Problems of Information Transmission}, 1(1):1--7, 1965.
+
+\bibitem{KothapalliSetty2021}
+Abhiram Kothapalli, Srinath Setty, Justin Thaler, and Riad~S. Wahby.
+\newblock Revisiting the gkr protocol.
+\newblock In {\em IACR Cryptology ePrint Archive}, 2021.
+
+\bibitem{kuhn1962}
+Thomas~S. Kuhn.
+\newblock {\em The Structure of Scientific Revolutions}.
+\newblock University of Chicago Press, 1962.
+
+\bibitem{kwon2014}
+Jae Kwon.
+\newblock Tendermint: Consensus without mining, 2014.
+\newblock White paper.
+
+\bibitem{Ladner1975}
+Richard~E. Ladner.
+\newblock On the structure of polynomial time reducibility.
+\newblock {\em Journal of the ACM}, 22(1):155--171, 1975.
+
+\bibitem{lamport1998}
+Leslie Lamport.
+\newblock The part-time parliament.
+\newblock In {\em ACM Transactions on Computer Systems}, volume~16, pages
+  133--169, 1998.
+
+\bibitem{landauer1961}
+Rolf Landauer.
+\newblock Irreversibility and heat generation in the computing process.
+\newblock {\em IBM Journal of Research and Development}, 5(3):183--191, 1961.
+
+\bibitem{langley1987}
+Pat Langley, Herbert~A. Simon, Gary~L. Bradshaw, and Jan~M. Zytkow.
+\newblock Scientific discovery: Computational explorations of the creative
+  processes.
+\newblock {\em MIT Press}, 1987.
+
+\bibitem{Levin1973}
+Leonid~A. Levin.
+\newblock Universal search problems.
+\newblock {\em Problems of Information Transmission}, 9(3):265--266, 1973.
+
+\bibitem{livitanyi2008}
+Ming Li and Paul M.~B. Vit{\'a}nyi.
+\newblock {\em An Introduction to Kolmogorov Complexity and Its Applications}.
+\newblock Springer, 3rd edition, 2008.
+
+\bibitem{LinCostello2004}
+Shu Lin and Daniel J.~Costello Jr.
+\newblock {\em Error Control Coding}.
+\newblock Pearson Prentice Hall, 2nd edition, 2004.
+
+\bibitem{lymberopoulos2024}
+George Lymberopoulos et~al.
+\newblock {\em Advances in Probabilistic Data Structures}.
+\newblock Springer, 2024.
+
+\bibitem{mackay2003}
+David J.~C. MacKay.
+\newblock {\em Information Theory, Inference, and Learning Algorithms}.
+\newblock Cambridge University Press, 2003.
+
+\bibitem{MacKay1999}
+David J.~C. MacKay.
+\newblock {\em Information Theory, Inference, and Learning Algorithms}.
+\newblock Cambridge University Press, 2003.
+
+\bibitem{MarquesSilva1999}
+Jo{\~a}o~P. Marques-Silva and Karem~A. Sakallah.
+\newblock {GRASP}: A search algorithm for propositional satisfiability.
+\newblock In {\em IEEE Transactions on Computers}, volume~48, pages 506--521,
+  1999.
+
+\bibitem{martinlof1966}
+Per Martin-L{\"o}f.
+\newblock {\em The Definition of Random Sequences}.
+\newblock Institute of Mathematical Statistics, 1966.
+
+\bibitem{Merkle1978}
+Ralph~C. Merkle.
+\newblock Secure communications over insecure channels.
+\newblock {\em Communications of the ACM}, 21(4):294--299, 1978.
+
+\bibitem{Miller1985}
+Gary~L. Miller.
+\newblock Riemann's hypothesis and tests for primality.
+\newblock In {\em Proceedings of the 7th Annual ACM Symposium on Theory of
+  Computing (STOC)}, volume~7, pages 234--239, 1975.
+
+\bibitem{minsky1967}
+Marvin~L. Minsky.
+\newblock {\em Computation: Finite and Infinite Machines}.
+\newblock Prentice-Hall, 1967.
+
+\bibitem{myhill1955}
+John Myhill.
+\newblock Creative sets.
+\newblock {\em Zeitschrift f{\"u}r mathematische Logik und Grundlagen der
+  Mathematik}, 1(2):97--108, 1955.
+
+\bibitem{nakamoto2008}
+Satoshi Nakamoto.
+\newblock Bitcoin: A peer-to-peer electronic cash system.
+\newblock 2008.
+
+\bibitem{NISTPQC2024}
+{National Institute of Standards and Technology}.
+\newblock Post-quantum cryptography standardization, 2024.
+\newblock https://csrc.nist.gov/projects/post-quantum-cryptography.
+
+\bibitem{NisanWigderson1994}
+Noam Nisan and Avi Wigderson.
+\newblock Hardness vs. randomness.
+\newblock {\em Journal of Computer and System Sciences}, 49(2):149--167, 1994.
+
+\bibitem{ongaro2014}
+Diego Ongaro and John Ousterhout.
+\newblock In search of an understandable consensus algorithm.
+\newblock {\em Proceedings of the 2014 USENIX Annual Technical Conference
+  (ATC)}, pages 305--319, 2014.
+
+\bibitem{paris1977}
+Jeff Paris and Leo Harrington.
+\newblock A mathematical incompleteness in peano arithmetic.
+\newblock {\em Handbook of Mathematical Logic}, pages 1133--1142, 1977.
+
+\bibitem{penrose1989}
+Roger Penrose.
+\newblock {\em The Emperor's New Mind: Concerning Computers, Minds, and the
+  Laws of Physics}.
+\newblock Oxford University Press, 1989.
+
+\bibitem{post1936}
+Emil~L. Post.
+\newblock Finite combinatory processes -- formulation 1.
+\newblock {\em Journal of Symbolic Logic}, 1(3):103--105, 1936.
+
+\bibitem{post1944}
+Emil~L. Post.
+\newblock Recursively enumerable sets of positive integers and their decision
+  problems.
+\newblock {\em Bulletin of the American Mathematical Society}, 50:284--316,
+  1944.
+
+\bibitem{rabin1983}
+Michael~O. Rabin.
+\newblock Probabilistic algorithm for testing primality.
+\newblock {\em Journal of Number Theory}, 12(1):128--138, 1980.
+
+\bibitem{Raghavendra2008}
+Prasad Raghavendra.
+\newblock Optimal algorithms and inapproximability results for every {CSP}?
+\newblock In {\em Proceedings of the 40th Annual ACM Symposium on Theory of
+  Computing (STOC)}, pages 245--254, 2008.
+
+\bibitem{RazborovRudich1997}
+Alexander~A. Razborov and Steven Rudich.
+\newblock Natural proofs.
+\newblock {\em Journal of Computer and System Sciences}, 55(1):24--35, 1997.
+
+\bibitem{RazborovSmolensky1987}
+Alexander~A. Razborov and Roman Smolensky.
+\newblock Lower bounds for polynomial-size circuits.
+\newblock In {\em Proceedings of the 19th Annual ACM Symposium on Theory of
+  Computing (STOC)}, 1987.
+
+\bibitem{zab2008}
+Benjamin Reed and Flavio~P. Junqueira.
+\newblock Zookeeper's atomic broadcast protocol.
+\newblock {\em Proceedings of the 2008 USENIX Annual Technical Conference
+  (ATC)}, pages 311--324, 2008.
+
+\bibitem{ReedSolomon1960}
+Irving~S. Reed and Gustave Solomon.
+\newblock Polynomial codes over certain finite fields.
+\newblock {\em Journal of the Society for Industrial and Applied Mathematics},
+  8(2):300--304, 1960.
+
+\bibitem{Regev2005}
+Oded Regev.
+\newblock On lattices, learning with errors, random linear codes, and
+  cryptography.
+\newblock In {\em Proceedings of the 37th Annual ACM Symposium on Theory of
+  Computing (STOC)}, pages 84--93, 2005.
+
+\bibitem{rice1953}
+Henry~G. Rice.
+\newblock Classes of recursively enumerable sets and their decision problems.
+\newblock {\em Transactions of the American Mathematical Society},
+  74(2):358--366, 1953.
+
+\bibitem{Richardson2001}
+Matthew Richardson and Pedro Domingos.
+\newblock The intelligent surfer: Probabilistic combination of link and content
+  information in pagerank.
+\newblock In {\em Advances in Neural Information Processing Systems (NIPS)},
+  volume~14, 2001.
+
+\bibitem{RichardsonUrbanke2008}
+Tom Richardson and R{\"u}diger Urbanke.
+\newblock {\em Modern Coding Theory}.
+\newblock Cambridge University Press, 2008.
+
+\bibitem{rissanen1978}
+Jorma Rissanen.
+\newblock Modeling by shortest data description.
+\newblock {\em Automatica}, 14(5):465--471, 1978.
+
+\bibitem{RSA1978}
+Ronald~L. Rivest, Adi Shamir, and Leonard Adleman.
+\newblock A method for obtaining digital signatures and public-key
+  cryptosystems.
+\newblock {\em Communications of the ACM}, 21(2):120--126, 1978.
+
+\bibitem{rogozhin1996}
+A.~Rogozhin.
+\newblock Small universal turing machines.
+\newblock In {\em Theoretical Computer Science}, volume 168, pages 215--240,
+  1996.
+
+\bibitem{rosser1936}
+J.~Barkley Rosser.
+\newblock Extensions of some theorems of g{\"o}del and church.
+\newblock {\em Journal of Symbolic Logic}, 1(3):87--91, 1936.
+
+\bibitem{rumelhart1986}
+David~E. Rumelhart, Geoffrey~E. Hinton, and Ronald~J. Williams.
+\newblock Learning representations by back-propagating errors.
+\newblock {\em Nature}, 323(6088):533--536, 1986.
+
+\bibitem{Savitch1970}
+Walter~J. Savitch.
+\newblock Relationships between nondeterministic and deterministic tape
+  complexities.
+\newblock {\em Journal of Computer and System Sciences}, 4(2):177--192, 1970.
+
+\bibitem{Setty2023}
+Srinath T.~V. Setty.
+\newblock Proving the correctness of {SNARKs}.
+\newblock In {\em IACR Cryptology ePrint Archive}, 2023.
+
+\bibitem{Shamir1992}
+Adi Shamir.
+\newblock {IP} = {PSPACE}.
+\newblock {\em Journal of the ACM}, 39(4):869--877, 1992.
+
+\bibitem{Shannon1948}
+Claude~E. Shannon.
+\newblock A mathematical theory of communication.
+\newblock {\em Bell System Technical Journal}, 27(3--4):379--423, 623--656,
+  1948.
+
+\bibitem{Shannon1949}
+Claude~E. Shannon.
+\newblock Communication theory of secrecy systems.
+\newblock {\em Bell System Technical Journal}, 28(4):656--715, 1949.
+
+\bibitem{shannon1950}
+Claude~E. Shannon.
+\newblock Programming a computer for playing chess.
+\newblock {\em Philosophical Magazine}, 41(314):256--275, 1950.
+
+\bibitem{Shannon1959}
+Claude~E. Shannon.
+\newblock Coding theorems for a discrete source with a fidelity criterion.
+\newblock {\em IRE National Convention Record}, 4:142--163, 1959.
+
+\bibitem{shapiro1956}
+Stewart Shapiro.
+\newblock The place of the concept of randomness in the study of perception.
+\newblock {\em Psychological Review}, 63(3):191--205, 1956.
+
+\bibitem{Shor1994}
+Peter~W. Shor.
+\newblock Algorithms for quantum computation: Discrete logarithms and
+  factoring.
+\newblock {\em Proceedings of the 35th Annual IEEE Symposium on Foundations of
+  Computer Science (FOCS)}, pages 124--134, 1994.
+
+\bibitem{silver2016}
+David Silver, Aja Huang, Chris~J. Maddison, Arthur Guez, Laurent Sifre, George
+  van~den Driessche, Julian Schrittwieser, Ioannis Antonoglou, Veda
+  Panneershelvam, Marc Lanctot, Sander Dieleman, Dominik Grewe, John Nham, Nal
+  Kalchbrenner, Ilya Sutskever, Timothy Lillicrap, Madeleine Leach, Koray
+  Kavukcuoglu, Thore Graepel, and Demis Hassabis.
+\newblock Mastering the game of {Go} with deep neural networks and tree search.
+\newblock {\em Nature}, 529(7587):484--489, 2016.
+
+\bibitem{simon1976}
+Herbert~A. Simon.
+\newblock The information storage system called "human memory".
+\newblock {\em Neural Mechanisms of Learning and Memory}, pages 79--96, 1976.
+
+\bibitem{simonton2004}
+Dean~Keith Simonton.
+\newblock {\em Creativity in Science: Chance, Logic, Genius, and Zeitgeist}.
+\newblock Cambridge University Press, 2004.
+
+\bibitem{sipser2012}
+Michael Sipser.
+\newblock {\em Introduction to the Theory of Computation}.
+\newblock Cengage Learning, 3rd edition, 2012.
+
+\bibitem{slepian1973}
+David Slepian and Jack~K. Wolf.
+\newblock Noiseless coding of correlated information sources.
+\newblock {\em IEEE Transactions on Information Theory}, 19(4):471--480, 1973.
+
+\bibitem{smith2007}
+Raymond~W. Smith.
+\newblock {\em The History of Computing}.
+\newblock Oxford University Press, 2007.
+
+\bibitem{smorynski1977}
+Craig Smory{\'n}ski.
+\newblock {\em Self-Reference and Modal Logic}.
+\newblock Springer-Verlag, 1977.
+
+\bibitem{soare1987}
+Robert~I. Soare.
+\newblock {\em Recursively Enumerable Sets and Degrees}.
+\newblock Springer-Verlag, 1987.
+
+\bibitem{solomonoff1964}
+Ray~J. Solomonoff.
+\newblock A formal theory of inductive inference.
+\newblock {\em Information and Control}, 7(1--2):1--22, 224--254, 1964.
+
+\bibitem{spielman2004}
+Daniel~A. Spielman and Shang-Hua Teng.
+\newblock Smoothed analysis of algorithms: Why the simplex algorithm usually
+  takes polynomial time.
+\newblock {\em Journal of the ACM}, 51(3):385--463, 2004.
+
+\bibitem{Stockmeyer1976}
+Larry~J. Stockmeyer.
+\newblock The polynomial-time hierarchy.
+\newblock {\em Theoretical Computer Science}, 3(1):1--22, 1976.
+
+\bibitem{stone2015}
+Peter Stone et~al.
+\newblock Artificial intelligence and life in 2030.
+\newblock {\em Stanford University One Hundred Year Study on Artificial
+  Intelligence}, 2015.
+
+\bibitem{TenBrink2001}
+Sander TenBrink.
+\newblock Networks of creative thinking.
+\newblock {\em Creativity Research Journal}, 13(3--4):379--388, 2001.
+
+\bibitem{tishby1999}
+Naftali Tishby, Fernando~C. Pereira, and William Bialek.
+\newblock {\em The Information Bottleneck Method}.
+\newblock Proceedings of the 37th Allerton Conference on Communication,
+  Control, and Computing, 1999.
+
+\bibitem{Toda1991}
+Seinosuke Toda.
+\newblock {PP} is as hard as the polynomial-time hierarchy.
+\newblock {\em SIAM Journal on Computing}, 20(5):865--877, 1991.
+
+\bibitem{trakhtenbrot1973}
+Boris~A. Trakhtenbrot.
+\newblock The emergence of algorithmic information theory.
+\newblock {\em IEEE Transactions on Information Theory}, IT-19:484--488, 1973.
+
+\bibitem{truecronicle2020}
+TrueCronicle.
+\newblock A scalable {BFT} protocol, 2020.
+\newblock White paper.
+
+\bibitem{turing1936}
+Alan~M. Turing.
+\newblock On computable numbers, with an application to the
+  {Entscheidungsproblem}.
+\newblock {\em Proceedings of the London Mathematical Society}, 42:230--265,
+  1936.
+
+\bibitem{turing1937}
+Alan~M. Turing.
+\newblock {\em Systems of Logic Based on Ordinals}.
+\newblock Princeton University, 1937.
+\newblock PhD thesis.
+
+\bibitem{uzzi2013}
+Elad Uzzi, John~M. Bowers, and Kevin~W. Plaxco.
+\newblock The psychology of scientific discovery.
+\newblock In {\em Proceedings of the National Academy of Sciences}, volume 110,
+  pages 3059--3064, 2013.
+
+\bibitem{Valiant1979}
+Leslie~G. Valiant.
+\newblock The complexity of computing the permanent.
+\newblock {\em Theoretical Computer Science}, 8(2):189--201, 1979.
+
+\bibitem{Valiant1984}
+Leslie~G. Valiant.
+\newblock A theory of the learnable.
+\newblock {\em Communications of the ACM}, 27(11):1134--1142, 1984.
+
+\bibitem{vaswani2017}
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones,
+  Aidan~N. Gomez, {\L}ukasz Kaiser, and Illia Polosukhin.
+\newblock Attention is all you need.
+\newblock {\em Advances in Neural Information Processing Systems (NeurIPS)},
+  30:5998--6008, 2017.
+
+\bibitem{vitanyi2004}
+Paul M.~B. Vit{\'a}nyi.
+\newblock Universal similarity.
+\newblock In {\em Proceedings of the IEEE International Symposium on
+  Information Theory (ISIT)}, 2004.
+
+\bibitem{Viterbi1967}
+Andrew~J. Viterbi.
+\newblock Error bounds for convolutional codes and an asymptotically optimum
+  decoding algorithm.
+\newblock {\em IEEE Transactions on Information Theory}, 13(2):260--269, 1967.
+
+\bibitem{vonneumann1945}
+John von Neumann.
+\newblock First draft of a report on the {EDVAC}.
+\newblock {\em University of Pennsylvania}, 1945.
+
+\bibitem{wallas1926}
+Graham Wallas.
+\newblock The art of thought.
+\newblock {\em Harcourt Brace}, 1926.
+
+\bibitem{weisberg2006}
+Robert~W. Weisberg.
+\newblock {\em Creativity: Understanding Innovation in Problem Solving,
+  Science, Invention, and the Arts}.
+\newblock John Wiley \& Sons, 2006.
+
+\bibitem{Williams2014}
+Ryan Williams.
+\newblock Faster decision of first-order graph properties.
+\newblock In {\em Proceedings of the 29th Annual IEEE Symposium on Logic in
+  Computer Science (LICS)}, pages 7--15, 2014.
+
+\bibitem{Williams2018}
+Ryan Williams.
+\newblock Limits on representing {Boolean} functions by linear combinations of
+  disjunctions.
+\newblock In {\em Proceedings of the 59th Annual IEEE Symposium on Foundations
+  of Computer Science (FOCS)}, pages 48--58, 2018.
+
+\bibitem{wolfram2002}
+Stephen Wolfram.
+\newblock {\em A New Kind of Science}.
+\newblock Wolfram Media, 2002.
+
+\bibitem{shoal2023}
+Lei Yang, Seo~Jin Park, Mohammad Alizadeh, Sreeram Kannan, and David Tse.
+\newblock Shoal: A {DAG}-based {BFT} protocol.
+\newblock In {\em Proceedings of the 20th USENIX Symposium on Networked Systems
+  Design and Implementation (NSDI)}, 2023.
+
+\bibitem{Yao1982}
+Andrew~C. Yao.
+\newblock Theory and applications of trapdoor functions.
+\newblock In {\em Proceedings of the 23rd Annual IEEE Symposium on Foundations
+  of Computer Science (FOCS)}, pages 80--91, 1982.
+
+\bibitem{hotstuff2019}
+Maofan Yin, Dahlia Malkhi, Michael~K. Reiter, Guy Golan-Gueta, and Ittai
+  Abraham.
+\newblock Hotstuff: {BFT} consensus with linearity and responsiveness.
+\newblock In {\em Proceedings of the 2019 ACM Symposium on Principles of
+  Distributed Computing (PODC)}, pages 347--356, 2019.
+
+\bibitem{Zapico2023}
+Daniel Zapico.
+\newblock Recent advances in probabilistic data structures, 2023.
+\newblock PhD Thesis.
+
+\bibitem{zenil2018}
+Hector Zenil.
+\newblock {\em The Computational Nature of Creativity}.
+\newblock Springer, 2018.
+
+\end{thebibliography}

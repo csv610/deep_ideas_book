@@ -1,0 +1,1044 @@
+% Chapter 11: Zero Knowledge Proofs
+% Part III: Difficulty
+
+\chapter{Zero Knowledge Proofs}
+\label{ch:zk}
+
+%======================================================================
+% SECTION 1: THE QUESTION
+%======================================================================
+\section{The Question: What Problem Was Humanity Trying to Solve?}
+\label{sec:zk:question}
+
+A prover wants to convince a verifier that a statement is true --- without revealing \emph{why} it's true.
+
+\begin{itemize}
+\item ``I know the secret key for this public key.''
+\item ``This graph is 3-colorable.''
+\item ``This program executed correctly.''
+\item ``I have a valid transaction (but I won't show you the details).''
+\end{itemize}
+
+\begin{question}How can you prove you know something without revealing it?\end{question}
+
+\begin{highlightbox}[The Core Question]
+Can a prover convince a verifier of the truth of a statement \emph{without transmitting any information} beyond the fact that the statement is true?
+
+\end{highlightbox}
+
+This question arises naturally in cryptography, where Alice wants to prove she knows a decryption key without revealing it, or prove that a ciphertext decrypts to a particular message without disclosing the plaintext. But the question is deeper: it asks whether \emph{knowledge} and \emph{conviction} are separable.
+
+%======================================================================
+% SECTION 2: WHY IT SEEMED IMPOSSIBLE
+%======================================================================
+\section{Why It Seemed Impossible: What Barriers Blocked Progress}
+\label{sec:zk:impossible}
+
+\begin{enumerate}
+\item \textbf{The Paradox of Proof:} A proof traditionally \emph{is} information --- a sequence of logical steps. To verify, the verifier must \emph{see} the steps. If the verifier sees nothing, how can they be convinced?
+
+\item \textbf{Knowledge vs. Proof:} In classical logic (and NP), a proof \emph{is} a witness (certificate). If you give the witness, you've revealed the secret. If you don't give it, how does the verifier check?
+
+\item \textbf{Interaction as a Resource:} Before Goldwasser-Micali-Rackoff (1985), proofs were \emph{static} (written down, checked once). The idea that \emph{interaction} (challenge-response) and \emph{randomness} could enable new kinds of proofs was radical.
+
+\item \textbf{Simulation Paradigm:} The definition of zero-knowledge --- ``whatever the verifier learns, they could have simulated themselves'' --- is deeply counterintuitive. It says the verifier gains \emph{zero} knowledge, yet is \emph{convinced}.
+\end{enumerate}
+
+\begin{roadblockbox}[The Intuition Barrier]
+``If I don't tell you the secret, you can't check it. If I do tell you, it's not zero-knowledge.'' The resolution: \emph{I don't tell you the secret; I prove I \emph{could} tell you, by responding correctly to your unpredictable challenges.}
+
+\end{roadblockbox}
+
+\begin{roadblockbox}[The Soundness Error Barrier]
+Each round of an interactive proof only catches a cheating prover with some probability $p < 1$. How can we ever be certain? The answer: \emph{repetition amplifies soundness}. After $k$ independent rounds, the cheating probability drops to $(1-p)^k \le e^{-pk}$, which can be made exponentially small. Crucially, this repetition preserves zero-knowledge under sequential composition.
+
+\end{roadblockbox}
+
+\begin{roadblockbox}[The Verification Paradox]
+A verifier who is convinced by a ZK proof learns nothing new --- yet the verifier's state has changed (they now believe the statement). How can a change in belief not correspond to learning? The resolution: the verifier learns the \emph{truth of the statement}, which they already knew (it was part of the input). The \emph{conviction} comes from the interaction, not from new information. This is the key insight: conviction and information transfer are separable.
+
+\end{roadblockbox}
+
+\begin{itemize}
+\item \textbf{The Randomness Barrier:} The verifier must be \emph{randomized}. A deterministic verifier could be tricked by a prover who predicts the challenges. Randomness makes challenges unpredictable, and soundness becomes probabilistic rather than absolute.
+\item \textbf{The Ciphertext Analogy:} A ciphertext hides a message but reveals nothing about it. Could a proof similarly hide its witness while revealing nothing beyond the statement's truth? This analogy, while imperfect, points toward the right intuition.
+\item \textbf{The Computational vs. Information-Theoretic Divide:} Classical proofs are information-theoretic --- a correct proof is accepted, an incorrect one is rejected, with absolute certainty. ZK proofs are \emph{computational}: soundness holds only against polynomial-time provers, and privacy holds only against polynomial-time verifiers. This shift from absolute to computational guarantees was deeply unsettling to mathematicians.
+\item \textbf{The Circularity Objection:} ``To construct a simulator, you need to know what the verifier will challenge --- but that's the secret!'' The resolution: the simulator doesn't need to know beforehand; it can \emph{rewind} the verifier after a wrong guess, resetting the verifier's state. This rewind ability is the verifier's algorithmic leash.
+\end{itemize}
+
+%======================================================================
+% SECTION 3: HISTORICAL CONTEXT
+%======================================================================
+\section{Historical Context: What Was Known at the Time}
+\label{sec:zk:context}
+
+\begin{historicalbox}[The ZK Revolution (1980s)]
+\begin{itemize}
+\item \textbf{1982:} Goldwasser, Micali, Rackoff (GMR): ``The Knowledge Complexity of Interactive Proof Systems'' (STOC). Defined IP, ZK, knowledge complexity. Quadratic Residuosity ZK proof.
+\item \textbf{1985:} Goldreich, Micali, Wigderson (GMW): ``Proofs that Yield Nothing But Their Validity'' --- \emph{every} NP statement has a ZK proof (assuming OWFs). Graph 3-coloring ZK proof.
+\item \textbf{1986:} Feige, Fiat, Shamir: ZK identification (Fiat-Shamir heuristic).
+\item \textbf{1988:} Brassard, Chaum, Crépeau: Multi-prover ZK (MIP).
+\item \textbf{1990:} Babai, Fortnow, Lund: $\mathsf{IP} = \mathsf{PSPACE}$ (Shamir 1992).
+\item \textbf{1991:} Kilian: ZK arguments (computationally sound, succinct). PCPs.
+\item \textbf{1992:} Feige, Kilian: Parallel repetition.
+\item \textbf{2000s:} zk-SNARKs (Groth, Gennaro, Pinocchio, Groth16), zk-STARKs (Ben-Sasson et al. 2018), Bulletproofs (B\"unz et al. 2018).
+\end{itemize}
+
+\end{historicalbox}
+
+Key figures:
+
+\begin{itemize}
+\item \textbf{Shafi Goldwasser} (MIT, Weizmann; Turing Award 2012): Born in New York to Israeli parents, Goldwasser earned her Ph.D. at UC Berkeley under Manuel Blum. Her thesis work on interactive proofs emerged from thinking about how a smart card could prove its identity without revealing its secret key. Along with Micali, she developed the simulation paradigm --- perhaps the single most influential idea in modern cryptography. She later made fundamental contributions to zero-knowledge (delegation of computation, non-malleable cryptography) and theoretical machine learning (PAC learning with noise). She has advised dozens of students who became leaders in the field, and she remains an active voice for diversity in computer science.
+
+\item \textbf{Silvio Micali} (MIT; Turing Award 2012): Born in Palermo, Italy, Micali earned his Ph.D. at UC Berkeley. His collaboration with Goldwasser produced not just zero-knowledge proofs but also the foundations of public-key encryption (semantic security, with Goldwasser) and pseudorandom generation (with Blum and Yao). He introduced Verifiable Random Functions (VRFs), which are essential for blockchain consensus. His more recent work on the Algorand blockchain (a pure proof-of-stake system) demonstrates his rare ability to translate theoretical insights into deployed systems serving millions of users.
+
+\item \textbf{Charles Rackoff} (University of Toronto): Rackoff brought crucial expertise in complexity theory and probability theory. His contribution to the GMR paper included the precise definition of knowledge complexity and the construction of the quadratic residuosity protocol --- the first nontrivial example of a zero-knowledge proof for a specific number-theoretic language. He also contributed the ``Rackoff bound'' in pseudorandomness and has influenced generations of students at the University of Toronto.
+
+\item \textbf{Oded Goldreich} (Weizmann Institute): A towering figure in theoretical cryptography. The GMW paper (with Micali and Wigderson) showed that \emph{every NP statement} has a zero-knowledge proof, assuming the existence of one-way functions. This was the first general result connecting cryptography to NP-completeness. Goldreich also pioneered pseudorandom functions (with Goldwasser and Micali), hard-core bits, and the study of interactive proof systems. His multi-volume book \emph{Foundations of Cryptography} (2001, 2004) is the standard reference that trained an entire generation of cryptographers. He has been a fierce defender of rigorous theoretical standards in the field.
+
+\item \textbf{Avi Wigderson} (IAS, Princeton; Turing Award 2021): Born in Haifa, Israel, Wigderson earned his Ph.D. at Princeton. His contributions span complexity theory, cryptography, and the theory of randomness. The GMW paper applied his deep understanding of NP-completeness to show that graph 3-coloring (an NP-complete problem) admits a ZK proof, which by reduction means all of NP does. Wigderson also played a central role in the $\mathsf{IP} = \mathsf{PSPACE}$ result and the hardness-vs-randomness paradigm, which asks whether randomness can always be eliminated from efficient algorithms. His book \emph{Mathematics and Computation} (2019) is a masterful synthesis of computational complexity theory.
+
+\item \textbf{Adi Shamir} (Weizmann Institute; Turing Award 2002): Co-inventor of RSA (with Rivest and Adleman) at age 26, Shamir's contributions span the entire field of cryptography. He contributed the Fiat-Shamir heuristic (with Feige and Fiat) that converts interactive ZK protocols into non-interactive ones --- now used in virtually every deployed ZK system. He also proved $\mathsf{IP} = \mathsf{PSPACE}$, establishing that interactive proofs capture all of polynomial space. Other seminal contributions include secret sharing (Shamir's secret sharing scheme), differential cryptanalysis, and the ``cube root'' attack on RSA.
+
+\item \textbf{Joe Kilian} (Northeastern University): Kilian pioneered the connection between probabilistically checkable proofs (PCPs) and succinct arguments. \cite{goldreichmicaliwigderson1991}, His 1991 paper introduced the notion of computationally sound proofs that are shorter than the NP witness --- the intellectual precursor to zk-SNARKs. He also contributed to the theory of zero-knowledge (concurrent ZK, parallel repetition) and to practical cryptography (the Kilian-Petrank protocol for electronic voting).
+
+\item \textbf{Alessandro Chiesa} (UC Berkeley), \textbf{Eli Ben-Sasson} (StarkWare), \textbf{Eran Tromer} (Tel Aviv), \textbf{Madars Virza} (MIT): This group drove the transition from theory to practice. Chiesa co-invented the Pinocchio protocol (the first practical zk-SNARK) and co-founded the Zcash company. Ben-Sasson co-invented zk-STARKs (transparent, post-quantum) and co-founded StarkWare, which powers StarkNet and other L2 solutions. Tromer contributed to the design of STARKs and to side-channel attacks. Virza implemented the first Zcash shielded transactions and contributed to the design of BCTV14 and Groth16.
+
+\item \textbf{Additional Contributors:} Jens Groth (Groth16, the most efficient zk-SNARK), Jonathan Katz (foundations), Yehuda Lindell (ZK for MPC), Rafail Ostrovsky (perfect ZK for NP), Boaz Barak (non-black-box ZK), Nir Bitansky (recursive ZK and complexity), Justin Thaler (practical ZK and FRI analysis), Srinath Setty (Nova folding scheme), and the teams behind critical implementations (arkworks, gnark, Circom, Noir, SnarkJS).
+\end{itemize}
+
+\begin{connectionbox}[Connection to Chapters 9, 10]
+ZK for NP (GMW) uses \emph{any} NP-complete problem (Graph 3-Coloring) + commitment scheme (from OWFs, Chapter 10). The \emph{simulation paradigm} (Chapter 3: self-reference) is central: simulator rewinds verifier.
+
+\end{connectionbox}
+
+%======================================================================
+% SECTION 4: THE MENTAL LEAP
+%======================================================================
+\section{The Mental Leap: The Creative Insight That Changed Everything}
+\label{sec:zk:leap}
+
+There are four major leaps here:
+
+\begin{mentalLeap}[Leap 1 (GMR 1985)]\emph{Proofs Can Be Interactive and Probabilistic.}\end{mentalLeap}
+The verifier sends \emph{random challenges}; the prover responds. Soundness: if statement false, no prover can cheat except with negligible probability. Completeness: honest prover always convinces. This is \emph{Interactive Proofs (IP)}.
+
+\begin{mentalLeap}[Leap 2 (GMR 1985)]\emph{Zero Knowledge = Simulatability.}\end{mentalLeap}
+A proof is \emph{zero-knowledge} if there exists a \emph{simulator} that, given only the statement (not the witness), can produce a transcript \emph{indistinguishable} from a real interaction. The verifier learns nothing they couldn't have generated themselves!
+
+\begin{mentalLeap}[Leap 3 (GMW 1986)]\emph{Every NP Statement Has a ZK Proof.}\end{mentalLeap}
+Reduce any NP statement to Graph 3-Coloring. Prover commits to a random permutation of a valid 3-coloring. Verifier challenges a random edge. Prover reveals colors of endpoints. Repeat $O(n^2)$ times. If graph not 3-colorable, cheating prover caught with probability $\ge 1/|E|$. Zero-knowledge via commitment hiding + permutation.
+
+\begin{mentalLeap}[Leap 4 (Kilian 1992 / Micciancio 2000 / Groth 2010)]\emph{Succinct Non-Interactive ZK (zk-SNARKs).}\end{mentalLeap}
+Using PCPs (probabilistically checkable proofs) + cryptographic commitments (pairings, lattices, hashes), the prover sends \emph{one short message} (proof $\approx$ 100--200 bytes) that verifies in milliseconds. The \emph{Fiat-Shamir transform} (heuristic) makes it non-interactive in the Random Oracle Model.
+
+\begin{mentalLeap}[Leap 5 (2016--Present)]\emph{ZK Goes Mainstream.}\end{mentalLeap}
+What was pure theory in the 1980s and early 2000s became production infrastructure starting with Zcash (2016). zk-SNARKs power blockchain scaling (ZK-rollups), private payments, verifiable computation, and identity systems. ZK circuits are now written in high-level languages (Circom, Noir, Leo), proven in hardware-accelerated provers, and verified on mobile devices. The technology has moved from a handful of cryptography Ph.D.s to thousands of engineers building production systems.
+
+\begin{connectionbox}[The Architecture of Insight]
+Each leap strips away an assumption: Leap 1 removes the assumption that proofs must be static. Leap 2 removes the assumption that a convincing proof must transmit information. Leap 3 shows the result is universal (all NP). Leap 4 removes interaction and adds succinctness --- the proof becomes a single message, shorter than the witness. Leap 5 shows that theoretical breakthroughs can transform into world-changing infrastructure.
+
+\end{connectionbox}
+
+%======================================================================
+% SECTION 5: THE MATHEMATICS
+%======================================================================
+\section{The Mathematics: Rigorous Development of the Theory}
+\label{sec:zk:math}
+
+\subsection{Interactive Proofs}
+\label{sec:zk:ip}
+
+The GMR definition of interactive proofs formalizes the notion of a \emph{probabilistic} verification protocol.
+
+\begin{definition}[Interactive Proof System]
+A pair $(P, V)$ of probabilistic polynomial-time interactive machines for language $L$:
+\begin{itemize}
+\item \textbf{Completeness:} $x \in L \implies \Pr[\langle P, V \rangle(x) = 1] \ge 2/3$.
+\item \textbf{Soundness:} $x \notin L \implies \forall P^*, \Pr[\langle P^*, V \rangle(x) = 1] \le 1/3$.
+\end{itemize}
+$\mathsf{IP}$ = languages with interactive proofs.
+\end{definition}
+
+The completeness and soundness parameters can be amplified by repetition. The constants $2/3$ and $1/3$ are arbitrary; any $c > s$ with $c - s$ non-negligible suffices. A key distinction is between \emph{public-coin} protocols (verifier's random coins are revealed to prover) and \emph{private-coin} protocols (verifier keeps coins secret). Goldwasser and Sipser (1986) showed they are equivalent: any private-coin IP can be transformed into a public-coin IP with at most an exponential blowup in rounds, and subsequent work (through the $\mathsf{IP} = \mathsf{PSPACE}$ theorem) showed this blowup can be polynomial.
+
+The \emph{sum-check protocol}, due to Lund, Fortnow, Karloff, and Nisan (LFKN, 1990), is the central building block for $\mathsf{IP} = \mathsf{PSPACE}$. It allows a verifier to check a claim about a multivariate polynomial summation:
+
+\begin{definition}[Sum-Check Protocol]
+Given a $v$-variate polynomial $g$ over a finite field $\mathbb{F}$, the prover claims $H = \sum_{x_1 \in \{0,1\}} \cdots \sum_{x_v \in \{0,1\}} g(x_1,\dots,x_v)$. The protocol proceeds in $v$ rounds:
+\begin{enumerate}
+\item Prover sends a univariate polynomial $g_1(x_1) = \sum_{x_2,\dots,x_v \in \{0,1\}} g(x_1, x_2, \dots, x_v)$.
+\item Verifier checks $g_1(0) + g_1(1) = H$, picks random $r_1 \in \mathbb{F}$, sends to prover.
+\item Prover sends $g_2(x_2) = \sum_{x_3,\dots,x_v \in \{0,1\}} g(r_1, x_2, \dots, x_v)$.
+\item Verifier checks $g_2(0) + g_2(1) = g_1(r_1)$, picks random $r_2$, sends.
+\item Continue. After $v$ rounds, verifier checks $g(r_1,\dots,r_v) \stackrel{?}{=} g_v(r_v)$ by evaluating $g$ at the random point.
+\end{enumerate}
+Soundness: If the initial claim is false, a cheating prover is caught with probability $\ge 1 - v \cdot d / |\mathbb{F}|$ where $d = \deg(g)$.
+\end{definition}
+
+\paragraph{Sum-Check Worked Example.} Let $g(x_1,x_2) = 2x_1^2 + x_1 x_2 + x_2 + 1$ over $\mathbb{F}_7$, and the prover claims $H = \sum_{x_1 \in \{0,1\}} \sum_{x_2 \in \{0,1\}} g(x_1,x_2) = 7$. Round 1: prover sends $g_1(x_1) = g(x_1,0) + g(x_1,1) = (2x_1^2 + 1) + (2x_1^2 + x_1 + 1 + 1) = 4x_1^2 + x_1 + 3$. Verifier checks $g_1(0)+g_1(1) = 3 + (4+1+3) = 3+1 = 4 \pmod{7}$ which is not equal to the claimed $H=7=0\pmod{7}$. The verifier rejects. The soundness guarantee: if the prover's claim were wrong, the verifier catches it at this round with probability at least $1 - d/|\mathbb{F}| = 1 - 2/7 \approx 0.714$ (where $d=2$ is the maximum degree in $x_1$).
+
+The sum-check protocol shows that $\mathsf{\#P}$ (counting problems) is in $\mathsf{IP}$: given a SAT formula $\phi$, let $g$ be its arithmetization; the sum over all assignments counts satisfying assignments. Since $\mathsf{\#P}$-complete problems are in IP, and $\mathsf{PSPACE}$ can be expressed as $\mathsf{\#P}$ with alternation, the full $\mathsf{IP} = \mathsf{PSPACE}$ follows.
+
+\begin{theorem}[Shamir 1990, building on LFKN]
+$\mathsf{IP} = \mathsf{PSPACE}$.
+\end{theorem}
+
+\begin{proof}[Sketch]
+$\mathsf{IP} \subseteq \mathsf{PSPACE}$: Verifier's strategy space is poly-space.
+$\mathsf{PSPACE} \subseteq \mathsf{IP}$: Arithmetize QBF formula $\to$ low-degree polynomial. Sum-check protocol. Verifier checks polynomial evaluations at random points.
+
+In more detail: For a TQBF formula $\Phi = \forall x_1 \exists x_2 \forall x_3 \cdots \phi(x_1,\dots,x_n)$, construct an arithmetic expression $E$ by replacing $\forall y$ with $\prod_{y \in \{0,1\}}$ and $\exists y$ with $\sum_{y \in \{0,1\}}$. While this creates an exponential explosion in the number of operators, careful use of linearization polynomials and the sum-check protocol keeps the interaction polynomial.
+
+The critical technical hurdle: a quantified formula $\forall x\; \exists y\; \phi(x,y)$ arithmetizes to $\prod_{x \in \{0,1\}} \sum_{y \in \{0,1\}} g_\phi(x,y)$, which has degree that may double with each alternation. Shamir's key insight: introduce \emph{linearization polynomials} that keep the degree bounded. Specifically, after each quantifier alternation, the prover sends a linearized version of the current polynomial, and the verifier checks consistency at a random point. This keeps the protocol polynomial in the formula size.
+\end{proof}
+
+\begin{connectionbox}[Connection to Chapter 4: The Axiomatic Method]
+The arithmetization of TQBF mirrors the axiomatic method: a complex logical formula (quantified Boolean logic) is reduced to elementary arithmetic operations (addition, multiplication) over a finite field. The verifier only checks local consistency at random points --- a direct analogue of checking each inference step in a formal proof.
+
+\end{connectionbox}
+
+\begin{roadblockbox}[Why Can't the Prover Cheat?]
+The verifier's random choices ``trap'' the prover at each step. If the prover lies about $g_1$, the verifier's check $g_1(0) + g_1(1)$ fails immediately. If the prover waits until later, the verifier's random $r_1$ makes the next check depend on a value the prover committed to before knowing $r_1$. This \emph{commit-then-challenge} pattern is the heart of interactive proofs.
+
+\end{roadblockbox}
+
+\subsection{Zero-Knowledge}
+\label{sec:zk:zkdef}
+
+\begin{definition}[Perfect Zero-Knowledge]
+$(P,V)$ is \emph{perfect ZK} for $L$ if $\exists$ PPT simulator $S$ such that $\forall x \in L$, $\forall$ verifiers $V^*$:
+\[
+\text{View}_{V^*}[\langle P, V^* \rangle(x)] \equiv S(x)
+\]
+(identical distributions). \emph{Statistical ZK:} statistical distance negligible. \emph{Computational ZK (CZK):} computationally indistinguishable.
+\end{definition}
+
+The three flavors correspond to different adversary models. Perfect ZK is the strongest --- but also the rarest. Most practical protocols achieve computational ZK. The definition also extends to \emph{auxiliary-input ZK}: the verifier may have prior knowledge (auxiliary input) that could help distinguish. A protocol is \emph{auxiliary-input ZK} if the simulator's output is indistinguishable even when the verifier has auxiliary input $z$. This is essential for composition: without it, sequential composition of ZK protocols may leak information.
+
+The \emph{simulation paradigm} defines knowledge as ``whatever you can compute, you could have computed before.'' The simulator captures the verifier's entire post-interaction state and must produce it without access to the prover's secret. A protocol is zero-knowledge precisely when simulation is possible.
+
+The distinction between types of ZK is subtle but crucial:
+\begin{itemize}
+\item \textbf{Perfect ZK:} The distributions are literally identical. Example: the quadratic residuosity protocol (GMR). Achieved when the prover's messages are uniformly random subject to the constraints.
+\item \textbf{Statistical ZK:} The statistical distance is negligible (e.g., $2^{-n}$). Example: the graph isomorphism protocol. The simulator's output is not perfectly identical but statistically close.
+\item \textbf{Computational ZK:} The distributions are computationally indistinguishable. Example: the GMW 3-coloring protocol (assuming commitment hiding). This is the weakest --- but also the most widely achievable --- notion.
+\end{itemize}
+
+\paragraph{Black-Box vs. Non-Black-Box ZK.} In the standard definition, the simulator is given black-box access to the verifier: it can run the verifier, rewind it, and examine its input/output behavior. This is called \emph{black-box zero-knowledge}. Most known ZK protocols are black-box. Barak (2001) showed there exist protocols that are ZK but not black-box ZK, using a non-black-box simulator that analyzes the verifier's code. This was a major theoretical breakthrough, though practical protocols remain black-box.
+
+\paragraph{The Quadratic Residuosity Protocol (GMR).} The original GMR paper constructed a perfect zero-knowledge proof for the Quadratic Residuosity (QR) language: given $(N, y)$ where $N = pq$ is an RSA modulus, prove that $y$ is a quadratic residue modulo $N$ (i.e., $\exists x$ s.t. $x^2 \equiv y \pmod{N}$). The protocol:
+\begin{enumerate}
+\item Prover picks random $r \in \mathbb{Z}_N^*$, sends $a = r^2 \bmod N$.
+\item Verifier sends random challenge $c \in \{0,1\}$.
+\item If $c=0$, prover sends $r$ (showing $a$ is a random square). If $c=1$, prover sends $x \cdot r \bmod N$ (showing knowledge of a square root of $y$).
+\item Verifier checks: if $c=0$, $r^2 \equiv a$; if $c=1$, $(x r)^2 \equiv a \cdot y$.
+\end{enumerate}
+Soundness: if $y$ is not a quadratic residue, no square root of $y$ exists, so the prover can only answer one of the two challenges. The cheating prover succeeds with probability $1/2$ per round. After $k$ rounds, error drops to $2^{-k}$. Perfect ZK: the simulator guesses $c$ before the round; if wrong, rewinds. Since the simulation is exact (no computational assumptions), this is \emph{perfect} zero-knowledge.
+
+\subsection{Graph 3-Coloring ZK Proof (GMW)}
+\label{sec:zk:3color}
+
+\begin{enumerate}
+\item \textbf{Common Input:} Graph $G=(V,E)$. \textbf{Prover's Secret:} Valid 3-coloring $\phi: V \to \{1,2,3\}$.
+\item \textbf{Commitment Scheme:} $\mathsf{Com}(m; r)$ perfectly hiding, computationally binding.
+\item \textbf{Protocol (repeat $|E| \cdot k$ times):}
+\begin{enumerate}
+\item Prover picks random permutation $\pi: \{1,2,3\} \to \{1,2,3\}$. For each $v \in V$, computes $c_v = \mathsf{Com}(\pi(\phi(v)))$. Sends $\{c_v\}_{v \in V}$.
+\item Verifier picks random edge $(u,v) \in E$. Sends $(u,v)$.
+\item Prover opens $c_u, c_v$: reveals $\pi(\phi(u)), \pi(\phi(v))$ and randomness.
+\item Verifier checks: commitments open correctly, colors are different ($\pi(\phi(u)) \neq \pi(\phi(v))$).
+\end{enumerate}
+\end{enumerate}
+
+\begin{theorem}
+If $G$ is 3-colorable, honest prover always accepted (Completeness).
+If $G$ is not 3-colorable, any prover accepted with prob $\le 1 - 1/|E|$ per round (Soundness).
+Protocol is Computational ZK (Simulator guesses verifier's challenge, rewinds if wrong).
+\end{theorem}
+
+\paragraph{Worked Example.} Consider the triangle graph $K_3$ with vertices $\{a,b,c\}$ and edges $\{(a,b),(b,c),(a,c)\}$. A valid 3-coloring is $\phi(a)=1, \phi(b)=2, \phi(c)=3$. The prover picks a random permutation $\pi$, say the identity, and commits to colors. The verifier picks edge $(a,b)$. The prover opens $c_a$ and $c_b$, revealing colors 1 and 2. The verifier checks they are different. If the graph were not 3-colorable (e.g., a 4-clique $K_4$), at least one edge must have the same color on both endpoints. A cheating prover must guess which edge the verifier will check. The probability of guessing correctly in one round is $1/|E|$. After $|E|$ rounds, the soundness error is $(1 - 1/|E|)^{|E|} \approx 1/e$. To achieve soundness error $2^{-\lambda}$, repeat $|E| \cdot \lambda$ times: the error becomes $\approx e^{-\lambda}$.
+
+\paragraph{Parallel Repetition.} A subtle question: can we run all $|E| \cdot k$ rounds \emph{in parallel} (all commitments sent at once, then all challenges, then all openings)? Parallel repetition preserves soundness (the probability of cheating across all rounds multiplies), but it does \emph{not} preserve zero-knowledge with respect to a malicious verifier. A cheating verifier could correlate its challenges based on the commitments, potentially extracting information. Feige and Kilian (1992) showed that parallel repetition of ZK protocols does not necessarily preserve ZK, and more sophisticated techniques (e.g., Fischlin's transform) are needed to obtain concurrent ZK.
+
+\paragraph{NP-Completeness Reduction.} Because graph 3-coloring is NP-complete, any NP statement can be reduced to an instance of graph 3-coloring via a polynomial-time reduction $R$. The ZK proof for the original statement then proceeds by applying the GMW protocol to $R(x)$. This shows $\mathsf{NP} \subseteq \mathsf{CZK}$ assuming one-way functions exist (for the commitment scheme). This is perhaps the central theorem of zero-knowledge: every efficiently verifiable statement can be proved in zero-knowledge.
+
+\paragraph{Simulator Construction.} The simulator $S$ works as follows: it picks a random edge $(u,v) \in E$ to guess the verifier's challenge. It assigns random distinct colors to $u$ and $v$, and random colors to all other vertices. It commits to all colors. If the verifier challenges $(u,v)$, the simulator opens successfully (the colors are different). If the verifier challenges a different edge, the simulator rewinds (restarts from scratch). Expected number of attempts: $|E|$. The simulated transcript is computationally indistinguishable from a real transcript because the commitment scheme hides the colors.
+
+\begin{connectionbox}[Connection to Chapter 3: Self-Reference]
+The simulator \emph{rewinds} the verifier --- it runs the verifier forward, then resets it to an earlier state. This self-referential ability (the simulator controls the verifier) mirrors the self-reference in G\"odel's theorems (Chapter 3). In both cases, a system's ability to reason about its own operation unlocks new power.
+
+\end{connectionbox}
+
+\subsection{Sigma Protocols}
+\label{sec:zk:sigma}
+
+A \emph{Sigma protocol} is a three-move public-coin interactive proof system with a special structure: \textbf{Commit} $\to$ \textbf{Challenge} $\to$ \textbf{Response}.
+
+\begin{definition}[Sigma Protocol]
+A Sigma protocol for relation $R = \{(x,w)\}$ (where $x$ is the statement and $w$ is the witness) satisfies:
+\begin{itemize}
+\item \textbf{Completeness:} If $(x,w) \in R$, the honest prover convinces the honest verifier with probability 1.
+\item \textbf{Special Soundness:} From two accepting transcripts $(a, c, z)$ and $(a, c', z')$ with the same commitment $a$ and distinct challenges $c \neq c'$, there exists a polynomial-time extractor that outputs $w$ such that $(x,w) \in R$.
+\item \textbf{Special Honest-Verifier Zero Knowledge (HVZK):} There exists a simulator that, given $x$ and a challenge $c$, outputs $(a, z)$ such that $(a, c, z)$ is indistinguishable from a real transcript with that challenge.
+\end{itemize}
+\end{definition}
+
+\paragraph{Schnorr Protocol (Proof of Discrete Logarithm Knowledge).}
+Let $\mathbb{G}$ be a cyclic group of prime order $q$ with generator $g$. The prover knows $x \in \mathbb{Z}_q$ such that $h = g^x$.
+
+\begin{enumerate}
+\item \textbf{Commit:} Prover picks $r \xleftarrow{\$} \mathbb{Z}_q$, sends $a = g^r$.
+\item \textbf{Challenge:} Verifier picks $c \xleftarrow{\$} \mathbb{Z}_q$, sends $c$.
+\item \textbf{Response:} Prover sends $z = r + c \cdot x \bmod q$.
+\item \textbf{Verify:} Verifier checks $g^z \stackrel{?}{=} a \cdot h^c$.
+\end{enumerate}
+
+\paragraph{Special Soundness Proof.} Given two transcripts $(a, c, z)$ and $(a, c', z')$ with $c \neq c'$:
+\[
+g^z = a \cdot h^c, \qquad g^{z'} = a \cdot h^{c'}.
+\]
+Dividing: $g^{z - z'} = h^{c - c'}$. Since $c - c' \neq 0$, we compute $x = (z - z') \cdot (c - c')^{-1} \bmod q$. This is the discrete logarithm of $h$ base $g$.
+
+\paragraph{Special HVZK.} Given challenge $c$, simulator picks $z \xleftarrow{\$} \mathbb{Z}_q$ and sets $a = g^z \cdot h^{-c}$. The transcript $(a, c, z)$ is uniformly distributed over all accepting transcripts with challenge $c$, exactly as in a real interaction.
+
+\paragraph{AND Proofs.} To prove knowledge of both $w_1$ (for $x_1$) and $w_2$ (for $x_2$), the prover runs two independent Sigma protocols using the \emph{same} challenge. The verifier sends a single challenge $c$, and the prover computes responses $z_1$ and $z_2$ for both protocols. This gives a compact proof of conjunctions with only one challenge message.
+
+\paragraph{OR-Proofs (CDS 1994).} A prover can prove knowledge of a witness for statement $x_1$ \emph{or} $x_2$ without revealing which. Suppose the prover knows $w_1$ such that $(x_1, w_1) \in R$ but does not know $w_2$. The prover simulates a transcript for $x_2$ (using the HVZK simulator) and runs the real protocol for $x_1$, then uses a clever challenge-splitting technique: $c = c_1 \oplus c_2$. The verifier receives both commitments and responses, checks $c = c_1 \oplus c_2$, and verifies both transcripts. This proves the prover must know at least one witness, without revealing which.
+
+\paragraph{Equality Proofs.} A particularly important variant proves that two commitments commit to the same value. Given $C_1 = g^{x} h^{r_1}$ and $C_2 = g^{x} h^{r_2}$, the prover proves knowledge of $x$ consistent with both. This is the basis for ``proof of same secret'' used in anonymous credentials, chain analysis, and threshold signatures.
+
+\begin{roadblockbox}[The Schnorr Protocol in Practice]
+The Schnorr protocol is the most deployed ZK protocol in the world. Every EdDSA signature (Ed25519, Ed448) uses a Fiat-Shamir-transformed Schnorr proof. Bitcoin's Taproot upgrade (2021) adopted Schnorr signatures for their key aggregation properties. The IETF's EdDSA standard (RFC 8032) is based on Schnorr. The protocol's simplicity, efficiency, and provable security make it the workhorse of modern cryptography.
+
+\end{roadblockbox}
+
+\paragraph{Sigma Protocol for Knowledge of Opening.} Given a Pedersen commitment $C = g^x h^r$, the prover can prove knowledge of $(x,r)$ via the following Sigma protocol: commit $(a,d) = (g^a h^d)$; challenge $c$; response $(z_x = a + c x, z_r = d + c r)$; verify $g^{z_x} h^{z_r} = (a,d) \cdot C^c$. This shows knowledge is both extractable and zero-knowledge, forming the basis for many privacy-preserving protocols.
+
+\begin{roadblockbox}[Why Can't the Prover Compute the Challenge Ahead of Time?]
+In a Sigma protocol, the commitment $a$ is sent before the challenge $c$ is received. If the prover could choose $a$ after seeing $c$, they could cheat by picking $(c,z)$ and setting $a = g^z h^{-c}$. The sequential nature --- commit, then challenge, then respond --- is essential. This is exactly the structure that the Fiat-Shamir transform replaces with a hash function.
+
+\end{roadblockbox}
+
+\subsection{The Fiat-Shamir Transform}
+\label{sec:zk:fiatshamir}
+
+The Fiat-Shamir heuristic (1986) converts any public-coin interactive proof into a non-interactive one by replacing the verifier's random challenges with the output of a cryptographic hash function.
+
+\begin{definition}[Fiat-Shamir Transform]
+Given a public-coin interactive proof $(P,V)$ with transcript $(a_1, c_1, z_1, a_2, c_2, z_2, \dots)$:
+\begin{enumerate}
+\item The prover computes $c_1 = H(x, a_1)$ where $H$ is a cryptographic hash function (modeled as a random oracle).
+\item After receiving $z_1$, the prover computes $c_2 = H(x, a_1, z_1, a_2)$.
+\item Continue for all rounds. The proof is the full transcript $(a_1, z_1, a_2, z_2, \dots)$.
+\item The verifier re-computes all $c_i$ using $H$ and verifies each round.
+\end{enumerate}
+\end{definition}
+
+The security proof uses the \emph{Forking Lemma} (Pointcheval and Stern, 1996): if an adversary can forge a non-interactive proof with non-negligible probability, then by rewinding the adversary and running it twice with the same random tape but different oracle answers (a ``fork''), one can extract a witness. This formalizes the intuition that the hash function acts as an unpredictable verifier.
+
+The Fiat-Shamir transform is \emph{sound in the Random Oracle Model} (ROM) but not necessarily in the standard model. There exist contrived protocols (e.g., the Goldwasser-Kalai proof) where the transform produces an unsound non-interactive proof despite the interactive version being sound. Nevertheless, the transform is used ubiquitously in practice (Schnorr signatures, EdDSA, zk-SNARKs, STARKs).
+
+\paragraph{The Random Oracle Model.} The ROM idealizes a hash function $H$ as a truly random function that responds consistently to each query. Security proofs in the ROM assume the adversary can only learn $H$ values by querying; there is no algebraic structure. While this assumption is known to be false for real hash functions (SHA-256, Keccak, BLAKE3), the ROM remains the standard security model for Fiat-Shamir-transformed protocols. The ``random oracle is not a hash function'' critique (Canetti-Goldreich-Halevi, 1998) shows that there exist schemes secure in the ROM but insecure with any concrete hash function --- yet these counterexamples are highly contrived, and the ROM has proven reliable in practice.
+
+\paragraph{The Forking Lemma.} The formal security proof for Fiat-Shamir uses the forking lemma (Pointcheval and Stern, 1996). Suppose an adversary $\mathcal{A}$ produces a valid non-interactive proof $(a, c, z)$ with non-negligible probability, where $c = H(x, a)$. By replaying $\mathcal{A}$ with the same random tape but different oracle answers, the simulator can obtain two valid proofs $(a, c, z)$ and $(a, c', z')$ with $c \neq c'$. The simulator then extracts the witness using the special soundness property of the underlying Sigma protocol. This shows that Fiat-Shamir preserves knowledge soundness in the ROM.
+
+\subsection{zk-SNARKs (Succinct Non-Interactive ARguments of Knowledge)}
+\label{sec:zk:snark}
+
+\begin{enumerate}
+\item \textbf{Arithmetic Circuit:} NP statement $\to$ circuit $C(x,w)=0$ over $\mathbb{F}_p$.
+\item \textbf{R1CS:} Rank-1 Constraint System: $A \cdot z \circ B \cdot z = C \cdot z$ where $z = (w, x, 1)$ is the witness vector and $\circ$ denotes entrywise product. Each constraint is a single equation $(\sum A_i z_i) \cdot (\sum B_i z_i) = \sum C_i z_i$.
+\item \textbf{QAP:} Quadratic Arithmetic Program: Polynomials $A_i(x), B_i(x), C_i(x)$ s.t. $\sum w_i A_i(x) \cdot \sum w_i B_i(x) - \sum w_i C_i(x) = H(x) \cdot Z(x)$ where $Z(x) = \prod (x - r_i)$ and $r_i$ are distinct evaluation points for each constraint.
+\item \textbf{Trusted Setup (Groth16):} SRS = $\{ [\alpha]_1, [\beta]_1, [\gamma]_1, [\delta]_1, [x^i]_1, [\alpha x^i]_1, [\beta x^i]_1, [x^i]_2, \dots \}$ using pairings $e: \mathbb{G}_1 \times \mathbb{G}_2 \to \mathbb{G}_T$.
+\item \textbf{Proof:} $\pi = ([A]_1, [B]_2, [C]_1)$ where $A = \alpha + \sum w_i A_i(x) + r \delta$, $B = \beta + \sum w_i B_i(x) + s \delta$, $C = \frac{\sum w_i (\beta A_i(x) + \alpha B_i(x) - C_i(x)) + H(x)Z(x)}{\delta} + r s \delta$, using random blinding values $r, s$.
+\item \textbf{Verification:} Pairing checks: $e(A,B) \stackrel{?}{=} e(\alpha,\beta) \cdot e(\sum w_i \gamma_i, \gamma) \cdot e(C,\delta)$. Additional public input handling: replace $\sum w_i \gamma_i$ with $\sum (w_i \gamma_i + \text{public\_inputs}\cdot \beta_i)$.
+\end{enumerate}
+
+\paragraph{R1CS Worked Example.} Consider the constraint $x^3 + x - 30 = 0$, which is satisfied by $x=3$. We decompose this into R1CS constraints:
+\begin{enumerate}
+\item $v_1 = x \cdot x$ (intermediate: $x^2$)
+\item $v_2 = v_1 \cdot x$ (intermediate: $x^3$)
+\item $v_3 = v_2 + x - 30 = 0$ (final constraint)
+\end{enumerate}
+The witness vector is $z = (x=3, v_1=9, v_2=27, v_3=0, 1)$. Each constraint becomes a row in matrices $A, B, C$:
+\begin{itemize}
+\item For constraint 1: $A_1 = [1,0,0,0,0]$, $B_1 = [1,0,0,0,0]$, $C_1 = [0,1,0,0,0]$ (encoding $x \cdot x = v_1$).
+\item For constraint 2: $A_2 = [0,1,0,0,0]$, $B_2 = [1,0,0,0,0]$, $C_2 = [0,0,1,0,0]$ (encoding $v_1 \cdot x = v_2$).
+\item For constraint 3: $A_3 = [1,0,1,0,-30]$, $B_3 = [0,0,0,0,1]$, $C_3 = [0,0,0,1,0]$ (encoding $(v_2 + x - 30) \cdot 1 = v_3$ where $v_3$ must be 0).
+\end{itemize}
+The QAP then interpolates these matrix entries as polynomials $A_i(x), B_i(x), C_i(x)$ over three evaluation points (one per constraint).
+
+\paragraph{QAP Construction (Lagrange Interpolation).} Given $n$ constraints evaluated at points $r_1, r_2, \dots, r_n$, for each witness variable $i$ we define target polynomial $Z(x) = \prod_{j=1}^n (x - r_j)$. For each $j$, the value $A_i(r_j)$ is the $(j,i)$ entry of matrix $A$. Using Lagrange interpolation:
+\[
+A_i(x) = \sum_{j=1}^n A_i(r_j) \cdot \ell_j(x), \quad \text{where } \ell_j(x) = \prod_{k \neq j} \frac{x - r_k}{r_j - r_k}.
+\]
+The same construction applies to $B_i(x)$ and $C_i(x)$. The constraint satisfaction condition becomes:
+\[
+\sum_i w_i A_i(x) \cdot \sum_i w_i B_i(x) - \sum_i w_i C_i(x) \equiv 0 \pmod{Z(x)},
+\]
+which is equivalent to the existence of a quotient polynomial $H(x)$ satisfying the QAP equation.
+
+\paragraph{Trusted Setup Ceremony.} The structured reference string (SRS) requires generating secret random values $\alpha, \beta, \gamma, \delta, x \in \mathbb{F}_p$. These must be destroyed after the setup; if leaked, an adversary can forge proofs. In practice, a multi-party computation (MPC) ceremony is used: $n$ participants each contribute randomness, and the final SRS is secure as long as at least one participant destroys their secret. The Zcash Powers of Tau ceremony involved hundreds of participants across the globe.
+
+\begin{roadblockbox}[Why Must the Toxic Waste Be Destroyed?]
+The secret values $\alpha, \beta, \gamma, \delta, x$ allow any adversary to produce valid proofs for false statements. If an adversary knows $\alpha$ and $\beta$, they can set $A = \alpha$, $B = \beta$, $C=0$ and satisfy the verification equation. The ceremony's security relies on at least one honest participant who destroys their contribution --- a single point of failure that motivates transparent protocols (STARKs, Bulletproofs, Nova).
+
+\end{roadblockbox}
+
+\begin{connectionbox}[Connection to Chapter 10: Pairings]
+Groth16 and other pairing-based SNARKs use bilinear pairings $e: \mathbb{G}_1 \times \mathbb{G}_2 \to \mathbb{G}_T$ (Chapter 10) to enable the verification equation. The pairing allows the verifier to check polynomial identities without seeing the secret polynomial evaluation point --- it hides the secret $x$ in the exponent while enabling the check via the bilinear property.
+
+\end{connectionbox}
+
+\subsubsection*{Universal and Updatable Setups}
+
+\begin{itemize}
+\item \textbf{Marlin (2019):} Universal SRS (depends only on circuit size). Updatable via multi-party ceremony.
+\item \textbf{PLONK (2019):} Universal, updatable setup. Permutation argument for wiring constraints. Flexible gate arity. Uses a single polynomial commitment scheme (Kate, bulletproofs, or FRI).
+\item \textbf{Halo (2019):} Recursive ZK, no trusted setup. Uses inner product argument (Bulletproofs) + cycle of elliptic curves.
+\end{itemize}
+
+\subsection{zk-STARKs (Scalable Transparent ARguments of Knowledge)}
+\label{sec:zk:stark}
+
+\begin{itemize}
+\item No trusted setup (transparent). Uses \emph{FRI} (Fast Reed-Solomon IOP) for polynomial commitment.
+\item Hash-based (collision-resistant hash function), post-quantum.
+\item Larger proofs (~100 KB vs ~200 bytes), but no toxic waste.
+\item Execution trace $\to$ polynomial constraints $\to$ low-degree test $\to$ FRI.
+\end{itemize}
+
+The STARK pipeline proceeds as follows:
+\begin{enumerate}
+\item \textbf{Arithmeticization:} Represent the computation as an \emph{execution trace} --- a table of register states at each step. Encode the transition rules as polynomial constraints $P(\text{trace}_i, \text{trace}_{i+1}) = 0$.
+\item \textbf{Low-Degree Extension:} Interpolate the trace to a polynomial $f$ on a larger domain $D$ (the Reed-Solomon code). The prover commits to $f$ via Merkle tree of evaluations.
+\item \textbf{Constraint Checking:} The prover and verifier interact (or use Fiat-Shamir) to check that $f$ satisfies the constraint polynomials at random points.
+\item \textbf{Low-Degree Test (FRI):} The verifier checks that $f$ is close to a low-degree polynomial (degree $\ll |D|$), which ensures the trace was computed honestly.
+\end{enumerate}
+
+\subsubsection*{FRI (Fast Reed-Solomon IOP)}
+\label{sec:zk:fri}
+
+\begin{enumerate}
+\item \textbf{Commit:} Prover commits to polynomial $f$ of degree $< d$ on domain $D$ of size $n = |D|$ (typically $n$ is a power of 2, $d = \rho n$ for some rate $\rho \in (0,1)$).
+\item \textbf{Folding (repeat $\log n$ times):}
+  \begin{enumerate}
+  \item Write $f(x) = g(x^2) + x \cdot h(x^2)$ where $g$ and $h$ have degree $< d/2$. 
+  \item Verifier sends random $\beta \in \mathbb{F}$. Prover computes $f_1(y) = g(y) + \beta \cdot h(y)$ on domain $D_1 = \{x^2 : x \in D\}$.
+  \item Commit to $f_1$ on $D_1$. Set $f := f_1$, $d := d/2$, $D := D_1$.
+  \end{enumerate}
+\item \textbf{Query:} Verifier picks random $x_0 \in D$, queries $f(x_0), f(-x_0), f_1(x_0^2), f_2(x_0^4), \dots$ and checks consistency at each folding level.
+\end{enumerate}
+
+The FRI protocol has soundness error proportional to the distance of $f$ from the Reed-Solomon code. The number of queries and the rate $\rho$ determine the security level. Concretely, with rate $\rho = 1/16$ and $n=2^{20}$, the proof size is roughly $2^{20} \cdot \log n \cdot \text{hash} \approx 100$~KB.
+
+\paragraph{FRI Soundness Analysis.} The soundness of FRI relies on the fact that if $f$ is $\delta$-far from any degree-$d$ polynomial (i.e., differs on at least $\delta$ fraction of domain points), then with high probability the folding step produces $f_1$ that is $\delta'$-far from degree $d/2$, where $\delta' \approx \delta$ when $|\mathbb{F}|$ is large relative to the domain. The query phase checks consistency at a random point; if $f$ and $f_1$ are not consistent, the verifier catches it with probability $1 - (d+1)/|\mathbb{F}|$. The final check verifies the folded polynomial has the claimed degree. The total soundness error is bounded by $(1 - \rho) \cdot \text{queries} + \text{folding error}$.
+
+\paragraph{Field Selection in STARKs.} STARKs require a field with a large smooth subgroup to enable FFT-based interpolation. Common choices:
+\begin{itemize}
+\item \textbf{Goldilocks field} $\mathbb{F}_p$ with $p = 2^{64} - 2^{32} + 1$: supports $2^{32}$-th roots of unity, enabling highly efficient FFT operations. Used by Plonky2 and RISC Zero.
+\item \textbf{Mersenne-31 / Baby Bear / Koala Bear:} Small fields (around 31 bits) that fit in a single 32-bit register. Multiple small-field limbs are combined via CRT or extension towers for security.
+\item \textbf{BN254 scalar field:} The scalar field of the BN254 pairing-friendly curve, used for compatibility with Ethereum on-chain verification.
+\end{itemize}
+
+\subsection{Bulletproofs: Short Proofs Without Trusted Setup}
+\label{sec:zk:bulletproofs}
+
+Bulletproofs (B\"unz et al., 2018) provide short zero-knowledge proofs for general statements with logarithmic communication and no trusted setup. They are most famously used for \emph{range proofs}: proving that a committed value $v$ lies in $[0, 2^n - 1]$ without revealing $v$.
+
+\paragraph{Inner Product Argument.} The core building block is an inner product argument: given commitments $A = \mathbf{g}^{\mathbf{a}} \mathbf{h}^{\mathbf{b}}$ and $P = g^{\langle \mathbf{a}, \mathbf{b} \rangle}$ (in Pedersen vector commitment style), prove that the committed vectors $\mathbf{a}, \mathbf{b} \in \mathbb{Z}_p^n$ satisfy $\langle \mathbf{a}, \mathbf{b} \rangle = c$. The argument uses a recursive halving technique:
+\begin{enumerate}
+\item If $n=1$, prover sends $a, b$; verifier checks $g^{a} h^{b} = A$ and $g^{ab} = P$.
+\item If $n>1$, split $\mathbf{a} = (\mathbf{a}_L, \mathbf{a}_R)$, $\mathbf{b} = (\mathbf{b}_L, \mathbf{b}_R)$. Prover computes $A_L = \mathbf{g}^{\mathbf{a}_R} \mathbf{h}^{\mathbf{b}_L}$ and $A_R = \mathbf{g}^{\mathbf{a}_L} \mathbf{h}^{\mathbf{b}_R}$ with appropriate basis vectors. Verifier sends random $x$. Prover computes folded vectors $\mathbf{a}' = x \mathbf{a}_L + x^{-1} \mathbf{a}_R$, $\mathbf{b}' = x^{-1} \mathbf{b}_L + x \mathbf{b}_R$, and folded commitment $A' = A_L^{x^2} \cdot A \cdot A_R^{x^{-2}}$. Recurse with $n/2$.
+\end{enumerate}
+The total communication is $2 \log_2 n$ group elements and $2$ field elements.
+
+\paragraph{Range Proof Construction.} To prove $v \in [0, 2^n - 1]$:
+\begin{enumerate}
+\item Commit to $v$ as $V = g^v h^r$.
+\item Express $v$ in binary: $\mathbf{a}_L \in \{0,1\}^n$ (bits of $v$), $\mathbf{a}_R = \mathbf{a}_L - \mathbf{1}^n$.
+\item Prove $\mathbf{a}_L \circ \mathbf{a}_R = \mathbf{0}$ (each bit is 0 or 1) and $\langle \mathbf{a}_L, \mathbf{2}^n \rangle = v$ (bits reconstruct $v$).
+\item Use the inner product argument to prove these constraints simultaneously.
+\end{enumerate}
+The proof size is $2 \log_2 n + 4$ group elements --- about 1.3~KB for $n=64$. Bulletproofs are used in Monero (since October 2018) and the Liquid sidechain.
+
+\paragraph{Bulletproofs Example (n=4).} Suppose we want to prove $v = 7 \in [0, 15]$ (so $n=4$). The bit decomposition is $v = 0111_2$, so $\mathbf{a}_L = (0,1,1,1)$. The constraint $\mathbf{a}_L \circ \mathbf{a}_R = \mathbf{0}$ checks that each bit is 0 or 1: $\mathbf{a}_R = (0,1,1,1) - (1,1,1,1) = (-1,0,0,0)$, and the entrywise product $\mathbf{a}_L \circ \mathbf{a}_R = (0,0,0,0)$. The inner product $\langle \mathbf{a}_L, \mathbf{2}^n \rangle = 0\cdot8 + 1\cdot4 + 1\cdot2 + 1\cdot1 = 7 = v$, confirming the bits reconstruct the value. The inner product argument compresses these $n=4$ constraints into a proof of $2\log_2 4 + 4 = 8$ group elements.
+
+\paragraph{Aggregation.} Bulletproofs support \emph{batch} range proofs: proving that multiple values $v_1,\dots,v_m$ are all in $[0, 2^n-1]$ with a single proof whose size grows only as $O(\log(mn))$. This is achieved by combining the inner product arguments using random linear combinations. Aggregation is critical for blockchain scalability: a single aggregated range proof can prove that all outputs in a transaction are valid, replacing $O(m)$ separate proofs.
+
+\subsection{Recursive ZK and Folding Schemes}
+\label{sec:zk:recursive}
+
+\begin{itemize}
+\item \textbf{Halo (2019):} Recursive ZK without trusted setup. Uses inner product argument on cycle of curves (e.g., Pasta curves: Pallas/Vesta). Inner proof verifies outer proof.
+\item \textbf{Nova (2021):} Folding scheme: fold two R1CS instances $(A \cdot z_1 \circ B \cdot z_1 = C \cdot z_1)$ and $(A \cdot z_2 \circ B \cdot z_2 = C \cdot z_2)$ into one instance. Based on discrete log (no pairings). Incrementally Verifiable Computation (IVC).
+\item \textbf{SuperNova (2022):} Generalizes Nova to arbitrary circuits. Folds multiple instances.
+\item \textbf{ProtoStar (2023):} Folding with better efficiency. No FFT needed.
+\item \textbf{Sangria (2023):} Folding for PLONKish circuits.
+\end{itemize}
+
+\paragraph{Nova Folding in Detail.} Nova introduces \emph{relaxed R1CS}, which extends standard R1CS with an error vector $E$ and a scalar $u$:
+\[
+A z \circ B z = u \cdot C z + E
+\]
+where $z = (w, x, u)$. A standard R1CS instance $(A z \circ B z = C z)$ is embedded as $(A z \circ B z = u \cdot C z + E)$ with $u=1$ and $E=\mathbf{0}$. Two relaxed instances $\mathbb{I}_1 = (u_1, E_1, w_1, x_1)$ and $\mathbb{I}_2 = (u_2, E_2, w_2, x_2)$ with the same structure $(A,B,C)$ are folded as:
+\begin{align*}
+u &= u_1 + r \cdot u_2 \\
+E &= E_1 + r \cdot E_2 + r \cdot (A z_1 \circ B z_2 + A z_2 \circ B z_1 - u_1 C z_2 - u_2 C z_1) \\
+w &= w_1 + r \cdot w_2 \\
+x &= x_1 + r \cdot x_2
+\end{align*}
+where $r$ is a random challenge from the verifier. The cross-terms ensure correctness. The key insight: the cross-term $A z_1 \circ B z_2 + A z_2 \circ B z_1 - u_1 C z_2 - u_2 C z_1$ is pre-computed by the prover and absorbed into $E$, keeping the verifier's work $O(|x|)$ --- independent of the circuit size!
+
+This enables \emph{incrementally verifiable computation} (IVC): given a function $F$ and an initial state $s_0$, the prover iteratively folds proofs that $s_{i+1} = F(s_i)$. The verifier only checks the final folded proof, which is logarithmic in the number of steps. This is the core technology behind many zkVMs.
+
+\paragraph{IVC Construction with Nova.} To prove $T$ steps of $F$:
+\begin{enumerate}
+\item Start with initial instance $\mathbb{I}_0$ with $u_0=1$, $E_0=\mathbf{0}$, witness $w_0$, and state $s_0$.
+\item For step $i = 0, 1, \dots, T-1$:
+  \begin{enumerate}
+  \item Compute $s_{i+1} = F(s_i)$ and new witness $w_{i+1}$.
+  \item Create standard R1CS instance $\mathbb{U}_{i+1}$ for the step $(s_i, w_i) \to (s_{i+1}, w_{i+1})$.
+  \item The verifier (which is itself a circuit) runs the folding verifier: pick random $r$, compute $\mathbb{I}_{i+1} = \text{Fold}(\mathbb{I}_i, \mathbb{U}_{i+1}, r)$.
+  \end{enumerate}
+\item At step $T$, the prover outputs the folded instance $\mathbb{I}_T$ and the witness $w_T$.
+\item The verifier checks that $\mathbb{I}_T$ satisfies the relaxed R1CS equation. This verification is $O(|x|)$ --- independent of $T$ and the circuit size!
+\end{enumerate}
+The key to efficiency is that the folding verifier (which runs inside the circuit) is \emph{much} simpler than a full SNARK verifier. It only performs a few field operations and a hash (for the random challenge), making it feasible to prove inside the next step's circuit.
+
+\begin{roadblockbox}[Why Does Folding Work Without Pairings?]
+Traditional recursive ZK (e.g., Halo) uses pairings or inner product arguments to verify proofs inside proofs. Nova avoids this by relaxing the R1CS equation: instead of requiring $Az \circ Bz = Cz$, it allows $Az \circ Bz = u \cdot Cz + E$. The error term $E$ accumulates cross-term errors that would otherwise require expensive cryptographic operations. The verifier's only cryptographic work is checking the final relaxed equation --- no pairings, no inner products.
+
+\end{roadblockbox}
+
+\subsection{ZK Virtual Machines (zkVMs)}
+\label{sec:zk:zkvm}
+
+zkVMs prove correct execution of arbitrary programs (RISC-V, MIPS, WASM, EVM):
+
+\begin{itemize}
+\item \textbf{RISC Zero (2021):} RISC-V ISA. STARK-based (FRI). Prover generates a trace of execution (register states, memory accesses), arithmetizes the RISC-V instruction set as polynomial constraints, and proves low-degree via FRI. Supports \emph{continuations} for programs too large for a single trace: the computation is split into segments, each proven separately, and segments are linked via recursive verification. Uses the Bn254 curve for on-chain verification. The RISC Zero zkVM is built on the \emph{RISC-V 32IM} specification, supporting 32 registers, a 32-bit address space, and standard arithmetic, memory, and control-flow instructions.
+
+\item \textbf{SP1 (Succinct 2023):} RISC-V. Based on Plonky2 (Goldilocks field + FRI), which uses the ``Goldilocks'' field $\mathbb{F}_p$ with $p = 2^{64} - 2^{32} + 1$ for fast arithmetic (field operations compile to $\le 4$ CPU instructions on modern x86-64). Precompiles for Keccak, SHA-256, elliptic curve operations (secp256k1, BN254). Achieves prover speeds of hundreds of thousands of RISC-V cycles per second. The precompile system allows native code execution for performance-critical operations while proving the results in ZK.
+
+\item \textbf{Valida (2023):} Custom ISA (``Valida Instruction Set'') designed specifically for ZK-friendliness. LLVM backend allows compiling C/Rust to Valida. Eliminates complex RISC-V instructions that are expensive to prove (e.g., division, branch prediction, barrel shifters). Instead, Valida provides a minimal set of instructions that can be efficiently arithmetized. The resulting proof system uses Plonky3 (the successor to Plonky2).
+
+\item \textbf{zkEVMs:} Polygon zkEVM, zkSync Era, Scroll, Linea, Taiko. Prove EVM execution in zero-knowledge. Classified by type:
+  \begin{itemize}
+  \item \textbf{Type 1 (Fully Ethereum-equivalent):} Taiko, PSE zkEVM. Prove any Ethereum block, including all precompiles. Highest compatibility, lowest prover speed.
+  \item \textbf{Type 2 (EVM-equivalent but modified precompiles):} Polygon zkEVM. Match EVM semantics exactly but replace or remove expensive precompiles. Good compatibility-efficiency tradeoff.
+  \item \textbf{Type 3 (ZK-friendly):} zkSync Era, Scroll. Use custom bytecode representations and modified opcodes. Higher prover speed but requires modified deployment.
+  \end{itemize}
+
+\item \textbf{Cairo (StarkWare):} Custom language and virtual machine designed for STARK proofs. Cairo programs compile to CASM (Cairo Assembly), which produces an execution trace of ``AIR'' (Algebraic Intermediate Representation) constraints. Used in StarkNet (L2) and StarkEx (validium). The Cairo 2.0 compiler adds higher-level language features (traits, generics, match, pattern matching). Cairo's STARK verifier is itself written in Cairo, enabling recursive proofs.
+
+\item \textbf{Jolt (2023):} RISC-V via the \emph{Lasso} lookup argument. Uses a ``lookup-based'' approach where each instruction's execution is proven by looking up its result in a precomputed table, rather than arithmetizing the instruction directly. This yields faster prover times and simpler implementations. Jolt precomputes a ``sum of products'' table for each instruction type; the prover's work is dominated by the lookup argument (Lasso) and the sum-check protocol, achieving speedups of 10--100$\times$ over prior approaches for certain workloads.
+\end{itemize}
+
+\begin{roadblockbox}[The Prover Time Bottleneck]
+Despite rapid advances, ZK provers remain $10^3$--$10^6 \times$ slower than native execution. A simple Ethereum transaction (21,000 gas) takes seconds to prove; proving a full Ethereum block (10M+ gas) takes hours. This has driven intense research into hardware acceleration (GPUs, FPGAs, ASICs) and algorithmic improvements (lookup arguments, folding schemes, parallelization). The goal: make proving as fast as execution, enabling ubiquitous ZK for all computation.
+
+\end{roadblockbox}
+
+\paragraph{Arithmetization Approaches.} The way a program is encoded as polynomial constraints determines the efficiency of the resulting proof. Three dominant approaches exist:
+\begin{itemize}
+\item \textbf{AIR (Algebraic Intermediate Representation):} Used by STARKs and RISC Zero. The execution trace is a matrix where each row represents one cycle; constraints are expressed as polynomials over adjacent rows. Flexible but requires careful constraint design.
+\item \textbf{R1CS (Rank-1 Constraint System):} Used by Groth16 and Nova. Each constraint is a quadratic equation $(a \cdot z)(b \cdot z) = c \cdot z$. Simple and well-studied but requires many constraints for complex operations.
+\item \textbf{PLONKish (PLONK-style):} Used by PLONK and its derivatives. A generalization of R1CS with custom gates and a permutation argument for wiring. More expressive than R1CS, allowing fewer constraints for common operations.
+\end{itemize}
+
+\begin{connectionbox}[Connection to Chapter 10: Cryptographic Building Blocks]
+Modern ZK systems rely on the cryptographic primitives developed in Chapter 10: one-way functions (for commitment schemes), hash functions (for Fiat-Shamir and Merkle trees), pairings (for Groth16 and PLONK), and elliptic curve groups (for Pedersen commitments and inner product arguments). ZK is not a standalone technology --- it is the culmination of decades of cryptographic research.
+
+\end{connectionbox}
+
+\subsubsection*{Lookup Arguments}
+\label{sec:zk:lookup}
+
+Modern zkVMs use lookup arguments (Lasso, cq, plookup) to handle table lookups (bitwise ops, memory, precompiles) efficiently. Commit to a table $T$, then prove that a vector $\mathbf{f}$ of length $m$ is contained in $T$ of length $n$ (typically $n \gg m$):
+
+\begin{itemize}
+\item \textbf{plookup (2019):} Given vectors $\mathbf{f} \in \mathbb{F}^m$ and $T \in \mathbb{F}^n$, prove $\{f_i\} \subseteq T$ using a permutation-based argument. Construct a combined sorted vector $s = \text{sort}(\mathbf{f} \cup T)$ and check that adjacent elements are either equal or adjacent in $T$. Uses a grand product $\prod_i (s_i + \beta) / (t_i + \beta)$ to compress the checks into a single polynomial equation. The protocol requires $O(n + m \log n)$ prover work for sorting.
+
+\item \textbf{cq (2022):} Cached quotients. Improves on plookup by caching certain polynomial evaluations, reducing prover time. The key insight: the sorted vector $s$ can be pre-processed, and the grand product polynomials can be evaluated at batch points using cached quotients. This reduces the prover's work from $O(n + m \log n)$ to $O(n + m)$.
+
+\item \textbf{Lasso (2023):} A new lookup paradigm that separates the lookup argument into (a) proving $\mathbf{f} \subseteq T$ and (b) proving the looked-up values. The prover commits to $\mathbf{f}$ and a vector $\mathbf{v}$ of multiplicities (how many times each table entry is looked up). The verifier checks that $\sum \mathbf{v}_j = m$ and that for all $i$, $\mathbf{f}_i = \text{lookup}(T, i)$. Lasso achieves prover costs that are sublinear in the table size --- a major breakthrough for large tables (e.g., 256-bit wide tables for hash functions). The prover work is $O(m + \lambda n^{1/k})$ where $\lambda$ is the security parameter and $k$ is a parameter controlling the time-space tradeoff.
+
+\item \textbf{LogUp (2023):} A logarithmic derivative-based lookup argument that replaces grand products with sums of fractions. Instead of checking a product of ratios, LogUp checks a sum of fractions $\sum_i \frac{1}{f_i + \beta} - \sum_j \frac{\mathbf{v}_j}{t_j + \beta} \equiv 0$, which is cheaper to prove because it avoids the multiplicative complexity of grand products. Used in the StarkNet Prover.
+
+\item \textbf{Binius (2024):} A binary-field-based lookup argument that operates over binary fields ($\mathbb{F}_{2^k}$) rather than prime fields. Uses novel techniques from binary field arithmetic, sumcheck, and polynomial commitment to achieve extremely fast provers for bitwise operations (e.g., AND, OR, XOR).
+\end{itemize}
+
+\begin{connectionbox}[Connection to Chapter 4: Axiomatic Method]
+The reduction of program execution to polynomial constraints mirrors the axiomatic method: a few simple algebraic rules (addition, multiplication) are sufficient to encode arbitrarily complex computations. The verifier only needs to check these local constraints at random points --- a direct analogue of verifying a proof by checking individual inference steps.
+
+\end{connectionbox}
+
+%======================================================================
+% SECTION 6: CONSEQUENCES
+%======================================================================
+\section{Consequences: What Became Possible}
+\label{sec:zk:consequences}
+
+\begin{enumerate}
+\item \textbf{Identification Without Secrets:} Fiat-Shamir (1986): Prover proves knowledge of $x$ s.t. $y = f(x)$ without revealing $x$. Basis for ZK authentication, blockchain addresses. The Schnorr signature scheme, used in Bitcoin Taproot and EdDSA, is a direct application of the Fiat-Shamir transform to the Schnorr identification protocol.
+
+\item \textbf{Zcash (2016):} First production zk-SNARK deployment. Shielded transactions: $\mathsf{Pour}$ circuit proves validity without revealing sender, receiver, amount. Subsequent upgrades (Sapling, Orchard) improved efficiency, moving from Bowe-Hopwood (BCTV14) to Groth16 to Halo 2 (no trusted setup).
+
+\item \textbf{Ethereum ZK-Rollups:} zkSync, StarkNet, Scroll, Polygon zkEVM. Batch 1000s of txs, prove validity with one ZK proof. L1 verifies proof; L2 executes. As of 2026, zk-rollups have processed billions of transactions across Ethereum, with settlement costs of a few cents per transaction.
+
+\item \textbf{Verifiable Computation:} Outsource computation to untrusted cloud; receive result + ZK proof of correctness. Truebit, RISC Zero, SP1. This enables \emph{zk-coprocessors} that offload heavy computation from smart contracts to off-chain provers.
+
+\item \textbf{Privacy-Preserving Credentials:} Anonymous credentials (Idemix, Coconut), range proofs (Bulletproofs: prove $v \in [0, 2^{64}]$ without revealing $v$), set membership. Used in digital identity (Identity.com, cheqd), KYC compliance without data exposure.
+
+\item \textbf{MPC + ZK:} Combine MPC (Chapter 10) with ZK for maliciously secure computation with public verifiability. MPC ensures inputs remain private; ZK ensures correct execution. This combination underpins many blockchain privacy protocols (Zcash, Aztec, Secret Network).
+
+\item \textbf{Light Clients:} Prove blockchain state (headers, Merkle proofs) to resource-constrained devices via ZK. Succinct (Telepathy bridge), Herodotus (storage proofs). ZK bridges use consensus proofs: prove $n$ validators signed a block header on chain A, allowing chain B to accept the state.
+
+\item \textbf{ZK-ML:} Prove model inference (zkCNN) or training correctness. zkCNN, zkML, Circom + ONNX. Applications: proving credit scores, medical diagnoses, or model fairness without revealing the model or the data.
+
+\item \textbf{ZK Coprocessors:} Offload computation (SQL, ML, heavy math) to ZK prover (RISC Zero, SP1, Valida). A blockchain smart contract requests a ZK proof of a computation; the proof is verified on-chain. This enables \emph{any} off-chain computation to be used on-chain with full trust guarantees.
+
+\item \textbf{Blockchain Privacy Beyond Currency:} Aztec Network provides private smart contracts using Noir (a domain-specific language for ZK). Mina Protocol uses a single 22~KB recursive ZK proof for the entire chain state (``succinct blockchain''). Aleo builds a privacy-focused L1 with ZK at the consensus layer.
+
+\item \textbf{Proof Aggregation and Recursion:} Multiple ZK proofs can be recursively aggregated into a single proof. Aggregation schemes (Proof of Proof (PoP), accumulation schemes, and folding) enable compressing thousands of blockchain blocks into one proof. This is the architecture behind Mina's ``succinct blockchain'' and Succinct's Telepathy bridge.
+
+\item \textbf{zk-Oracles and Verifiable Data:} Provide cryptographically verified external data to smart contracts. For example, a zk-oracle can prove ``the NYT reported X on date Y'' by proving knowledge of a TLS session or a DKIM signature on an email. This eliminates the need for trusted oracles.
+
+\item \textbf{Decentralized Identity (DID) and Verifiable Credentials (VC):} ZK enables selective disclosure: prove ``I am over 18'' without revealing your birth date, or ``I hold a valid driver's license'' without revealing the license number. Standards bodies (W3C, DIF, IETF) are incorporating ZK into the verifiable credentials ecosystem.
+
+\item \textbf{Supply Chain and Provenance:} ZK proofs enable verification of product provenance without revealing proprietary supply chain relationships. A manufacturer can prove that components meet regulatory standards without exposing suppliers. Walmart, IBM, and the Linux Foundation's Hyperledger are exploring ZK for supply chain transparency.
+
+\item \textbf{Healthcare and Genomics:} ZK enables proving medical test results (e.g., ``Patient has immunity to disease X''') without revealing raw genomic data. This is critical for genomic data marketplaces and medical research, where data is sensitive but verification is necessary. Companies like Nebula Genomics and EncrypGen explore ZK for genomic privacy.
+
+\item \textbf{Voting and Governance:} ZK-based voting systems allow voters to prove their vote was correctly counted (individual verifiability) without revealing their choice (ballot secrecy). Systems like Helios, sVote, and the Ethereum-based MACI (Minimum Anti-Collusion Infrastructure) use ZK proofs for verifiable voting.
+\end{enumerate}
+
+\begin{connectionbox}[Connection to Chapter 12: Consensus]
+ZK-rollups and ZK bridges are the primary scaling technologies for blockchain consensus. They separate execution (off-chain, fast) from verification (on-chain, cheap). This architectural pattern --- ``verify, don't compute'' --- is enabled entirely by the succinctness and zero-knowledge properties of modern ZK proofs.
+
+\end{connectionbox}
+
+%======================================================================
+% SECTION 7: PHILOSOPHICAL SIGNIFICANCE
+%======================================================================
+\section{Philosophical Significance: What It Revealed About Limits of Formal Systems}
+\label{sec:zk:philosophy}
+
+\begin{enumerate}
+\item \textbf{Knowledge $\neq$ Information:} Zero-knowledge separates \emph{conviction} from \emph{information transfer}. You can be \emph{certain} of a fact without learning \emph{anything} about its internals. This reframes epistemology.
+
+\item \textbf{The Simulator as Epistemic Ideal:} ``Whatever you can compute after the interaction, you could have computed before.'' The simulator captures the \emph{essence} of learning nothing. This is a \emph{computational} definition of knowledge (vs. semantic).
+
+\item \textbf{Interaction Creates Power:} Static proofs (NP) = witness. Interactive proofs (IP) = PSPACE. Randomness + interaction $\to$ exponential power. ZK adds privacy on top. The \emph{protocol} is the proof.
+
+\item \textbf{Trust Minimization:} ZK lets you verify \emph{any} computation without trusting the executor. ``Don't trust, verify'' becomes mathematically rigorous. This is the philosophical core of blockchain scaling.
+
+\item \textbf{The Witness Is Not the Proof:} In ZK, the witness (secret) is \emph{hidden}; the proof is a \emph{dance} with the verifier. The proof is \emph{ephemeral} (interactive) or \emph{succinct} (SNARK). The witness is the \emph{source}, the proof is the \emph{certificate}.
+
+\item \textbf{The Cost of Privacy:} ZK proofs are not free. Producing a proof requires $10^3$--$10^6$ times the computation of the original statement. This asymmetry between proving (expensive) and verification (cheap) creates an economic tradeoff. The philosophical lesson: privacy has a computational cost, just as it has a social cost. ZK makes explicit the resource tradeoff between secrecy and computation.
+
+\item \textbf{Verification as a Public Good:} A ZK proof can be verified by anyone, anywhere, without trusting the prover. This makes verification a \emph{non-rivalrous public good}: the same proof convinces everyone. In the blockchain context, one verification suffices for all network participants, creating massive economies of scale.
+
+\item \textbf{Zero-Knowledge as Social Technology:} The ability to prove facts without revealing information transforms social coordination. It enables anonymous voting (prove eligibility without revealing identity), private auctions (prove bid validity without revealing amount), and confidential contracts (prove compliance without revealing terms). ZK is not just a mathematical tool --- it is a social technology for trust minimization.
+\end{enumerate}
+
+%======================================================================
+% SECTION 8: MODERN LEGACY
+%======================================================================
+\section{Modern Legacy: Where This Idea Appears Today}
+\label{sec:zk:legacy}
+
+\begin{itemize}
+\item \textbf{zkEVM:} Prove EVM execution in ZK (Polygon zkEVM, Scroll, Linea, Taiko). Type 1 (Ethereum-equivalent) to Type 3 (ZK-friendly). As of 2026, multiple Type 1 zkEVMs are in production, proving full Ethereum blocks.
+
+\item \textbf{Recursive ZK:} Prove verification of a ZK proof inside another ZK proof (Nova, Halo, Plonky2). Incrementally verifiable computation. Used to aggregate many ZK proofs into one (proof aggregation).
+
+\item \textbf{Folding Schemes:} Nova (Kothapalli-Setty 2022): Fold multiple instances into one. No trusted setup, no pairings, based on discrete log. Extended by SuperNova (multiple circuits), ProtoStar (no FFT), Sangria (PLONKish circuits).
+
+\item \textbf{ZK-ML:} Prove model inference (zkCNN) or training correctness. zkCNN, zkML, Circom + ONNX. Open-source frameworks (EZKL, Sherlock, Zkalc) allow ML engineers to prove inference without cryptographic expertise.
+
+\item \textbf{ZK Bridges:} Prove consensus of one chain to another (Succinct, Herodotus, Lagrange). ZK light clients verify consensus rules without running a full node. The Telepathy bridge proves Ethereum consensus to any chain.
+
+\item \textbf{ZK Coprocessors:} Offload computation (SQL, ML, heavy math) to ZK prover (RISC Zero, SP1, Valida). Aave uses ZK coprocessors for off-chain credit scoring; Uniswap uses them for historical swap data verification.
+
+\item \textbf{ZK Email/Identity:} Prove email ownership (DKIM) without revealing content. ZK-creds for KYC. ZK-Email (2023) proves an email was sent by a particular domain without revealing the email body. Used for on-chain identity verification.
+
+\item \textbf{Hardware Acceleration:} ZK ASICs (Ingonyama, Cysic, Fabric), FPGA, GPU (ICICLE, GPU-FRI). Prover times have dropped from hours to seconds for many circuits. The ICICLE library accelerates MSM (multi-scalar multiplication) and NTT (number-theoretic transform) on GPUs.
+
+\item \textbf{Developer Tooling:} Languages and frameworks (Circom, Noir, Leo, Zinc, Snarky/ Pickles, Halo 2) allow developers to write ZK circuits without understanding the underlying cryptography. The ZK developer ecosystem has grown from a handful of specialists to thousands of engineers.
+
+\item \textbf{Standardization:} The ZKProof standards effort (2018--) defines common terminology, security models, and interoperability formats. The R1CS/API standard (RICS) enables cross-platform proof generation and verification.
+
+\item \textbf{Industry Adoption Beyond Blockchain:} Major technology companies are investing in ZK technology. Meta explores ZK for private data sharing. Apple integrates ZK concepts in privacy-preserving ad attribution (Private Click Measurement). Google's Transparency Report uses ZK for private data verification. Intel and AMD explore ZK acceleration in CPUs and GPUs. These developments suggest ZK may become as fundamental as encryption in the digital infrastructure.
+
+\item \textbf{Academic Landscape:} The field has grown explosively. CRYPTO, EUROCRYPT, TCC (Theory of Cryptography), and SBC (Secure Blockchain Computing) conferences feature dozens of ZK papers annually. Dedicated workshops (ZKProof, ZK Summit, StarkWare Sessions, Devconnect ZK) bring together researchers and practitioners. Multiple universities (UC Berkeley, MIT, Tel Aviv, Weizmann, Technion, ETH Zurich) have active ZK research groups.
+\end{itemize}
+
+\begin{connectionbox}[Connections to Later Chapters]
+\begin{itemize}
+\item Chapter 3 (G\"odel): Self-reference in simulator (rewinding).
+\item Chapter 9 (NP): GMW shows NP $\subseteq$ CZK.
+\item Chapter 10 (Crypto): Commitments, OWFs, pairings, hashes are building blocks.
+\item Chapter 13 (Consensus): ZK light clients, ZK bridges, ZK-rollups.
+\item Chapter 4 (Axiomatic Method): Arithmetic circuit satisfiability reduces all of NP to polynomial equations.
+\end{itemize}
+
+\end{connectionbox}
+
+%======================================================================
+% SECTION 9: LESSONS FOR FUTURE SCIENTISTS
+%======================================================================
+\section{Summary}
+\label{sec:zk:summary}
+
+This chapter developed the theory of zero-knowledge proofs, establishing that a prover can convince a verifier of the truth of a statement without revealing any information beyond the validity of the statement itself. The Goldwasser--Micali--Rackoff (GMR) framework (1985) was introduced, defining zero-knowledge via the simulation paradigm: a protocol is zero-knowledge if there exists a polynomial-time simulator that can produce transcripts indistinguishable from real interactions, without access to the prover's witness. The chapter proved that graph 3-coloring admits a computational zero-knowledge interactive proof (Goldreich, Micali, Wigderson 1986), and that every language in $\mathsf{NP}$ admits a zero-knowledge proof under standard cryptographic assumptions. Sigma protocols were formalized as three-move interactive proofs (commitment, challenge, response) with special soundness and special honest-verifier zero-knowledge, with the Schnorr identification protocol as the canonical example. The Fiat--Shamir heuristic was analyzed, showing how interactive proofs can be made non-interactive via hash functions in the random oracle model. The chapter examined zero-knowledge succinct non-interactive arguments of knowledge (zk-SNARKs), presenting the Groth16 construction (2010) based on bilinear pairings and quadratic arithmetic programs (QAPs), and the PLONK protocol (Gabizon, Williamson, Ciobotaru 2019) with a universal trusted setup. zk-STARKs (Ben-Sasson et al. 2018) were presented as transparent (no trusted setup), post-quantum-resistant alternatives based on collision-resistant hash functions and the FRI low-degree test. The chapter also discussed recursive zero-knowledge proofs (folding schemes such as Nova by Kothapalli and Setty 2021), zkEVMs, and the practical deployment of zero-knowledge proofs in blockchain scaling (ZK-rollups).
+
+\section*{Key Takeaways}
+\begin{itemize}
+\item Zero-knowledge proofs are defined via the simulation paradigm: a protocol is zero-knowledge if a simulator can reproduce transcripts without access to the witness.
+\item Every $\mathsf{NP}$ language admits a zero-knowledge interactive proof under standard cryptographic assumptions (GMW 1986).
+\item Sigma protocols provide a general framework for constructing zero-knowledge proofs of knowledge, with special soundness and special honest-verifier zero-knowledge.
+\item zk-SNARKs (Groth16, PLONK) and zk-STARKs provide succinct, non-interactive zero-knowledge proofs with constant-time verification, differing in their trust assumptions and post-quantum security.
+\item Open problems include the construction of post-quantum zk-SNARKs without trusted setups, improving prover efficiency for practical deployment, and the theoretical understanding of zero-knowledge in the presence of correlated witnesses.
+\end{itemize}
+
+%======================================================================
+% EXERCISES
+%======================================================================
+% EXERCISES
+%======================================================================
+\section{Exercises}
+\label{sec:zk:exercises}
+
+\begin{exercise}[Basic]
+Implement the Schnorr identification protocol (Sigma protocol for DL knowledge). Prove special soundness and special HVZK.
+\end{exercise}
+
+\begin{exercise}[Basic]
+Implement the Graph 3-Coloring ZK proof (GMW) for a small graph. Use a commitment scheme (e.g., Pedersen). Simulate the verifier's challenge and show the simulator works.
+\end{exercise}
+
+\begin{exercise}[Basic]
+Work through the sum-check protocol manually for the polynomial $g(x_1,x_2) = 2x_1^2 + x_1x_2 + x_2 + 1$ over $\mathbb{F}_7$. Show each round's polynomial and the final check.
+\end{exercise}
+
+\begin{exercise}[Basic]
+Implement the Pedersen commitment scheme $\mathsf{Com}(m) = g^m h^r$ over a prime-order group. Prove it is perfectly hiding and computationally binding under the discrete log assumption.
+\end{exercise}
+
+\begin{exercise}[Basic]
+Apply the Fiat-Shamir transform to the Schnorr identification protocol to produce a signature scheme. Write the signing and verification algorithms. Explain why the forking lemma guarantees security.
+\end{exercise}
+
+\begin{exercise}[Intermediate]
+Research the \emph{PCP Theorem} and its equivalence to hardness of approximation. Explain the statement $\mathsf{NP} = \mathsf{PCP}(\log n, 1)$ in terms of proof verification.
+\end{exercise}
+
+\begin{exercise}[Intermediate]
+Implement a Sigma protocol for proving knowledge of a discrete log in a group of unknown order (e.g., class group). Explain how to handle the lack of efficient group operations.
+\end{exercise}
+
+\begin{exercise}[Intermediate]
+Construct the simulator for the GMW Graph 3-Coloring protocol. Show that the simulated transcript is computationally indistinguishable from a real transcript, assuming the commitment scheme is computationally hiding.
+\end{exercise}
+
+\begin{exercise}[Intermediate]
+Implement an OR-proof for discrete logarithm: given group elements $g, h_1, h_2$, prove knowledge of $x$ such that $h_1 = g^x$ OR $h_2 = g^x$, without revealing which.
+\end{exercise}
+
+\begin{exercise}[Intermediate]
+Construct an R1CS constraint system for the circuit $y = x^3 + x + 5$ over $\mathbb{F}_{101}$. Write the matrices $A, B, C$ explicitly and verify that the witness $x=3, y=35$ satisfies all constraints.
+\end{exercise}
+
+\begin{exercise}[Intermediate]
+Implement the Bulletproofs inner product argument for vectors of length $n=4$. Show the recursive folding and verify the final inner product.
+\end{exercise}
+
+\begin{exercise}[Challenge]
+Implement a simple R1CS $\to$ QAP $\to$ Groth16 proof for a toy circuit (e.g., $x^3 + x + 5 = y$). Use a pairing library (e.g., \texttt{py\_ecc}). Verify the proof.
+\end{exercise}
+
+\begin{exercise}[Challenge]
+Implement a simple folding step for Nova: fold two R1CS instances into one. Verify the folding relation holds.
+\end{exercise}
+
+\begin{exercise}[Challenge]
+Implement the FRI low-degree test for a polynomial of degree $d=10$ over a field of size $p$ with rate $\rho=1/4$. Show the folding steps and verify soundness.
+\end{exercise}
+
+\begin{exercise}[Challenge]
+Implement Nova for the repeated squaring function $F(x) = x^2 \bmod N$. Use the folding scheme to prove $2^k$ squarings with $O(1)$ verification.
+\end{exercise}
+
+\begin{exercise}[Computational]
+Use the \texttt{arkworks} or \texttt{gnark} library to build a ZK circuit for a simple program (e.g., Merkle tree membership). Generate and verify a Groth16 proof. \url{https://github.com/arkworks-rs/...}
+\end{exercise}
+
+\begin{exercise}[Computational]
+Use RISC Zero or SP1 to prove a simple program (e.g., Fibonacci, SHA-256). Measure proof size, prover time, verifier time. \url{https://github.com/risc0/risc0}
+\end{exercise}
+
+\begin{exercise}[Computational]
+Use Circom to write a circuit for a simple ML model (linear regression). Generate a ZK proof of correct inference.
+\end{exercise}
+
+\begin{exercise}[Computational]
+Compare proof sizes and verification times for the same program expressed in Groth16, PLONK (with KZG commitments), and a STARK-based system (RISC Zero or Plonky2). Explain the tradeoffs.
+\end{exercise}
+
+\begin{exercise}[Computational]
+Use Plonky2 or the \texttt{plonky2} library to build a proof for a simple arithmetic circuit. Measure the prover time and proof size. \url{https://github.com/0xPolygonZero/plonky2}
+\end{exercise}
+
+\begin{exercise}[Challenge]
+Trace through the execution of a simple EVM opcode (e.g., \texttt{ADD} or \texttt{SHA3}) and explain how a zkEVM would represent and prove it. Use the Polygon zkEVM or zkSync Era open-source codebase.
+\end{exercise}
+
+\begin{exercise}[Challenge]
+Use the \texttt{circom} and \texttt{snarkjs} toolchain to implement a ZK proof of membership in a Merkle tree. Generate and verify a proof. Explain the proving key, verification key, and proof structure.
+\end{exercise}
+
+\begin{exercise}[Basic]
+Explain why the Quadratic Residuosity protocol (GMR) achieves \emph{perfect} zero-knowledge while the GMW 3-coloring protocol only achieves \emph{computational} zero-knowledge. What assumption is the difference due to?
+\end{exercise}
+
+\begin{exercise}[Challenge]
+Implement a proof aggregation scheme: given $n$ Groth16 proofs for the same circuit, aggregate them into a single proof using an inner product argument or a folding scheme. Verify the aggregate proof.
+\end{exercise}
+
+%======================================================================
+% TIMELINE
+%======================================================================
+\section{Timeline}
+\label{sec:zk:timeline}
+\addcontentsline{toc}{section}{Timeline}
+
+\begin{tabularx}{\linewidth}{|l|X|}
+\hline
+\textbf{Year} & \textbf{Event} \\ \hline
+1982 & Goldwasser-Micali-Rackoff: Knowledge complexity, IP, ZK (STOC) \\\hline
+1985 & Goldreich-Micali-Wigderson: NP $\subseteq$ CZK (GMW) \\
+\hline
+1985 & Goldwasser-Sipser: Public-coin IPs = Private-coin IPs \\
+\hline
+1986 & Feige-Fiat-Shamir: ZK identification, Fiat-Shamir heuristic \\
+\hline
+1988 & Brassard-Chaum-Cr\'epeau: Multi-prover ZK (MIP) \\
+\hline
+1990 & Babai-Fortnow-Lund: $\mathsf{IP} = \mathsf{PSPACE}$ (Shamir 1992) \\
+\hline
+1991 & Kilian: ZK arguments (succinct), PCPs \\
+\hline
+1991 & Lund-Fortnow-Karloff-Nisan (LFKN): Sum-check protocol, $\#\mathsf{P} \in \mathsf{IP}$ \\
+\hline
+1992 & Arora-Safra: PCP Theorem \\
+\hline
+1992 & Feige-Kilian: Parallel repetition \\
+\hline
+2000 & Goldwasser-Kalai-Rothblum: Delegating computation \\
+\hline
+2006 & Groth-Ostrovsky-Sahai: Perfect ZK for NP \\
+\hline
+2007 & Ishai-Kushilevitz-Ostrovsky-Sahai: Zero-knowledge from linear PCPs \\
+\hline
+2008 & Groth: Short pairing-based ZK (Groth10) \\
+\hline
+2010 & Groth: Short non-interactive ZK (Groth16) \\
+\hline
+2013 & Ben-Sasson et al.: zk-SNARKs (Pinocchio) \\
+\hline
+2016 & Zcash: First production zk-SNARK deployment \\
+\hline
+2018 & Ben-Sasson et al.: zk-STARKs (transparent, post-quantum) \\
+\hline
+2018 & B\"unz et al.: Bulletproofs (range proofs, no trusted setup) \\
+\hline
+2019 & Chiesa et al.: Marlin (universal setup) \\
+\hline
+2019 & Gabizon et al.: PLONK (universal, updatable setup) \\
+\hline
+2019 & Bowe et al.: Halo (recursive ZK, no trusted setup) \\
+\hline
+2021 & Kothapalli-Setty: Nova (folding, no pairings) \\
+\hline
+2022 & Polygon zkEVM, zkSync, Scroll: zkEVMs launch \\
+\hline
+2022 & Kothapalli et al.: SuperNova (multi-circuit folding) \\
+\hline
+2023 & RISC Zero, SP1: ZK-VMs (RISC-V, general purpose) \\
+\hline
+2023 & Valida, Jolt: ZK-VMs (custom ISA, lookup args) \\
+\hline
+2023 & Setty et al.: ProtoStar (folding, no FFT) \\
+\hline
+2023 & Zapico et al.: Lasso lookup arguments \\
+\hline
+2023 & Burn-Buulet: Binius (binary-field ZK proofs) \\
+\hline
+2024 & ZK-rollups reach billions of txns across Ethereum \\
+\hline
+2024 & Aztec: Private smart contracts on Noir \\
+\hline
+2025 & ZK coprocessors in production (Aave, Uniswap) \\
+\hline
+2025 & zkEmail: Prove email ownership without revealing content \\
+\hline
+2026 & Type 1 zkEVMs in production; ZK hardware ASICs shipping \\
+\hline
+2026 & Folding-based L1 blockchains in testnet (Nexus, =nil;) \\
+\hline
+\end{tabularx}
+
+%======================================================================
+% CITATIONS
+%======================================================================
+\section{Citations}
+\label{sec:zk:citations}
+
+\begin{enumerate}
+  \item \cite{GoldwasserMicaliRackoff1985}
+  \item \cite{GoldreichMicaliWigderson1986}
+  \item \cite{FeigeFiatShamir1987}
+  \item \cite{BabaiFortnowLund1991}
+  \item \cite{Kilian1992}
+  \item \cite{Groth2010}
+  \item \cite{BenSasson2013}
+  \item \cite{BenSasson2018}
+  \item \cite{Bunz2018}
+  \item \cite{Chiesa2020}
+  \item \cite{KothapalliSetty2021}
+  \item \cite{Gabizon2019}
+  \item \cite{Bowe2019}
+  \item \cite{Setty2023}
+  \item \cite{Zapico2023}
+\end{enumerate}
+
+%======================================================================
+% INDEX ENTRIES
+%======================================================================
+\index{zero-knowledge proofs}
+\index{ZK}
+\index{GMR}
+\index{GMW}
+\index{interactive proofs}
+\index{IP = PSPACE}
+\index{PCP theorem}
+\index{zk-SNARK}
+\index{zk-STARK}
+\index{Bulletproofs}
+\index{simulation paradigm}
+\index{Sigma protocols}
+\index{Schnorr protocol}
+\index{Fiat-Shamir transform}
+\index{random oracle model}
+\index{forking lemma}
+\index{trusted setup}
+\index{toxic waste}
+\index{recursive ZK}
+\index{folding schemes}
+\index{Nova}
+\index{SuperNova}
+\index{ProtoStar}
+\index{Sangria}
+\index{zkEVM}
+\index{Zcash}
+\index{ZK-rollup}
+\index{zkVM}
+\index{RISC Zero}
+\index{SP1}
+\index{Valida}
+\index{Jolt}
+\index{lookup arguments}
+\index{Lasso}
+\index{plookup}
+\index{PLONK}
+\index{Marlin}
+\index{Halo}
+\index{sum-check protocol}
+\index{arithmetization}
+\index{OR-proofs}
+\index{inner product argument}
+\index{range proof}
+\index{Monero}
+\index{light clients}
+\index{ZK bridge}
+\index{ZK coprocessor}
+\index{ZK-ML}
+\index{Cairo}
+\index{Noir}
+\index{Circom}
+\index{snarkjs}
+\index{Groth16}
+\index{PLONK}
+\index{special soundness}
+\index{special HVZK}
+\index{AND-proofs}
+\index{OR-proofs}
+\index{equality proofs}
+\index{aggregation}
+\index{proof aggregation}
+\index{accumulation scheme}
+\index{incrementally verifiable computation}
+\index{IVC}
+\index{relaxed R1CS}
+\index{IP}
+\index{QAP}
+\index{R1CS}
+\index{AIR}
+\index{PLONKish}
+\index{execution trace}
+\index{low-degree extension}
+\index{Reed-Solomon code}
+\index{Merkle tree}
+\index{Goldilocks field}
+\index{small field}
+\index{LogUp}
+\index{Binius}
+\index{cq}
+\index{zkEmail}
+\index{zkOracle}
+\index{MACl}
+\index{Helios}
+\index{voting}
+\index{supply chain}
+\index{genomics}
+\index{healthcare}
+\index{Goldwasser}
+\index{Micali}
+\index{Rackoff}
+\index{Wigderson}
+\index{Goldreich}
+\index{Shamir}
+\index{Kilian}
+\index{Ben-Sasson}
+\index{Chiesa}
+\index{Tromer}
+\index{Virza}
+\index{B\"unz}
+\index{Barak}
+\index{Feige}
+\index{Fiat}
+\index{Groth}
+\index{Setty}
+\index{Kothapalli}
+\index{Zapico}
+\index{continuations}
+\index{precompiles}
+\index{multi-party ceremony}
+\index{Powers of Tau}
+\index{aggregation}
+\index{ZK-rollup}
+\index{validium}
+\index{StarkNet}
+\index{StarkEx}
+\index{zkSync}
+\index{Polygon zkEVM}
+\index{Scroll}
+\index{Linea}
+\index{Taiko}
+\index{Aztec}
+\index{Mina}
+\index{Aleo}

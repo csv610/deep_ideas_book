@@ -1,0 +1,258 @@
+% Appendix C: Mathematical Prerequisites
+
+\chapter{Mathematical Prerequisites}
+\label{app:prereqs}
+
+This appendix provides a compact reference for the mathematical background assumed throughout the book.
+
+\section{Discrete Mathematics}
+
+\subsection{Sets, Relations, Functions}
+\begin{itemize}
+\item Sets: $\cup, \cap, \setminus, \times, \mathcal{P}(S)$ (power set)
+\item Relations: Reflexive, symmetric, transitive, equivalence, partial order
+\item Functions: Injective, surjective, bijective, inverse
+\item Strings/Alphabets: $\Sigma^*$, $\Sigma^n$, $\epsilon$ (empty string), concatenation
+\end{itemize}
+
+\subsection{Graph Theory}
+\begin{itemize}
+\item Graph $G=(V,E)$, directed/undirected, weighted
+\item Degree, path, cycle, connected, tree, DAG
+\item Adjacency matrix $A$, Laplacian $L = D - A$
+\item Random walks, stationary distribution, mixing time
+\end{itemize}
+
+\subsection{Combinatorics}
+\begin{itemize}
+\item Binomial coefficients: $\binom{n}{k} = \frac{n!}{k!(n-k)!}$
+\item Stirling's approximation: $n! \sim \sqrt{2\pi n} (n/e)^n$
+\item Summations: $\sum_{k=0}^n \binom{n}{k} = 2^n$, $\sum_{k=0}^n k = n(n+1)/2$
+\item Pigeonhole principle, inclusion-exclusion
+\end{itemize}
+
+\section{Probability}
+
+\subsection{Basic Probability}
+\begin{itemize}
+\item Probability space $(\Omega, \mathcal{F}, \Pr)$
+\item Random variables: discrete, continuous
+\item Expectation: $\mathbb{E}[X] = \sum x \Pr[X=x]$ or $\int x f(x) dx$
+\item Linearity: $\mathbb{E}[X+Y] = \mathbb{E}[X] + \mathbb{E}[Y]$
+\item Variance: $\mathrm{Var}[X] = \mathbb{E}[X^2] - \mathbb{E}[X]^2$
+\item Covariance: $\mathrm{Cov}[X,Y] = \mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y]$
+\end{itemize}
+
+\subsection{Concentration Inequalities}
+\begin{itemize}
+\item Markov: $\Pr[X \ge a] \le \mathbb{E}[X]/a$ ($X \ge 0$)
+\item Chebyshev: $\Pr[|X-\mu| \ge k\sigma] \le 1/k^2$
+\item Chernoff/Hoeffding: $\Pr[X \ge (1+\delta)\mu] \le e^{-\delta^2\mu/3}$ for sum of independent $[0,1]$ vars
+\item Union bound: $\Pr[\cup A_i] \le \sum \Pr[A_i]$
+\end{itemize}
+
+\subsection{Common Distributions}
+\begin{itemize}
+\item Bernoulli($p$): $\Pr[1]=p, \Pr[0]=1-p$
+\item Binomial($n,p$): sum of $n$ Bernoulli
+\item Geometric($p$): $\Pr[X=k] = (1-p)^{k-1}p$, $\mathbb{E}[X]=1/p$
+\item Poisson($\lambda$): $\Pr[X=k] = e^{-\lambda}\lambda^k/k!$
+\item Uniform, Normal (Gaussian), Exponential
+\end{itemize}
+
+\section{Linear Algebra}
+
+\subsection{Vector Spaces}
+\begin{itemize}
+\item $\mathbb{R}^n$, $\mathbb{C}^n$, $\mathbb{F}_q^n$
+\item Basis, dimension, linear independence
+\item Subspaces, orthogonal complement
+\end{itemize}
+
+\subsection{Matrices}
+\begin{itemize}
+\item Multiplication, transpose, inverse, rank
+\item Determinant, trace
+\item Eigenvalues/vectors: $Av = \lambda v$
+\item Characteristic polynomial: $\det(A - \lambda I)$
+\item Spectral theorem: symmetric $\to$ orthonormal eigenvectors, real eigenvalues
+\item SVD: $A = U \Sigma V^T$
+\item Positive semidefinite: $x^T A x \ge 0 \ \forall x$
+\end{itemize}
+
+\subsection{Markov Chains}
+\begin{itemize}
+\item Stochastic matrix $P$: rows sum to 1
+\item Stationary distribution $\pi$: $\pi P = \pi$, $\sum \pi_i = 1$
+\item Ergodic theorem: for irreducible, aperiodic chains, $\pi$ unique, $P^t \to \mathbf{1}\pi$
+\item Mixing time: $t_{\text{mix}}(\epsilon) = \min\{t : \|P^t(x,\cdot) - \pi\|_{TV} \le \epsilon\}$
+\item Markov chains on graphs: stationary distribution, power iteration, eigenvector centrality
+\end{itemize}
+
+\section{Number Theory}
+
+\subsection{Basics}
+\begin{itemize}
+\item Divisibility: $a \mid b$, $\gcd(a,b)$, $\mathrm{lcm}(a,b)$
+\item Euclidean algorithm, extended Euclid: $ax+by=\gcd(a,b)$
+\item Modular arithmetic: $\mathbb{Z}_n$, $\mathbb{Z}_n^*$
+\item Chinese Remainder Theorem: $\mathbb{Z}_{mn} \cong \mathbb{Z}_m \times \mathbb{Z}_n$ if $\gcd(m,n)=1$
+\item Euler's totient: $\phi(n) = n \prod_{p\mid n} (1-1/p)$
+\item Fermat's little theorem: $a^{p-1} \equiv 1 \pmod p$ for $p \nmid a$
+\item Euler's theorem: $a^{\phi(n)} \equiv 1 \pmod n$ for $\gcd(a,n)=1$
+\end{itemize}
+
+\subsection{Primality and Factoring}
+\begin{itemize}
+\item Miller-Rabin primality test (probabilistic)
+\item AKS primality test (deterministic polynomial time, 2002)
+\item Factoring: trial division, Pollard's rho, quadratic sieve, number field sieve (GNFS)
+\item RSA: $N=pq$, $\phi(N)=(p-1)(q-1)$, $ed \equiv 1 \pmod{\phi(N)}$
+\end{itemize}
+
+\subsection{Finite Fields}
+\begin{itemize}
+\item $\mathbb{F}_p = \mathbb{Z}_p$ for prime $p$
+\item $\mathbb{F}_{p^k} = \mathbb{F}_p[x]/(f(x))$ for irreducible $f$ of degree $k$
+\item Multiplicative group $\mathbb{F}_q^*$ is cyclic (primitive element)
+\item Polynomials: Reed-Solomon, BCH, finite field arithmetic
+\end{itemize}
+
+\subsection{Elliptic Curves}
+\begin{itemize}
+\item $E: y^2 = x^3 + ax + b$ over $\mathbb{F}_q$, $4a^3+27b^2 \ne 0$
+\item Group law: chord-and-tangent
+\item ECDLP: given $P, Q=kP$, find $k$ (hard)
+\item ECDSA, ECDH, pairings (BN curves, BLS signatures)
+\end{itemize}
+
+\section{Computability and Complexity}
+
+\subsection{Turing Machines}
+\begin{itemize}
+\item Configuration: state, tape, head position
+\item Decidable (recursive) vs. Recursively enumerable (semi-decidable)
+\item Universal TM: $U(\langle M \rangle, x) = M(x)$
+\item Reductions: $A \le_m B$ (many-one), $A \le_T B$ (Turing)
+\end{itemize}
+
+\subsection{Complexity Classes}
+\begin{itemize}
+\item $\mathsf{P} = \cup_k \mathsf{DTIME}(n^k)$
+\item $\mathsf{NP} = \cup_k \mathsf{NTIME}(n^k)$
+\item $\mathsf{PSPACE} = \cup_k \mathsf{DSPACE}(n^k)$
+\item $\mathsf{EXP} = \cup_k \mathsf{DTIME}(2^{n^k})$
+\item $\mathsf{BPP}$: probabilistic poly-time, error $\le 1/3$
+\item $\mathsf{NP}$-complete: SAT, 3-SAT, Clique, VC, HC, TSP, Subset Sum, Partition, Knapsack, Graph Coloring
+\item Hierarchy theorems: $\mathsf{DTIME}(t_1) \subsetneq \mathsf{DTIME}(t_2)$ if $t_1 \log t_1 = o(t_2)$
+\end{itemize}
+
+\subsection{Reductions}
+\begin{itemize}
+\item Many-one (Karp): $A \le_p B$ via poly-time $f$
+\item Cook (Turing): poly-time with oracle for $B$
+\item $\mathsf{NP}$-hard: $\forall L \in \mathsf{NP}, L \le_p A$
+\item $\mathsf{NP}$-complete: $\mathsf{NP}$-hard $\land A \in \mathsf{NP}$
+\end{itemize}
+
+\section{Logic and Proof Theory}
+
+\subsection{Propositional Logic}
+\begin{itemize}
+\item Connectives: $\land, \lor, \neg, \to, \leftrightarrow$
+\item CNF: conjunction of clauses (disjunction of literals)
+\item DNF: disjunction of terms (conjunction of literals)
+\item SAT: satisfiability of CNF formulas
+\end{itemize}
+
+\subsection{First-Order Logic}
+\begin{itemize}
+\item Quantifiers: $\forall, \exists$
+\item Structures: domain, interpretation of symbols
+\item Gödel's Completeness: valid $\iff$ provable (FOL)
+\item Gödel's Incompleteness: PA incomplete, Con(PA) unprovable in PA
+\end{itemize}
+
+\subsection{Proof Systems}
+\begin{itemize}
+\item Hilbert, Natural Deduction, Sequent Calculus
+\item Resolution (propositional): $A \lor x, B \lor \neg x \vdash A \lor B$
+\item Polynomial Calculus, Cutting Planes, Sum-of-Squares
+\item Interactive Proofs (IP), PCPs, ZK
+\end{itemize}
+
+\section{Information Theory}
+
+\subsection{Entropy and Mutual Information}
+\begin{itemize}
+\item $H(X) = -\sum p(x) \log p(x)$
+\item $H(X|Y) = \sum p(y) H(X|Y=y)$
+\item $I(X;Y) = H(X) - H(X|Y) = H(Y) - H(Y|X) = \sum p(x,y) \log \frac{p(x,y)}{p(x)p(y)}$
+\item Chain rule: $H(X,Y) = H(X) + H(Y|X)$
+\item Data processing inequality: $X \to Y \to Z \implies I(X;Z) \le I(X;Y)$
+\item Fano's inequality: $H(X|\hat{X}) \le H(P_e) + P_e \log(|\mathcal{X}|-1)$
+\end{itemize}
+
+\subsection{Coding}
+\begin{itemize}
+\item Prefix codes, Kraft inequality: $\sum 2^{-\ell_i} \le 1$
+\item Huffman coding: optimal prefix code
+\item Shannon-Fano, Arithmetic coding
+\item Channel capacity: $C = \max_{p(x)} I(X;Y)$
+\end{itemize}
+
+\section{Algebraic Structures}
+
+\subsection{Groups}
+\begin{itemize}
+\item $(G, \cdot)$: closure, associativity, identity, inverse
+\item Abelian: commutative
+\item Cyclic: generated by one element
+\item Order: $|G|$, order of element divides $|G|$ (Lagrange)
+\item Subgroups, cosets, quotient groups
+\item Isomorphism theorems
+\end{itemize}
+
+\subsection{Rings and Fields}
+\begin{itemize}
+\item Ring: $(R, +, \cdot)$, $(R,+)$ abelian group, $\cdot$ associative, distributive
+\item Field: ring where $R\setminus\{0\}$ is abelian group under $\cdot$
+\item Polynomial ring $R[x]$, quotient $R[x]/(f)$
+\item Finite fields: $\mathbb{F}_p$, $\mathbb{F}_{p^k}$
+\end{itemize}
+
+\section{Asymptotic Notation}
+
+\begin{itemize}
+\item $f(n) = O(g(n))$: $\exists c,n_0: f(n) \le c g(n) \ \forall n \ge n_0$
+\item $f(n) = \Omega(g(n))$: $g(n) = O(f(n))$
+\item $f(n) = \Theta(g(n))$: $f = O(g) \land f = \Omega(g)$
+\item $f(n) = o(g(n))$: $\lim_{n\to\infty} f(n)/g(n) = 0$
+\item $f(n) = \omega(g(n))$: $g(n) = o(f(n))$
+\item $\tilde{O}(g)$: $O(g \cdot \mathrm{polylog}(g))$
+\end{itemize}
+
+\section{Useful Mathematical Constants}
+
+\begin{itemize}
+\item $e = 2.71828...$, $\ln 2 = 0.6931...$
+\item $\log_2 e = 1.4427...$, $\log_2 3 = 1.585...$
+\item $\phi = (1+\sqrt{5})/2 = 1.618...$ (golden ratio)
+\item $\pi = 3.14159...$
+\item $\gamma = 0.5772...$ (Euler-Mascheroni)
+\item $H_n = \sum_{k=1}^n 1/k = \ln n + \gamma + O(1/n)$
+\item $\sum_{k=1}^n k = n(n+1)/2$, $\sum k^2 = n(n+1)(2n+1)/6$
+\item $\sum_{k=0}^\infty x^k = 1/(1-x)$ for $|x|<1$
+\item $\sum_{k=1}^\infty 1/k^2 = \pi^2/6$
+\end{itemize}
+
+%======================================================================
+% INDEX ENTRIES
+%======================================================================
+\index{mathematical prerequisites}
+\index{probability}
+\index{linear algebra}
+\index{number theory}
+\index{complexity classes}
+\index{information theory}
+\index{asymptotic notation}

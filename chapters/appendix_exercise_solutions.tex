@@ -1,0 +1,285 @@
+% Appendix E: Exercise Solutions
+
+\chapter{Exercise Solutions}
+\label{app:solutions}
+This appendix provides hints and selected solutions for exercises from each chapter. Solutions are ordered by difficulty level within each chapter. Full solutions for computational exercises are available as code repositories.
+
+%======================================================================
+\section{Chapter 1: What Is Computation?}
+%======================================================================
+
+\begin{exercise}[Basic]
+Prove that a 2-tape Turing Machine can be simulated by a 1-tape Turing Machine with at most quadratic time overhead.
+\end{exercise}
+\textbf{Solution:} Interleave the two tapes on a single tape using a special delimiter $\#$. For a 2-tape TM with tapes $T_1$ and $T_2$ and heads at positions $h_1, h_2$, represent the combined tape as $\ldots \# t_1(1)\# t_2(1) \# t_1(2)\# t_2(2) \ldots$ with the head positions marked by special symbols. To simulate one step of the 2-tape TM, scan the combined tape to locate both head positions (taking $O(n)$ time where $n$ is the tape length), read the symbols under each head, write the new symbols, and update the head positions. Each simulated step costs $O(n)$ time. A $T$-step computation on the 2-tape TM uses at most $T$ cells on each tape, so $n \le 2T + O(1)$, giving total time $O(T^2)$.
+
+\begin{exercise}[Intermediate]
+Show that a Universal Turing Machine with a 2-symbol alphabet exists.
+\end{exercise}
+\textbf{Solution:} Encode the original TM's $k$ alphabet symbols as blocks of $\lceil \log_2 k \rceil$ binary symbols. For example, with $k = 3$, use encodings $00, 01, 10$ (reserving $11$ as a marker). The UTM simulates the encoded TM by expanding each symbol lookup into a finite state control sequence. Shannon (1956) showed that any $k$-symbol, $n$-state TM can be simulated by a 2-symbol TM with $O(k \log k + n)$ states. The key insight is that the finite control of the UTM encodes the transition table of the simulated TM, using the binary encoding of states and symbols as addresses in the transition function.
+
+\begin{exercise}[Challenge]
+Construct a TM computing the Ackermann function $A(m,n)$ for small values. Estimate the number of steps for $A(3,3)$.
+\end{exercise}
+\textbf{Solution:} The Ackermann function is defined by:
+\[
+A(0,n) = n+1, \quad A(m+1,0) = A(m,1), \quad A(m+1,n+1) = A(m, A(m+1,n)).
+\]
+A 2-stack PDA (equivalently a TM) can compute this recursively: stack 1 holds the outer recursion parameter $m$, stack 2 holds the current value of $n$. The computation of $A(3,3)$ expands to $A(3,3) = A(2,A(3,2)) = A(2,A(2,A(3,1))) = \ldots$, ultimately producing $A(3,3) = 61$. The number of steps is roughly proportional to the number of recursive calls, which is $O(A(m,n))$ itself---exponential in $m$. For $A(3,3)$, the computation requires approximately $2^{2^{2^{\ldots}}}$ operations (tower of exponentials of height $m$).
+
+%======================================================================
+\section{Chapter 2: The Halting Problem}
+%======================================================================
+
+\begin{exercise}[Basic]
+Use diagonalization to prove that the set of total computable functions is not recursively enumerable.
+\end{exercise}
+\textbf{Solution:} Suppose $\{f_i\}_{i \ge 0}$ is an enumeration of all total computable functions. Define $g(n) = f_n(n) + 1$. Since each $f_i$ is total computable, $g$ is also total computable (compute $f_n(n)$ then add 1). But $g(n) \neq f_n(n)$ for all $n$, so $g$ differs from every function in the enumeration. This contradicts the assumption that $\{f_i\}$ enumerates all total computable functions. Therefore no such enumeration exists, and the set of indices of total computable functions is not r.e.
+
+\begin{exercise}[Intermediate]
+Prove that the set $\mathrm{INF} = \{\langle M \rangle : L(M) \text{ is infinite}\}$ is $\Pi_2^0$-complete.
+\end{exercise}
+\textbf{Solution:} First, $\mathrm{INF}$ is $\Pi_2^0$: $M$ accepts infinitely many strings iff $\forall n \exists w (|w| \ge n \land w \in L(M))$. The inner condition is $\Sigma_1^0$ (r.e.), so the whole is $\Pi_2^0$. For hardness: reduce $\mathrm{TOT}$ (which is $\Pi_2^0$-complete) to $\mathrm{INF}$. Given $\langle M \rangle$, construct $M'$ that on input $w$: simulates $M$ on inputs $0, 1, \ldots, |w|$ in dovetail fashion. If any simulation halts and rejects, $M'$ rejects. If all simulations halt and accept, $M'$ accepts $w$. Then $L(M')$ is infinite iff $M$ halts on all inputs (i.e., $\langle M \rangle \in \mathrm{TOT}$).
+
+\begin{exercise}[Challenge]
+Prove Post's Theorem: $A$ is $\Sigma_{n+1}^0$ iff $A$ is r.e.\ in $\Sigma_n^0$.
+\end{exercise}
+\textbf{Solution:} By induction on $n$. Base case ($n=0$): $\Sigma_1^0 = \mathrm{RE}$, and r.e.\ in $\Sigma_0^0$ = r.e.\ in decidable = $\mathrm{RE}$. Inductive step: Suppose the characterization holds for level $n$. If $A \in \Sigma_{n+1}^0$, then $A = \{x : \exists y \, R(x,y)\}$ with $R \in \Pi_n^0$. The complement $\bar{R} \in \Sigma_n^0$. Using an oracle for $\Sigma_n^0$ (which by induction hypothesis is r.e.\ in $\Sigma_{n-1}^0$), we can enumerate $\bar{R}$, hence co-enumerate $R$, hence enumerate $A$ by searching for a witness $y$ with $R(x,y)$. Conversely, if $A$ is r.e.\ in $\Sigma_n^0$, there is an oracle TM $M^O$ with oracle $O \in \Sigma_n^0$ such that $x \in A$ iff $M^O(x)$ halts and accepts. The computation $M^O(x)$ is a $\Sigma_{n+1}^0$ predicate (existential over the computation path, with oracle queries forming a $\Sigma_n^0$ predicate at each step).
+
+%======================================================================
+\section{Chapter 3: G\"odel's Incompleteness Theorems}
+%======================================================================
+
+\begin{exercise}[Intermediate]
+Prove G\"odel's Second Incompleteness Theorem using the Hilbert-Bernays-L\"ob derivability conditions.
+\end{exercise}
+\textbf{Solution:} The derivability conditions for a consistent, $\Sigma_1$-sound theory $T \supseteq \mathrm{PA}$ are:
+\begin{enumerate}
+\item If $T \vdash \phi$, then $T \vdash \mathsf{Prov}(\ulcorner \phi \urcorner)$.
+\item $T \vdash \mathsf{Prov}(\ulcorner \phi \to \psi \urcorner) \to (\mathsf{Prov}(\ulcorner \phi \urcorner) \to \mathsf{Prov}(\ulcorner \psi \urcorner))$.
+\item $T \vdash \mathsf{Prov}(\ulcorner \phi \urcorner) \to \mathsf{Prov}(\ulcorner \mathsf{Prov}(\ulcorner \phi \urcorner) \urcorner)$.
+\end{enumerate}
+Let $G$ be the G\"odel sentence: $T \vdash G \leftrightarrow \neg \mathsf{Prov}(\ulcorner G \urcorner)$. The First Theorem shows $T \nvdash G$. Since $T$ is $\Sigma_1$-sound and $T \nvdash G$, we have $T \nvdash \mathsf{Prov}(\ulcorner G \urcorner)$ (by soundness, since $G$ is true, $\mathsf{Prov}(\ulcorner G \urcorner)$ is false, so $T \nvdash$ a false $\Sigma_1$ sentence). Now, the proof of the First Incompleteness Theorem can be formalized inside $T$ to show $T \vdash \mathsf{Con}(T) \to G$ (the proof shows: if $T$ is consistent, then $G$ is true). Since $T \nvdash G$, modus tollens gives $T \nvdash \mathsf{Con}(T)$.
+
+\begin{exercise}[Advanced]
+Construct the diagonal lemma: for any formula $\phi(x)$ with one free variable, there exists a sentence $\psi$ such that $T \vdash \psi \leftrightarrow \phi(\ulcorner \psi \urcorner)$.
+\end{exercise}
+\textbf{Solution:} Define the function $\mathrm{diag}(n)$: given a formula $\theta(x)$, let $d$ be the G\"odel number of $\theta(\ulcorner \theta \urcorner)$ (substitute the numeral for $\ulcorner \theta \urcorner$ into $\theta$). This function is primitive recursive, hence representable in PA by a formula $\mathrm{Diag}(x,y)$ such that $\mathrm{PA} \vdash \mathrm{Diag}(\ulcorner \theta \urcorner, \ulcorner \theta(\ulcorner \theta \urcorner) \urcorner)$. Now let $\theta(x) = \phi(\mathrm{diag}(x))$ where $\mathrm{diag}$ is represented by a $\Sigma_1$ formula. Define $\psi = \theta(\ulcorner \theta \urcorner)$. Then $\psi$ is the sentence $\phi(\ulcorner \theta(\ulcorner \theta \urcorner) \urcorner) = \phi(\ulcorner \psi \urcorner)$. Inside PA, one can prove: if $n$ is the code of a formula, then $\mathrm{Diag}(n, m)$ implies $\psi \leftrightarrow \phi(m)$ for $m$ the code of the substituted formula. By construction, PA $\vdash \mathrm{Diag}(\ulcorner \theta \urcorner, \ulcorner \psi \urcorner)$, hence PA $\vdash \psi \leftrightarrow \phi(\ulcorner \psi \urcorner)$.
+
+\begin{exercise}[Challenge]
+Prove Goodstein's theorem: for any starting value $m$, the Goodstein sequence eventually reaches 0.
+\end{exercise}
+\textbf{Solution:} Represent $m$ in hereditary base-$b$ notation: e.g., $m = 26 = 2^{2^2 + 1} + 2 + 1$ in base 2. Define the Goodstein sequence: $G_1 = m$, $G_{n+1}$ = replace all occurrences of $b$ by $b+1$ and subtract 1. The key is to map each $G_n$ (in hereditary base $n+1$) to an ordinal by replacing the base by $\omega$. The resulting ordinal $\alpha_n$ is strictly decreasing: each step either replaces a base by a larger one (increasing the ordinal) then subtracts 1 (decreasing it by more). Since the ordinals below $\varepsilon_0$ are well-ordered, the sequence must terminate at 0. However, this proof requires transfinite induction up to $\varepsilon_0$, which is not provable in PA---Goodstein's theorem is true but unprovable in PA, connecting it to the Second Incompleteness Theorem.
+
+%======================================================================
+\section{Chapter 4: Rice's Theorem}
+%======================================================================
+
+\begin{exercise}[Basic]
+Prove that the property ``$M$ accepts a finite language'' is undecidable using Rice's Theorem.
+\end{exercise}
+\textbf{Solution:} The property $P = \{M : L(M) \text{ is finite}\}$ is a semantic property (depends only on the language accepted, not on the internal structure of $M$). It is non-trivial: the TM accepting $\{0\}$ has $L(M)$ finite, so $P$ is non-empty; the TM accepting $\Sigma^*$ has $L(M)$ infinite, so $\bar{P}$ is non-empty. By Rice's Theorem, $P$ is undecidable.
+
+\begin{exercise}[Intermediate]
+Prove Rice's Theorem for r.e.\ properties: let $P$ be a non-trivial semantic property of r.e.\ languages. Then $P$ is undecidable.
+\end{exercise}
+\textbf{Solution:} Since $P$ is non-trivial, there exist TMs $M_1, M_2$ with $L(M_1) \in P$ and $L(M_2) \notin P$. We reduce HALT to $P$. Given $\langle M, w \rangle$, construct $M_{M,w}$ that on input $x$: simulates $M$ on $w$; if $M$ halts on $w$, simulate $M_1$ on $x$. If $M$ does not halt on $w$, $M_{M,w}$ diverges on all inputs, so $L(M_{M,w}) = \emptyset$. Now if $M$ halts on $w$, then $L(M_{M,w}) = L(M_1) \in P$. If $M$ does not halt on $w$, then $L(M_{M,w}) = \emptyset$. We need $\emptyset \notin P$ for the reduction to work. If $\emptyset \in P$, swap the roles of $M_1$ and $M_2$: construct $M_{M,w}$ to simulate $M_2$ when $M$ halts, so $L(M_{M,w}) = L(M_2) \notin P$.
+
+%======================================================================
+\section{Chapter 5: What Is Information?}
+%======================================================================
+
+\begin{exercise}[Basic]
+Prove the chain rule: $H(X,Y) = H(X) + H(Y|X)$.
+\end{exercise}
+\textbf{Solution:} By definition:
+\begin{align}
+H(X,Y) &= -\sum_{x,y} p(x,y) \log p(x,y) \\
+&= -\sum_{x,y} p(x,y) \log(p(x) \cdot p(y|x)) \\
+&= -\sum_{x,y} p(x,y) \log p(x) - \sum_{x,y} p(x,y) \log p(y|x) \\
+&= -\sum_x p(x) \log p(x) \sum_y p(y|x) - \sum_x p(x) \sum_y p(y|x) \log p(y|x) \\
+&= H(X) + H(Y|X).
+\end{align}
+
+\begin{exercise}[Intermediate]
+Prove the data processing inequality: if $X \to Y \to Z$ forms a Markov chain, then $I(X;Z) \le I(X;Y)$.
+\end{exercise}
+\textbf{Solution:} By the chain rule for mutual information:
+\begin{align}
+I(X;Y,Z) &= I(X;Y) + I(X;Z|Y) = I(X;Z) + I(X;Y|Z).
+\end{align}
+Since $X \to Y \to Z$ is Markov, $X$ and $Z$ are conditionally independent given $Y$, so $I(X;Z|Y) = 0$. Also, $I(X;Y|Z) \ge 0$ (mutual information is always non-negative). Therefore:
+\[
+I(X;Y) = I(X;Z) + I(X;Y|Z) \ge I(X;Z).
+\]
+
+\begin{exercise}[Intermediate]
+Prove Fano's inequality: $H(X|\hat{X}) \le H(P_e) + P_e \log(|\mathcal{X}|-1)$, where $P_e = \Pr[X \neq \hat{X}]$.
+\end{exercise}
+\textbf{Solution:} Define the error indicator $E = \mathbf{1}[X \neq \hat{X}]$. Then $H(X|\hat{X}, E) = H(X|\hat{X}, E=0)\Pr[E=0] + H(X|\hat{X}, E=1)\Pr[E=1]$. When $E=0$, $X = \hat{X}$ is determined, so $H(X|\hat{X}, E=0) = 0$. When $E=1$, $X$ is uniform over at most $|\mathcal{X}|-1$ values, so $H(X|\hat{X}, E=1) \le \log(|\mathcal{X}|-1)$. Thus $H(X|\hat{X}, E) \le P_e \log(|\mathcal{X}|-1)$. Since conditioning reduces entropy: $H(X|\hat{X}) \le H(X|\hat{X}, E) + H(E) = H(X|\hat{X}, E) + H(P_e)$. Combining: $H(X|\hat{X}) \le H(P_e) + P_e \log(|\mathcal{X}|-1)$.
+
+%======================================================================
+\section{Chapter 6: Error Correcting Codes}
+%======================================================================
+
+\begin{exercise}[Intermediate]
+Compute the minimum distance of the $[7,4]$ Hamming code and prove it is perfect.
+\end{exercise}
+\textbf{Solution:} The parity-check matrix is the $3 \times 7$ matrix whose columns are all non-zero binary 3-tuples:
+\[
+H = \begin{pmatrix} 0&0&0&1&1&1&1 \\ 0&1&1&0&0&1&1 \\ 1&0&1&0&1&0&1 \end{pmatrix}
+\]
+The minimum distance equals the smallest number of linearly dependent columns. Any two columns are linearly independent. Three columns are dependent iff they sum to $0$ in $\mathbb{F}_2^3$. The codeword $c = (0,0,0,1,1,1,0)$ satisfies $Hc^T = 0$ (the last three columns of $H$ sum to $0$), so $d_{\min} \le 3$. Since no two columns are identical, $d_{\min} \ge 3$. Thus $d_{\min} = 3$.
+
+Sphere-packing bound: $t = \lfloor(d_{\min}-1)/2\rfloor = 1$. The bound requires $2^{n-k} \ge \sum_{i=0}^t \binom{n}{i} = 1 + 7 = 8$. The code has $2^{n-k} = 2^3 = 8$ codewords per coset. Since $|C| \cdot 8 = 16 \cdot 8 = 128 = 2^7$, the bound is met with equality, proving the Hamming code is perfect.
+
+\begin{exercise}[Challenge]
+Prove that no non-trivial perfect binary code exists beyond the Hamming codes and the Golay code.
+\end{exercise}
+\textbf{Solution:} The sphere-packing bound requires $\sum_{i=0}^t \binom{n}{i} = 2^{n-k}$. For binary codes, this constrains the possible parameters $(n,k,t)$. The known solutions are: (a) $t=1$: Hamming codes with $n = 2^r - 1$, $k = 2^r - r - 1$; (b) $t=3$, $n=23$, $k=12$: the binary Golay code; (c) trivial codes ($t = \lfloor n/2 \rfloor$ with $k=1$ or $k=n-1$). The non-existence proof for other parameters uses the Tiet\"a-v\"a\"an\"anen (1990) result, which relies on Zilber's theorem to show that any perfect code with $t \ge 2$ and $n \ge 2t+1$ must be equivalent to a linear code.
+
+%======================================================================
+\section{Chapter 7: Kolmogorov Complexity}
+%======================================================================
+
+\begin{exercise}[Basic]
+Prove that $K(x) \le |x| + O(1)$.
+\end{exercise}
+\textbf{Solution:} Consider the program $p$ = ``print $x$'' where $x$ is hard-coded. The length of this program is $|x| + c$ where $c$ is the constant overhead for the print instruction in the universal machine $U$. This program outputs $x$, so $K(x) \le |x| + c$. The constant $c$ depends only on the choice of universal machine, not on $x$.
+
+\begin{exercise}[Intermediate]
+Prove that $K(x)$ is uncomputable.
+\end{exercise}
+\textbf{Solution:} Suppose $K$ were computable. Then the set $S = \{x : K(x) > |x|\}$ is decidable (compute $K(x)$ and compare with $|x|$). Since only $2^{n} - 1$ programs have length $\le n$, there exists a string $x$ of length $n$ with $K(x) > n$ for every $n$. Enumerate strings lexicographically, checking membership in $S$; since $S$ is decidable, find the shortest $x^*$ with $K(x^*) > |x^*|$. The program ``output the shortest string $x$ with $K(x) > |x|$'' has length $O(\log |x^*|)$ (using the decision procedure and binary search). But this program outputs $x^*$, so $K(x^*) = O(\log |x^*|) < |x^*|$ for large $|x^*|$, contradicting $K(x^*) > |x^*|$.
+
+\begin{exercise}[Challenge]
+Prove the Coding Theorem: $K(x) = -\log m(x) + O(1)$, where $m(x) = \sum_{p: U(p)=x} 2^{-|p|}$ is the universal semimeasure.
+\end{exercise}
+\textbf{Solution:} ($\ge$) Let $p^*$ be a shortest program for $x$, so $K(x) = |p^*|$. Then $m(x) \ge 2^{-|p^*|} = 2^{-K(x)}$, so $-\log m(x) \le K(x)$. ($\le$) For any prefix-free $m$ with $\sum_x m(x) \le 1$, the Kraft inequality gives a prefix code $C$ with $C(x) = \lceil -\log m(x) \rceil$ bits. The decoder program has length $|x| + c$ for the fixed decoder, but using the code: a program of length $C(x) + c'$ suffices. Hence $K(x) \le -\log m(x) + O(1)$. Since $m(x)$ (the universal semimeasure) is a specific prefix semimeasure, $K(x) \le -\log m(x) + O(1)$.
+
+%======================================================================
+\section{Chapter 8: Computational Complexity}
+%======================================================================
+
+\begin{exercise}[Basic]
+Use the time hierarchy theorem to prove $\mathsf{P} \subsetneq \mathsf{EXP}$.
+\end{exercise}
+\textbf{Solution:} The deterministic time hierarchy theorem states $\mathsf{DTIME}(n^k) \subsetneq \mathsf{DTIME}(n^{k+1})$ for $k \ge 1$. Since $\mathsf{P} = \bigcup_k \mathsf{DTIME}(n^k)$ and $\mathsf{EXP} = \bigcup_k \mathsf{DTIME}(2^{n^k})$, for any $k$ we have $\mathsf{DTIME}(n^k) \subseteq \mathsf{P} \subsetneq \mathsf{DTIME}(2^{n^k}) \subseteq \mathsf{EXP}$. Hence $\mathsf{P} \subsetneq \mathsf{EXP}$.
+
+\begin{exercise}[Intermediate]
+Prove Savitch's Theorem: $\mathsf{NSPACE}(s(n)) \subseteq \mathsf{DSPACE}(s(n)^2)$ for $s(n) \ge \log n$.
+\end{exercise}
+\textbf{Solution:} Given an NSPACE($s(n)$) machine $M$, construct a deterministic machine $M'$ that decides the same language. On input $x$, $M'$ determines the start configuration $C_{\mathrm{start}}$ and accept configuration $C_{\mathrm{accept}}$. $M'$ uses depth-first search over the configuration graph to determine if $C_{\mathrm{accept}}$ is reachable from $C_{\mathrm{start}}$. The key observation: a configuration of $M$ requires $O(s(n))$ space to store. The configuration graph has $2^{O(s(n))}$ nodes, each with $O(1)$ outgoing edges. To test reachability, $M'$ enumerates all paths of length $\le 2^{O(s(n))}$, but this requires $O(s(n))$ space for the path pointer (a sequence of configuration identifiers, each of size $O(s(n))$, with a pointer of depth $O(s(n))$). The total space is $O(s(n)^2)$. More precisely, $M'$ uses a recursive reachability procedure: $\mathrm{REACH}(C_1, C_2, t)$ returns whether $C_2$ is reachable from $C_1$ in $\le 2^t$ steps, using the midpoint method: try all configurations $C_m$ as midpoints, recursing with $t-1$. The recursion depth is $t = O(s(n))$, and each level stores one configuration of size $O(s(n))$, giving $O(s(n)^2)$ total space.
+
+\begin{exercise}[Challenge]
+Prove that $\mathsf{Parity} \notin \mathsf{AC}^0$ (Furst-Sipser / Ajtai / Håstad).
+\end{exercise}
+\textbf{Solution:} We prove this by the randomized switching lemma (Håstad's proof). An $\mathsf{AC}^0$ circuit of depth $d$ and size $S$ can be converted, after random restriction (setting each variable independently to $0$ or $1$ with probability $p$ each, and $\star$ with probability $1-2p$), into a decision tree of depth $O(\log S)$ with high probability. Choose $p = 1/(d \log S)$. After restriction, most variables are fixed. A decision tree of depth $t$ cannot compute Parity on $t+1$ unrestricted variables (since each leaf depends on only $t$ variables, but Parity on $t+1$ variables depends on all of them). Specifically, a depth-$t$ tree can be shattered on at most $t$ variables, but Parity on $t+1$ variables requires dependence on all $t+1$. The probability that the restricted Parity function agrees with any depth-$O(\log S)$ decision tree is at most $1 - 2^{-O(\log S)} < 1$. This contradicts the fact that the original circuit must compute Parity correctly on all inputs, since the restriction preserves the value on a $1-2p$ fraction of inputs.
+
+%======================================================================
+\section{Chapter 9: NP-Completeness}
+%======================================================================
+
+\begin{exercise}[Basic]
+Prove that if any NP-complete problem is in P, then P = NP.
+\end{exercise}
+\textbf{Solution:} Let $L$ be NP-complete and suppose $L \in \mathsf{P}$. By definition of NP-complete, for every $A \in \mathsf{NP}$, there exists a polynomial-time reduction $f$ such that $x \in A \iff f(x) \in L$. Since $f$ is computable in polynomial time and $L$ can be decided in polynomial time (as $L \in \mathsf{P}$), the composition gives a polynomial-time decision procedure for $A$: compute $f(x)$, then decide if $f(x) \in L$. Hence $A \in \mathsf{P}$, so $\mathsf{NP} \subseteq \mathsf{P}$. Since $\mathsf{P} \subseteq \mathsf{NP}$, we conclude $\mathsf{P} = \mathsf{NP}$.
+
+\begin{exercise}[Intermediate]
+Prove 3-SAT $\le_p$ Clique with an explicit graph construction.
+\end{exercise}
+\textbf{Solution:} Given a 3-CNF formula $\phi = C_1 \land C_2 \land \cdots \land C_m$ with clauses $C_j = (\ell_{j,1} \lor \ell_{j,2} \lor \ell_{j,3})$, construct graph $G$ as follows. The vertex set has $3m$ vertices: one for each literal in each clause, i.e., $v_{j,i}$ for $\ell_{j,i}$ in clause $C_j$. Two vertices $v_{j,i}$ and $v_{j',i'}$ are connected by an edge if: (1) they come from different clauses ($j \neq j'$), and (2) the corresponding literals are not negations of each other (i.e., $\ell_{j,i} \neq \overline{\ell_{j',i'}}$). Set $k = m$.
+
+($\Rightarrow$) If $\phi$ is satisfiable, each clause has at least one true literal. Pick one such literal per clause; the corresponding $m$ vertices form a clique of size $m$: they are from different clauses and are pairwise consistent (since the satisfying assignment makes them all true, no two can be negations of each other).
+
+($\Leftarrow$) If $G$ has a clique of size $m$, the $m$ vertices correspond to one literal per clause from distinct clauses, with no two being negations. Assign true to each chosen literal and arbitrarily to the rest. This satisfies $\phi$.
+
+\begin{exercise}[Intermediate]
+Prove 3-SAT $\le_p$ 3-Coloring.
+\end{exercise}
+\textbf{Solution:} Given a 3-CNF formula $\phi$ with variables $x_1, \ldots, x_n$ and clauses $C_1, \ldots, C_m$, construct graph $G$ as follows. Start with a triangle on three special vertices $\{T, F, B\}$ (Truth, Falsehood, Base) with edges $(T,F)$, $(T,B)$, $(F,B)$, forcing three different colors. For each variable $x_i$, add two vertices $x_i$ and $\bar{x}_i$ connected by an edge (forcing opposite colors). Connect both $x_i$ and $\bar{x}_i$ to $B$ (so neither can be the base color). For each clause $C_j = (\ell_a \lor \ell_b \lor \ell_c)$, add a ``clause gadget'': a triangle on three new vertices $c_{j,1}, c_{j,2}, c_{j,3}$ connected to $F$, and edges connecting $c_{j,1}$ to the vertex for $\ell_a$, $c_{j,2}$ to $\ell_b$, and $c_{j,3}$ to $\ell_c$. The clause vertices cannot all be colored $F$ (they form a triangle), so at least one must be colored $T$. Since the clause vertex adjacent to the literal's graph vertex cannot share that literal's color, if the literal is $T$-colored, the clause constraint is satisfied.
+
+%======================================================================
+\section{Chapter 10: Cryptography}
+%======================================================================
+
+\begin{exercise}[Basic]
+Show that if factoring is easy, then RSA is insecure.
+\end{exercise}
+\textbf{Solution:} RSA key generation produces $N = pq$ and public exponent $e$ with $\gcd(e, \phi(N)) = 1$, where $\phi(N) = (p-1)(q-1)$. To break RSA, given $N$ and $e$: factor $N$ to obtain $p$ and $q$ (the assumed easy step). Compute $\phi(N) = (p-1)(q-1)$. Compute $d = e^{-1} \bmod \phi(N)$ using the extended Euclidean algorithm. To decrypt any ciphertext $c$, compute $c^d \bmod N$. Since $d$ is the private key, this recovers the plaintext $m = c^d \bmod N$.
+
+\begin{exercise}[Intermediate]
+Implement and analyze the Diffie-Hellman key exchange. Prove that the shared secret is identical for both parties.
+\end{exercise}
+\textbf{Solution:} Alice picks random $a$, computes $A = g^a \bmod p$. Bob picks random $b$, computes $B = g^b \bmod p$. They exchange $A$ and $B$ publicly. Alice computes $K_A = B^a \bmod p = (g^b)^a \bmod p = g^{ab} \bmod p$. Bob computes $K_B = A^b \bmod p = (g^a)^b \bmod p = g^{ab} \bmod p$. Since modular exponentiation is associative: $K_A = g^{ab} \bmod p = K_B$. The security rests on the discrete logarithm problem: given $g, g^a \bmod p$, finding $a$ is computationally hard for appropriate primes $p$ (typically 2048+ bits).
+
+%======================================================================
+\section{Chapter 11: Zero Knowledge Proofs}
+%======================================================================
+
+\begin{exercise}[Basic]
+Prove special soundness of the Schnorr protocol: from two accepting transcripts $(a,c,z)$ and $(a,c',z')$ with $c \neq c'$, extract the witness $x$.
+\end{exercise}
+\textbf{Solution:} The Schnorr protocol: prover sends $a = g^r$, verifier sends challenge $c$, prover responds $z = r + cx \bmod q$. Verification: $g^z = a \cdot h^c$ where $h = g^x$.
+
+From two transcripts with the same commitment $a$ but different challenges $c \neq c'$:
+\[
+g^z = a \cdot h^c \quad \text{and} \quad g^{z'} = a \cdot h^{c'}
+\]
+Dividing: $g^{z - z'} = h^{c - c'}$. Since $h = g^x$, we get $g^{z-z'} = g^{x(c-c')}$, so $z - z' \equiv x(c - c') \pmod{q}$. Since $c \neq c'$, we compute $x = (z - z')(c - c')^{-1} \bmod q$.
+
+\begin{exercise}[Intermediate]
+Construct a simulator for the GMW Graph 3-Coloring protocol. Show computational indistinguishability.
+\end{exercise}
+\textbf{Solution:} The GMW protocol for graph 3-coloring: prover commits to a proper 3-coloring $\chi$ of graph $G$ using Pedersen commitments. Verifier picks a random edge $(u,v)$. Prover opens commitments for $\chi(u)$ and $\chi(v)$ (showing they differ).
+
+The simulator $S$ for verifier $V^*$: $S$ picks a random proper 3-coloring $\chi^*$ of $G$. $S$ commits to $\chi^*$ and interacts with $V^*$, receiving edge query $e = (u,v)$. $S$ opens $\chi^*(u)$ and $\chi^*(v)$. Since $\chi^*$ is a proper coloring, $\chi^*(u) \neq \chi^*(v)$, so the answer is always consistent. The transcript from $S$ is: commitments to a proper coloring, a random edge query, and two different opening values. In the real protocol, the prover also commits to a proper coloring (a potentially different one) and opens a random edge. Under the binding property of Pedersen commitments, the two distributions are computationally indistinguishable: an adversary cannot distinguish a commitment to one proper coloring from another.
+
+%======================================================================
+\section{Chapter 12: Interactive Proofs}
+%======================================================================
+
+\begin{exercise}[Basic]
+Show that any language in NP has an interactive proof system with a single round.
+\end{exercise}
+\textbf{Solution:} Given an NP language $L$ with verifier $V_{NP}$ and witness $w$ of polynomial length, construct an IP protocol: the prover sends $w$ to the verifier in a single message, and the verifier runs $V_{NP}(x, w)$. Completeness holds because if $x \in L$, there exists a witness $w$ that $V_{NP}$ accepts. Soundness holds because if $x \notin L$, no witness exists, so no prover message can make $V_{NP}$ accept. Thus $L \in \mathsf{IP}_1$ (one-round IP). This shows $\mathsf{NP} \subseteq \mathsf{IP}$.
+
+\begin{exercise}[Intermediate]
+Show that Graph Non-Isomorphism (GNI) has an interactive proof.
+\end{exercise}
+\textbf{Solution:} The protocol: (1) Prover claims $G_0 \not\cong G_1$. (2) Verifier picks $b \in \{0, 1\}$ uniformly, computes $H = G_b$ with a random permutation $\pi$, and sends $H$ to the prover. (3) Prover must identify $b$ (which original graph was permuted). If $G_0 \not\cong G_1$, the prover can always determine which graph $H$ is isomorphic to (by exhaustive search over automorphisms), so succeeds with probability 1. If $G_0 \cong G_1$, then $H$ is equally likely to be a permuted $G_0$ or $G_1$, so the prover guesses correctly with probability $1/2$. Repeating $k$ times reduces error to $2^{-k}$. This is the classic Goldwasser-Sipser protocol.
+
+\begin{exercise}[Challenge]
+Sketch the proof that IP $\subseteq$ PSPACE.
+\end{exercise}
+\textbf{Solution:} A PSPACE machine simulates the interactive proof by recursively computing the probability that the verifier accepts, maximizing over all possible prover messages at each step. For a protocol with $p(n)$ rounds, the machine maintains a value $V_i$ representing the acceptance probability given the messages sent in rounds $i+1, \dots, p(n)$. Starting from $V_{p(n)} = 1$ (accept) or $0$ (reject), it computes $V_{i-1} = \max_{m \in \mathcal{M}_i} \mathbb{E}_{r_i}[V_i]$ where the expectation is over the verifier's random bits. Each $V_i$ can be computed in polynomial space because the maximization and expectation involve only polynomial-size spaces. The final value $V_0$ gives the acceptance probability, which the machine compares to $2/3$. This shows IP $\subseteq$ PSPACE.
+
+%======================================================================
+\section{Chapter 13: Distributed Consensus}
+%======================================================================
+
+\begin{exercise}[Basic]
+Prove Paxos safety: if two proposals are both chosen (accepted by a majority), they must have the same value.
+\end{exercise}
+\textbf{Solution:} Let proposals $P_1$ (number $n_1$, value $v_1$) and $P_2$ (number $n_2$, value $v_2$) both be chosen, with $n_1 < n_2$. A proposal is ``chosen'' when a majority of acceptors accept it. By the pigeonhole principle, the majority that accepted $P_1$ and the majority that accepted $P_2$ share at least one acceptor $a$. Acceptor $a$ accepted $v_1$ at number $n_1$ and $v_2$ at number $n_2 \ge n_1$. By the Paxos protocol, after responding to Prepare($n_2$), acceptor $a$ promises not to accept any proposal numbered less than $n_2$. The proposer for $P_2$, after receiving Prepare($n_2$) responses, learns the highest-numbered accepted value from the responses. Since $a$ accepted $v_1$ at $n_1$ before promising for $n_2$, this $v_1$ was among the reported values. If any acceptor reported a value, the proposer for $P_2$ must use the highest-numbered one; if $v_1$ is the highest such, then $v_2 = v_1$. More generally, the inductive argument shows: all proposals with number $> n_1$ that are chosen must carry value $v_1$.
+
+\begin{exercise}[Challenge]
+Prove that in any deterministic consensus protocol, if one process can crash, then $n \ge 2t + 1$ processes are needed for $t$-tolerant consensus.
+\end{exercise}
+\textbf{Solution:} This is the FL impossibility result (Fischer, Lynch, Paterson 1985): no deterministic consensus protocol can tolerate even a single crash failure in an asynchronous system. The proof uses an indistinguishability argument. Suppose protocol $\Pi$ solves consensus for $n$ processes with $t$ failures. Consider two initial configurations: $v_0 = 0$ for all processes, and $v_1 = 1$ for all processes. In any execution, each process outputs 0 or 1. In a run $R_0$ where all processes run with input 0 and no failures, all must output 0 (agreement + validity). Process $p$ must eventually decide 0, say at step $s_p$. The prefix of $R_0$ up to step $s_p$ for process $p$ looks identical to a run where $p$ crashes at that step. In that crashed run, the remaining $n-1$ processes must still reach consensus. If $n-1 \ge n-t$ (i.e., $t \ge 1$), the crashed run is still valid. The surviving processes must output 0. But a symmetric argument on $R_1$ shows they must output 1, a contradiction. Hence $n > t$, and for randomized protocols, $n \ge 2t + 1$ for majority-based protocols.
+
+%======================================================================
+\section{Chapter 14: The Anatomy of Human Genius}
+%======================================================================
+
+\begin{exercise}[Intermediate]
+Analyze the Fast Fourier Transform using the nine patterns.
+\end{exercise}
+\textbf{Solution:} \textbf{Pattern 1 (Change Representation):} DFT as matrix-vector multiplication $y = Fx$ where $F_{jk} = \omega^{jk}$. The representation shift: view the matrix $F_n$ as a product of sparse matrices, enabling $O(n \log n)$ computation. \textbf{Pattern 2 (Find the Hidden Structure):} The butterfly decomposition: $F_{2n}$ decomposes into two $F_n$ multiplications via the twiddle factor structure $\omega_{2n}^2 = \omega_n$. \textbf{Pattern 3 (Compositional Reduction):} Divide-and-conquer: reduce size-$2n$ DFT to two size-$n$ DFTs. \textbf{Pattern 4 (Leverage Existing Machinery):} Gaussian elimination on the structured matrix is $O(n^3)$; the algebraic structure of roots of unity collapses this to $O(n \log n)$. \textbf{Pattern 5 (Transform the Problem Space):} Number-theoretic transform: same algorithm works over finite fields for polynomial multiplication in $O(n \log n)$. The other patterns apply less directly, but the FFT exemplifies how recognizing algebraic structure (roots of unity form a cyclic group) transforms a seemingly cubic problem into a logarithmic one.
+
+%======================================================================
+% INDEX ENTRIES
+%======================================================================
+\index{exercise solutions}
+\index{solutions}
+\index{hints}

@@ -64,4 +64,4 @@ make check      # Verify compilation
 
 ## License
 
-All rights reserved.
+[MIT License](LICENSE)

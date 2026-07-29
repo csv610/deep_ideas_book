@@ -12,14 +12,11 @@
 
 By the early 1970s, complexity theory had defined P (efficiently solvable) and NP (efficiently verifiable). But a mystery remained: \emph{Are they different?} And if so, \emph{which} problems in NP are the ``hardest''?
 
-\begin{question}Why are thousands of seemingly different problems — from logic (SAT) to graphs (Clique, Coloring) to numbers (Subset Sum, Factoring) to games (Chess, Go) — actually \emph{the same problem} in disguise?\end{question}
+Why are thousands of seemingly different problems — from logic (SAT) to graphs (Clique, Coloring) to numbers (Subset Sum, Factoring) to games (Chess, Go) — actually \emph{the same problem} in disguise?
 
 This question had practical urgency. By 1970, researchers across operations research, artificial intelligence, and combinatorial optimization had independently encountered problems that seemed to demand exponential time. The traveling salesman problem, Boolean satisfiability, graph coloring, integer programming, and job scheduling each resisted efficient algorithmic solution despite decades of effort by the brightest minds. The suspicion grew that these problems shared a deeper commonality — not merely in their difficulty, but in their essential nature.
 
-\begin{highlightbox}[The Core Question]
 Is there a \emph{single} problem inside NP that is the ``hardest'' — such that solving it efficiently would give us efficient algorithms for every NP problem? And conversely, is every NP problem reducible to this hardest core?
-
-\end{highlightbox}
 
 Kurt G\"odel anticipated this question in a 1956 letter to John von Neumann. G\"odel observed that a formula of the propositional calculus can be shown to be unsatisfiable in ``roughly $k \cdot n$ steps'' (by nondeterministic search), and asked whether the deterministic time could be bounded by a polynomial in $n$. He recognized that if such a polynomial bound existed, it would revolutionize mathematics by automating theorem-proving. G\"odel was asking, in essence, whether SAT is in P — the central question of NP-completeness, posed fifteen years before the framework existed to formulate it precisely.
 
@@ -39,15 +36,9 @@ Before Cook/Karp/Levin, the landscape was fragmented:
 \item \textbf{The Soviet Isolation:} Levin's independent discovery in the USSR was unknown in the West until the late 1970s. The Iron Curtain meant that two complete theories of NP-completeness developed in parallel, with different formulations and emphases — Levin's work emphasized \emph{average-case} complexity and \emph{universal search} algorithms from the start.
 \end{enumerate}
 
-\begin{roadblockbox}[The Fragmentation Barrier]
 ``TSP is about graphs. SAT is about logic. Knapsack is about numbers. They have nothing in common.'' This intuition had to be broken by showing they \emph{are} the same problem — polynomial-time reducible to each other.
 
-\end{roadblockbox}
-
-\begin{roadblockbox}[The ``No Universal Solver'' Dogma]
 A common belief held that because each problem had its own mathematical structure, each required its own bespoke solution method. The idea that a single algorithmic technique (SAT solving) could subsume all of combinatorial optimization was considered naive. NP-completeness proved this dogma wrong on the hardness side: all these problems are computationally equivalent. The surprise was both positive (they are the same) and negative (they are all hard).
-
-\end{roadblockbox}
 
 Previous attempts to unify hardness had failed. In recursion theory, many-one reductions had classified undecidable problems since the 1940s (Post's problem, the Turing degrees), but these were infinite classifications with infinitely many distinct degrees. The finitary analogue — polynomial-time reductions — was not obvious. Why would the polynomial-time analogue of Turing reducibility collapse the entire NP universe into just three categories (P, NP-complete, NP-intermediate) rather than producing an infinite hierarchy? The answer lay in the power of nondeterminism and the tight structure of polynomial-time computation, which Ladner's theorem would later illuminate.
 
@@ -61,7 +52,6 @@ A third barrier was the sheer novelty of reductions as a classification tool. Re
 \section{Historical Context: What Was Known at the Time}
 \label{sec:np:context}
 
-\begin{historicalbox}[The Convergence of 1971--1973]
 \begin{itemize}
 \item \textbf{1971 (May):} Stephen Cook (Toronto) presents ``The Complexity of Theorem-Proving Procedures'' at STOC. Defines P, NP, polynomial-time reduction, proves SAT is NP-complete.
 \item \textbf{1972:} Richard Karp (Berkeley) publishes ``Reducibility Among Combinatorial Problems'' — 21 NP-complete problems, showing the class is \emph{rich} and \emph{natural}. The paper becomes one of the most cited in computer science.
@@ -70,8 +60,6 @@ A third barrier was the sheer novelty of reductions as a classification tool. Re
 \item \textbf{1975:} Ladner: NP-intermediate problems exist if P $\neq$ NP. The internal structure of NP is nontrivial.
 \item \textbf{1979:} Garey \& Johnson: \emph{Computers and Intractability} — the ``bible'' of NP-completeness, cataloging 300+ problems with reductions.
 \end{itemize}
-
-\end{historicalbox}
 
 Key figures:
 
@@ -83,7 +71,6 @@ Key figures:
 \item \textbf{Michael Garey and David Johnson:} Their 1979 book \emph{Computers and Intractability: A Guide to the Theory of NP-Completeness} became the definitive reference, organizing hundreds of NP-complete problems by structure and providing template reductions.
 \end{itemize}
 
-\begin{historicalbox}[The Precursors]
 \begin{itemize}
 \item \textbf{1956:} G\"odel's letter to von Neumann asks whether propositional satisfiability can be solved in polynomial time — the first recorded articulation of the P vs NP question.
 \item \textbf{1960s:} Edmonds defines polynomial-time algorithms (``good algorithms'') in the context of maximum matching. Cobham (1964) and Edmonds (1965) independently propose polynomial time as the formalization of efficient computation.
@@ -92,12 +79,7 @@ Key figures:
 \item \textbf{1970:} Knuth asks whether certain combinatorial problems might be ``NP-complete'' in a draft of \emph{The Art of Computer Programming} (though the term did not yet exist).
 \end{itemize}
 
-\end{historicalbox}
-
-\begin{connectionbox}[Connection to Chapter 8]
 Cook's theorem uses the \emph{polynomial-time reduction} machinery built on the complexity classes (P, NP) and hierarchy theorems from Chapter 8. NP-completeness is the \emph{internal structure} of NP — the discovery that NP has a hardest element. The hierarchy theorems (time and space hierarchies) ensure that more time buys more computational power, but they do not resolve whether P = NP. NP-completeness reorients the question: instead of asking whether P = NP directly, we can ask whether any specific complete problem (like SAT) is in P.
-
-\end{connectionbox}
 
 %======================================================================
 % SECTION 4: THE MENTAL LEAP
@@ -107,19 +89,19 @@ Cook's theorem uses the \emph{polynomial-time reduction} machinery built on the 
 
 There are two leaps here — Cook's and Karp's.
 
-\begin{mentalLeap}[Cook's Leap (1971)]\emph{Any non-deterministic polynomial-time computation can be encoded as a Boolean formula.}\end{mentalLeap}
+\emph{Any non-deterministic polynomial-time computation can be encoded as a Boolean formula.}
 
 A non-deterministic TM $M$ running in time $p(n)$ has a computation tableau of size $p(n) \times p(n)$. Each cell = state + symbol. The condition ``this is a valid accepting computation'' is a conjunction of local constraints (each $2 \times 3$ window follows transition rules). This is a SAT formula of size $O(p(n)^2)$. The formula is satisfiable $\iff$ $M$ accepts the input. \emph{Every} NP problem reduces to SAT.
 
 This is the essence of the Cook-Levin theorem: SAT is NP-complete. The key insight is that the correctness of a nondeterministic Turing machine computation is a \emph{local} property. Each step of the TM is determined by the contents of a $2 \times 3$ window of the tableau. The global acceptance condition (the machine enters the accept state) can be checked by examining a single cell. This locality is what makes the reduction to SAT work: each $2 \times 3$ window constraint is a clause, and the whole computation is the conjunction of polynomially many such local constraints.
 
-\begin{mentalLeap}[Karp's Leap (1972)]\emph{NP-completeness is not a curiosity — it's the \emph{normal} state of NP problems.}\end{mentalLeap}
+\emph{NP-completeness is not a curiosity — it's the \emph{normal} state of NP problems.}
 
 Karp didn't just prove more problems complete. He showed a \emph{web of reductions}: SAT $\to$ 3-SAT $\to$ Clique $\to$ Vertex Cover $\to$ Hamiltonian Cycle $\to$ TSP $\to$ Subset Sum $\to$ Partition $\to$ Knapsack $\to$ Bin Packing $\to$ Graph Coloring $\to$ \dots Each reduction is a \emph{translation} preserving the ``yes/no'' answer. The 21 problems were \emph{representative} — hundreds more would follow. Karp also showed a \emph{method}: to prove a new problem NP-complete, reduce a known NP-complete problem to it using a polynomial-time gadget construction.
 
 The combined insight: \textbf{NP-complete problems are ``universal'' for NP.} They are the ``assembly language'' of non-deterministic polynomial time. Solving one efficiently solves \emph{all} of NP. The beauty is that this is a theorem, not a conjecture: if SAT $\in$ P, then P = NP. If SAT $\notin$ P, then P $\neq$ NP and all NP-complete problems are intractable.
 
-\begin{mentalLeap}[Levin's Leap (1973)]\emph{Universal search and average-case completeness.}\end{mentalLeap}
+\emph{Universal search and average-case completeness.}
 
 Levin's independent formulation differed in philosophically important ways. Instead of focusing on decision problems (yes/no answers), Levin defined \emph{search problems} — given an instance, find a solution. He also defined \emph{average-case NP-completeness}, recognizing that worst-case hardness is insufficient for cryptography and practical algorithm design. His concept of \emph{universal search} — an algorithm that searches all possible programs in parallel, achieving optimal performance up to a constant factor — remains one of the most remarkable algorithmic ideas ever conceived. If a problem has any polynomial-time algorithm (even one we haven't discovered), Levin's universal search algorithm will solve it in polynomial time with only a multiplicative constant overhead. Of course, the constant is astronomical — but the existence proof is stunning.
 
@@ -220,7 +202,6 @@ If $M$ accepts $x$, there exists an accepting computation path. The variables se
 The formula has $O(T^2)$ variables and $O(T^2)$ clauses, each of constant size. The construction is computable in time $O(T^2) = O(p(n)^2)$, which is polynomial in $n$. Therefore $L \le_p \mathsf{SAT}$.
 \end{proof}
 
-\begin{historicalbox}[Why the Cook-Levin Theorem Is Not Obvious]
 The Cook-Levin theorem is often presented as a straightforward encoding, but several subtle points deserve emphasis:
 
 \begin{enumerate}
@@ -228,8 +209,6 @@ The Cook-Levin theorem is often presented as a straightforward encoding, but sev
 \item The encoding uses $O(p(n)^2)$ variables — one could hope for $O(p(n)^{\log p(n)})$ by exploiting more sophisticated encoding schemes, but the quadratic bound is the natural one from the tableau.
 \item The construction works for \emph{any} nondeterministic TM — it does not depend on the specific problem. This universality is what makes SAT the ``first'' NP-complete problem.
 \end{enumerate}
-
-\end{historicalbox}
 
 \subsection{Karp's 21 Problems (Key Reductions)}
 \label{sec:np:karp}
@@ -266,7 +245,6 @@ This preserves satisfiability: any assignment satisfying the original clause can
 \item \textbf{3-Colorability $\le_p$ Planar 3-Colorability:} This reduction requires constructing a planar graph 4-cycle that simulates edge crossings using a planar crossover gadget. The existence of a planar crossover for 3-coloring (and its lack for 2-coloring) shows the subtlety of planar constraint satisfaction. The crossover gadget is a graph of 18 vertices that allows two edges to cross without creating spurious color constraints.
 \end{itemize}
 
-\begin{roadblockbox}[The Gadget Design Principle]
 Every Karp reduction can be understood as a composition of \emph{gadgets}. A gadget is a small graph (or set of numbers, or subformula) that implements a logical constraint. The three fundamental gadget types are:
 
 \begin{enumerate}
@@ -279,14 +257,9 @@ Mastering these three gadget types is the key to proving new NP-completeness res
 
 A classic example of gadget design is the \emph{crossover gadget} used in planar graph reductions. When reducing to a planar problem (like Planar 3-Colorability or Planar Hamiltonian Cycle), edges in the source graph may cross in the plane. A crossover gadget replaces the crossing with a small planar subgraph that simulates the crossing without violating planarity. For 3-Colorability, the crossover gadget is an 18-vertex graph that allows any 3-coloring of the four boundary vertices as long as the two ``wires'' are colored consistently. This gadget is planar, so the resulting graph remains planar, proving that Planar 3-Colorability is NP-complete.
 
-\end{roadblockbox}
-
-\begin{historicalbox}[The Influence of Karp's 1972 Paper]
 Karp's paper ``Reducibility Among Combinatorial Problems'' did more than list 21 NP-complete problems — it established the \emph{methodology} of NP-completeness proofs. Before Karp, the only known NP-complete problem was SAT (Cook), and proving a new problem NP-complete meant reducing from SAT (which involved encoding TM computations — a tedious process). Karp showed that reductions could be chained: once SAT reduces to 3-SAT, and 3-SAT reduces to Clique, and Clique reduces to Vertex Cover, any new problem need only be connected to this web at its nearest neighbor. This ``transitive closure'' property of reductions makes NP-completeness practical as a classification tool.
 
 Karp's paper also introduced the notion of \emph{systematic reduction cataloging}. Each problem was presented with a clear description, a reference to its origin, and a reduction from a known NP-complete problem. This format — still used today — turned NP-completeness from a theoretical curiosity into an engineering methodology.
-
-\end{historicalbox}
 
 \subsection{More Reductions and Classical NP-Complete Problems}
 
@@ -324,10 +297,7 @@ This function $f$ ensures that $L$ is in NP (since SAT is in NP and $f(|x|)$ is 
 
 Candidate NP-intermediate problems: \textbf{Graph Isomorphism}, \textbf{Factoring} (decision version: given $n$ and $m$, does $n$ have a nontrivial factor $\le m$?), \textbf{Discrete Log}, \textbf{Minimum Circuit Size Problem (MCSP)}. Despite decades of effort, none of these has been proven NP-complete or shown to be in P. Factoring is in BQP (Shor's algorithm) but not known to be in P. MCSP is in NP but its exact complexity remains one of the deepest open problems in complexity theory.
 
-\begin{connectionbox}[NP-Intermediate Problems and Cryptography]
 The existence of NP-intermediate problems (assuming P $\neq$ NP) is intimately connected to cryptography. One-way functions (functions that are easy to compute but hard to invert) exist iff P $\neq$ NP and some additional structure holds. The canonical candidate one-way function — integer multiplication (easy) vs factoring (hard) — is a candidate NP-intermediate problem. This is no coincidence: if a problem is NP-complete, it is ``hard in the worst case'' but not necessarily ``hard on average,'' which is what cryptography requires. NP-intermediate problems like factoring and discrete log provide exactly the average-case hardness that cryptography needs.
-
-\end{connectionbox}
 
 \subsection{Completeness for Other Classes}
 \label{sec:np:other_complete}
@@ -340,10 +310,7 @@ The existence of NP-intermediate problems (assuming P $\neq$ NP) is intimately c
 \item \textbf{\#P-complete:} Counting versions of NP-complete problems. \#SAT (count satisfying assignments), \#3-SAT, permanent of a 0-1 matrix. Toda's theorem (1991): $\PH \subseteq \mathsf{P}^{\#\mathsf{P}}$ — the entire polynomial hierarchy can be solved by a single query to a \#P oracle. This is one of the most surprising results in complexity theory.
 \end{itemize}
 
-\begin{roadblockbox}[The Counting Barrier]
 \#P-completeness shows that even when decision is easy (matching in bipartite graphs is in P), counting can be hard (the permanent is \#P-complete). This is the ``easy decision, hard counting'' phenomenon, which has significant implications for statistical physics (counting independent sets, satisfying assignments of random formulas) and Bayesian inference (computing partition functions). The dichotomy between easy decision and hard counting is a recurring theme in complexity theory.
-
-\end{roadblockbox}
 
 \subsection{The PCP Theorem and Hardness of Approximation}
 \label{sec:np:pcp}
@@ -413,10 +380,7 @@ Assuming P $\neq$ NP:
 
 These are \emph{optimal} because greedy or random algorithms achieve these ratios. The theory of approximation algorithms thus attains a mathematical completeness: for many fundamental problems, we now know exactly how well we can approximate them in polynomial time (assuming P $\neq$ NP or the UGC).
 
-\begin{historicalbox}[The Long Road to the PCP Theorem]
 The PCP theorem was the culmination of a decade of work. In 1990, Feige, Goldwasser, Lovász, Safra, and Szegedy showed that approximating Max-Clique is hard, introducing the idea of ``babai'' protocols. In 1991, Babai, Fortnow, and Lund proved NEXP = MIP (multiple interactive provers), establishing that interactive proofs with multiple provers have enormous power. This was followed by the work of Arora, Lund, Motwani, Sudan, and Szegedy (1992) who proved the full PCP theorem. The original proof was over 100 pages and used sophisticated algebraic techniques (low-degree polynomials, Fourier analysis over finite fields, recursive composition). Dinur's 2007 combinatorial proof reduced the proof to lecture-length, making the theorem accessible to a much wider audience.
-
-\end{historicalbox}
 
 \subsubsection*{The Unique Games Conjecture (Khot 2002)}
 
@@ -437,10 +401,7 @@ Raghavendra's theorem works as follows: for any constraint satisfaction problem 
 
 The practical consequence: for any CSP, one can compute the UGC-optimal approximation ratio by simply evaluating the integrality gap of the basic SDP. This ``recipe'' has been applied to Max-Cut ($\alpha_{\text{GW}} \approx 0.878$), Max-2SAT ($\alpha \approx 0.940$), and hundreds of other problems.
 
-\begin{roadblockbox}[Status of the UGC]
 Despite intensive effort, the Unique Games Conjecture remains unresolved. Khot and Moshkovitz (2016) proved a ``gap amplification'' theorem for unique games that makes progress toward resolution. Subexponential algorithms for unique games (Arora-Barak-Steurer 2015) show that the problem is not NP-hard under the exponential time hypothesis (ETH) in the subexponential regime. A resolution of the UGC — either a proof or a disproof — would be one of the most significant results in computational complexity.
-
-\end{roadblockbox}
 
 \subsubsection*{Average-Case Complexity}
 \refstepcounter{subsubsection}\label{sec:np:averagecase}
@@ -499,10 +460,7 @@ A problem is FPT iff it has a kernelization (not necessarily polynomial-sized).
 
 For $k$-Vertex Cover, the classic kernel is: while there exists a vertex with degree $> k$, include it in the cover and remove it and its incident edges (since covering its edges requires either it or all $>k$ neighbors, but we can only include $k$ vertices in the cover). After removing, if more than $k^2$ edges remain, the instance is surely unsatisfiable. Otherwise, the remaining graph has at most $2k^2$ vertices and $k^2$ edges, giving a kernel of size $O(k^2)$.
 
-\begin{connectionbox}[Parameterized Complexity and Practical Algorithms]
 The $O(1.2738^k + kn)$ algorithm for $k$-Vertex Cover is practical for $k$ up to about 100. This means instances with 1000 vertices but parameter 50 are easily solvable, despite being ``NP-complete'' in the classical sense. Parameterized complexity thus provides a nuanced view of hardness: a problem is not simply ``hard'' or ``easy'' — its difficulty depends on the structural parameter.
-
-\end{connectionbox}
 
 \subsubsection*{Fine-Grained Complexity}
 \refstepcounter{subsubsection}\label{sec:np:finegrained}
@@ -533,10 +491,7 @@ A landmark result of fine-grained complexity is the \emph{hardness of approximat
 
 The ``canonical'' fine-grained hardness framework (Vassilevska-Williams 2018) organizes problems into equivalence classes based on SETH, 3SUM, OVH, and APSP. Each hypothesis has a ``universal problem'' that captures the essential hardness of the class: OV for SETH, 3SUM for the 3SUM conjecture, and negative triangle detection for APSP. Reductions to and from these universal problems establish tight lower bounds for dozens of fundamental problems.
 
-\begin{roadblockbox}[The SETH Barrier]
 The Strong Exponential Time Hypothesis (SETH) implies near-quadratic lower bounds for many basic problems: Edit Distance, LCS, Frechet Distance, and various graph distances. Understanding whether these lower bounds are tight — or whether SETH can be refuted — is one of the central open problems in fine-grained complexity. Recent work of Williams (2014) shows that SETH can be refuted---or at least, some cases of Orthogonal Vectors can be solved faster---using circuit analysis techniques.
-
-\end{roadblockbox}
 
 \subsubsection*{Proof Complexity}
 \refstepcounter{subsubsection}\label{sec:np:proofcomplexity}
@@ -563,12 +518,9 @@ A particularly elegant result in proof complexity is the \emph{width lower bound
 
 The relationship between SAT solving and proof complexity is deep and bidirectional. Every run of a CDCL solver with clause learning produces a resolution refutation of the input formula, and conversely, every resolution refutation can be simulated (inefficiently) by a CDCL solver. This means that lower bounds on resolution imply limitations on CDCL solvers, and improved SAT solving algorithms correspond to more powerful proof systems.
 
-\begin{historicalbox}[Feasible Interpolation and Cryptography]
 A surprising connection: if a proof system has the \emph{feasible interpolation} property (one can extract a small circuit from a proof that separates two disjoint NP sets), then lower bounds for the proof system imply separation of complexity classes. The cutting planes system has feasible interpolation for certain classes of formulas, which yields circuit lower bounds. This is one of the few links between proof complexity and circuit complexity.
 
 A landmark result: Krajíček (1997) proved that if NP $\neq$ coNP, then there is no polynomial-time algorithm for the \emph{implication problem} in propositional logic (does $\phi \models \psi$ hold when both formulas have polynomial length?). This shows that the NP $\neq$ coNP question has direct practical consequences for automated reasoning.
-
-\end{historicalbox}
 
 %======================================================================
 % SECTION 6: CONSEQUENCES
@@ -667,7 +619,6 @@ The PCP Theorem (1992) and subsequent work provided \emph{optimal} inapproximabi
 \item \textbf{The Cook-Reckhow Program (1979--present):} The question ``Is NP = coNP?'' — equivalent to asking whether every tautology has a short proof in some propositional proof system — connects proof complexity to NP-completeness. If NP $\neq$ coNP then P $\neq$ NP (since P is closed under complement). The Cook-Reckhow program seeks to prove super-polynomial lower bounds on proof length for increasingly strong proof systems: resolution (exponential lower bounds known), cutting planes (exponential lower bounds for specific tautologies), and polynomial calculus (degree lower bounds). The hardest open problem: prove that the Frege system (polynomial-length proofs) requires super-polynomial proofs for some tautology. This would separate NP from coNP (assuming a natural condition on the proof system).
 \end{itemize}
 
-\begin{roadblockbox}[Barriers to Resolving P vs NP]
 Three major barriers have been identified that prevent current techniques from resolving P vs NP:
 
 \begin{enumerate}
@@ -680,9 +631,6 @@ Three major barriers have been identified that prevent current techniques from r
 
 These barriers do not mean P vs NP is unsolvable — they mean new ideas are needed, ideas that circumvent all three barriers simultaneously.
 
-\end{roadblockbox}
-
-\begin{connectionbox}[Connections]
 \begin{itemize}
 \item Chapter 8 (Complexity): P, NP, hierarchy — the framework.
 \item Chapter 10 (Cryptography): Average-case hardness, one-way functions, LWE.
@@ -691,8 +639,6 @@ These barriers do not mean P vs NP is unsolvable — they mean new ideas are nee
 \item Chapter 12 (Interactive Proofs): Streaming algorithms for NP-hard problems (approximation via PCP/AM).
 \item Appendix (Biographical): Extended biographies of Cook, Karp, Levin.
 \end{itemize}
-
-\end{connectionbox}
 
 %======================================================================
 % SECTION 9: LESSONS FOR FUTURE SCIENTISTS

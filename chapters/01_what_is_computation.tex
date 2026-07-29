@@ -16,9 +16,9 @@ This was the culminating question of Hilbert's program --- the dream of placing 
 
 But the question presupposed an answer to a deeper question: \emph{What does it mean for a procedure to be ``mechanical''?} Before we can ask whether a mechanical procedure exists, we must define what counts as a mechanical procedure. This is the question that birthed computer science.
 
-\begin{question}What is a computation?\end{question}
+What is a computation?
 
-\begin{highlightbox}[The Core Question]What distinguishes a ``mechanical procedure'' that a human computer could follow from a mathematical insight that requires understanding? Can every well-defined mathematical procedure be captured by a single, universal formalism?\end{highlightbox}
+What distinguishes a ``mechanical procedure'' that a human computer could follow from a mathematical insight that requires understanding? Can every well-defined mathematical procedure be captured by a single, universal formalism?
 
 To appreciate the depth of this question, consider a simple example. Suppose we want to decide whether a Diophantine equation --- an integer polynomial equation like $x^3 + y^3 = z^3$ --- has a solution in integers. A trained mathematician might stare at it, summon deep number-theoretic insights, and eventually recognize that Fermat's Last Theorem (proved by Wiles in 1994) implies no solution exists. But a mechanical procedure would need to reach the same conclusion by systematically applying predetermined rules, without any understanding of number theory. The question is: can \emph{every} such mathematical decision be reduced to rule-following?
 
@@ -32,7 +32,7 @@ The Entscheidungsproblem was the third pillar of Hilbert's program. The first pi
 
 In the 1920s and 1930s, defining ``computation'' formally seemed paradoxical. Computation was something \emph{people did} --- inherently tied to understanding, meaning, and intention. The idea that it could be captured by a mathematical object --- a machine manipulating symbols without understanding them --- struck many as a category error.
 
-\begin{roadblockbox}[The Intuition Barrier]``A machine cannot think. A machine follows rules. But mathematics requires insight. Therefore no machine can do mathematics.'' The gap between \emph{syntax} (symbol manipulation) and \emph{semantics} (meaning) seemed unbridgeable.\end{roadblockbox}
+``A machine cannot think. A machine follows rules. But mathematics requires insight. Therefore no machine can do mathematics.'' The gap between \emph{syntax} (symbol manipulation) and \emph{semantics} (meaning) seemed unbridgeable.
 
 Three competing intuitions blocked progress:
 
@@ -44,11 +44,11 @@ Three competing intuitions blocked progress:
 \item \textbf{The Algorithm Model:} An algorithm is a finite list of instructions. But what counts as an instruction? ``Multiply two numbers'' --- is that one instruction? What about ``solve this differential equation''? The granularity problem seemed insoluble. If instructions are too coarse, the algorithm hides complexity. If too fine, the description becomes impractically large. What is the right level of atomicity for a ``mechanical step''?
 \end{enumerate}
 
-\begin{roadblockbox}[The Granularity Problem]Consider the Euclidean algorithm for GCD: ``Take the larger number, subtract the smaller from it repeatedly until the remainder is less than the smaller.'' Is ``subtract repeatedly'' one instruction or many? If the latter, how do we express iteration without presupposing a mechanism for looping? The problem is that any sufficiently expressive instruction set already contains the computational power we are trying to define.\end{roadblockbox}
+Consider the Euclidean algorithm for GCD: ``Take the larger number, subtract the smaller from it repeatedly until the remainder is less than the smaller.'' Is ``subtract repeatedly'' one instruction or many? If the latter, how do we express iteration without presupposing a mechanism for looping? The problem is that any sufficiently expressive instruction set already contains the computational power we are trying to define.
 
 Experts believed any formal definition would either be too narrow (excluding clearly computational processes) or too broad (including things that aren't). Capturing the intuitive notion exactly seemed impossible --- like trying to formalize ``art'' or ``beauty.''
 
-\begin{historicalbox}[G\"odel's Skepticism]In 1934, G\"odel rejected Church's proposal that $\lambda$-definability captures effective calculability, calling it ``thoroughly unsatisfactory.'' G\"odel demanded a justification that the proposed formal class could not be extended by any intuitively sound principle. Turing's analysis, two years later, would provide exactly that justification.\end{historicalbox}
+In 1934, G\"odel rejected Church's proposal that $\lambda$-definability captures effective calculability, calling it ``thoroughly unsatisfactory.'' G\"odel demanded a justification that the proposed formal class could not be extended by any intuitively sound principle. Turing's analysis, two years later, would provide exactly that justification.
 
 %======================================================================
 % SECTION 3: HISTORICAL CONTEXT
@@ -56,7 +56,7 @@ Experts believed any formal definition would either be too narrow (excluding cle
 \section{Historical Context: What Was Known at the Time}
 \label{sec:computation:context}
 
-\begin{historicalbox}[The Foundational Crisis]By 1928, mathematics was in crisis. Russell's paradox (1901) had shattered naive set theory. G\"odel's completeness theorem (1929) showed first-order logic is complete --- but his incompleteness theorems (1931) would soon show that any sufficiently strong formal system contains unprovable truths. Hilbert's program --- to prove mathematics consistent, complete, and decidable using finitary methods --- was the last great hope for mathematical certainty.\end{historicalbox}
+By 1928, mathematics was in crisis. Russell's paradox (1901) had shattered naive set theory. G\"odel's completeness theorem (1929) showed first-order logic is complete --- but his incompleteness theorems (1931) would soon show that any sufficiently strong formal system contains unprovable truths. Hilbert's program --- to prove mathematics consistent, complete, and decidable using finitary methods --- was the last great hope for mathematical certainty.
 
 Key developments converging in the 1930s:
 
@@ -70,7 +70,7 @@ Key developments converging in the 1930s:
 \item \textbf{Alan Turing (1936):} Turing machines. Analyzed what a human computer actually \emph{does} --- writes symbols on paper, changes mental state, moves left/right. Abstracted this into a mathematical machine.
 \end{itemize}
 
-\begin{connectionbox}[Connection to Chapter 3]G\"odel's encoding of syntax into arithmetic (Chapter 3) was the crucial precedent: it showed that \emph{meta-mathematical} notions (provability, truth) could be brought inside arithmetic. Turing applied the same insight to \emph{computation itself} --- the machine becomes data.\end{connectionbox}
+G\"odel's encoding of syntax into arithmetic (Chapter 3) was the crucial precedent: it showed that \emph{meta-mathematical} notions (provability, truth) could be brought inside arithmetic. Turing applied the same insight to \emph{computation itself} --- the machine becomes data.
 
 \subsection*{The Pre-1936 Landscape}
 
@@ -87,15 +87,15 @@ Before 1936, several mathematicians had circled the problem:
 
 \subsection*{Biographical Sketches}
 
-\begin{historicalbox}[Alan Turing (1912--1954)]Turing was a British mathematician, logician, and pioneer of computer science. He earned a first-class degree in mathematics from King's College, Cambridge in 1934, and was elected a Fellow at age 22. His 1936 paper, written when he was 23--24, is arguably the single most important paper in the history of computer science. During World War II, Turing worked at Bletchley Park, leading efforts to break the German Enigma code. He designed the Bombe, an electromechanical device that automated cryptanalysis. After the war, he worked on the Automatic Computing Engine (ACE) at the National Physical Laboratory. He was convicted of gross indecency for his homosexuality in 1952, subjected to chemical castration, and died of cyanide poisoning in 1954 in what was ruled a suicide. He was posthumously pardoned in 2013.\end{historicalbox}
+Turing was a British mathematician, logician, and pioneer of computer science. He earned a first-class degree in mathematics from King's College, Cambridge in 1934, and was elected a Fellow at age 22. His 1936 paper, written when he was 23--24, is arguably the single most important paper in the history of computer science. During World War II, Turing worked at Bletchley Park, leading efforts to break the German Enigma code. He designed the Bombe, an electromechanical device that automated cryptanalysis. After the war, he worked on the Automatic Computing Engine (ACE) at the National Physical Laboratory. He was convicted of gross indecency for his homosexuality in 1952, subjected to chemical castration, and died of cyanide poisoning in 1954 in what was ruled a suicide. He was posthumously pardoned in 2013.
 
-\begin{historicalbox}[Alonzo Church (1903--1995)]Church was an American mathematician and logician who spent most of his career at Princeton University. He invented the $\lambda$-calculus in 1932 as part of a formal system for the foundations of mathematics. Church was Turing's PhD advisor; their student-advisor relationship is one of the most consequential in intellectual history --- both men independently defined computation, and Turing proved their formalisms equivalent. Church also formulated Church's theorem: there is no decision procedure for first-order logic.\end{historicalbox}
+Church was an American mathematician and logician who spent most of his career at Princeton University. He invented the $\lambda$-calculus in 1932 as part of a formal system for the foundations of mathematics. Church was Turing's PhD advisor; their student-advisor relationship is one of the most consequential in intellectual history --- both men independently defined computation, and Turing proved their formalisms equivalent. Church also formulated Church's theorem: there is no decision procedure for first-order logic.
 
-\begin{historicalbox}[Kurt G\"odel (1906--1978)]G\"odel was an Austrian--American logician, mathematician, and philosopher. His incompleteness theorems (1931), published when he was 25, are among the most important results in mathematical logic. G\"odel's work on recursive functions, developed in his 1934 Princeton lectures, was foundational to computability theory. G\"odel was a perfectionist who published relatively little, but each publication was transformative. He suffered from mental health problems in later life and died of starvation in 1978.\end{historicalbox}
+G\"odel was an Austrian--American logician, mathematician, and philosopher. His incompleteness theorems (1931), published when he was 25, are among the most important results in mathematical logic. G\"odel's work on recursive functions, developed in his 1934 Princeton lectures, was foundational to computability theory. G\"odel was a perfectionist who published relatively little, but each publication was transformative. He suffered from mental health problems in later life and died of starvation in 1978.
 
-\begin{historicalbox}[Stephen Kleene (1909--1994)]Kleene was an American mathematician who earned his PhD under Church at Princeton (1934). He developed the theory of general recursive functions independently of and concurrently with G\"odel and Herbrand. Kleene also founded the theory of regular languages and finite automata (Kleene's theorem, 1956) and introduced the Kleene star operator. His 1952 book \emph{Introduction to Metamathematics} was the definitive textbook on recursion theory for decades.\end{historicalbox}
+Kleene was an American mathematician who earned his PhD under Church at Princeton (1934). He developed the theory of general recursive functions independently of and concurrently with G\"odel and Herbrand. Kleene also founded the theory of regular languages and finite automata (Kleene's theorem, 1956) and introduced the Kleene star operator. His 1952 book \emph{Introduction to Metamathematics} was the definitive textbook on recursion theory for decades.
 
-\begin{historicalbox}[Emil Post (1897--1954)]Post was an American mathematician and logician. He earned his PhD from Columbia (1920) for a dissertation on the propositional calculus. Post developed his canonical systems in 1921 but was unable to publish due to mental health struggles. He independently formulated a model equivalent to Turing machines in 1936, though his paper appeared slightly after Turing's. Post's ``tag systems'' --- simple string rewriting systems --- were later shown to be universal. He also proved the completeness and consistency of the propositional calculus, independent of Wittgenstein's contemporaneous work.\end{historicalbox}
+Post was an American mathematician and logician. He earned his PhD from Columbia (1920) for a dissertation on the propositional calculus. Post developed his canonical systems in 1921 but was unable to publish due to mental health struggles. He independently formulated a model equivalent to Turing machines in 1936, though his paper appeared slightly after Turing's. Post's ``tag systems'' --- simple string rewriting systems --- were later shown to be universal. He also proved the completeness and consistency of the propositional calculus, independent of Wittgenstein's contemporaneous work.
 
 \subsection*{Beyond the Mainstream}
 
@@ -108,7 +108,7 @@ The problem of defining computation was not confined to the logicians. Several o
 \item \textbf{David Hilbert (1926):} In ``On the Infinite,'' Hilbert wrote about the ``finite standpoint'' (\emph{finite Einstellung}) --- the idea that metamathematical reasoning must be based on finitary methods. This directly inspired the search for a finitary definition of computation.
 \end{itemize}
 
-\begin{connectionbox}[The Deep Roots]The question ``What is computation?'' did not arise in a vacuum. It grew from two millennia of work on algorithmic problem-solving --- from Euclid's algorithm (circa 300 BCE) to al-Khw\=arizm\=i's algebra (circa 820 CE) to Leibniz's \emph{calculus ratiocinator} (1666) to Babbage's Analytical Engine (1837). Each of these was a precursor to the formal question Turing answered.\end{connectionbox}
+The question ``What is computation?'' did not arise in a vacuum. It grew from two millennia of work on algorithmic problem-solving --- from Euclid's algorithm (circa 300 BCE) to al-Khw\=arizm\=i's algebra (circa 820 CE) to Leibniz's \emph{calculus ratiocinator} (1666) to Babbage's Analytical Engine (1837). Each of these was a precursor to the formal question Turing answered.
 
 %======================================================================
 % SECTION 4: THE MENTAL LEAP
@@ -118,7 +118,7 @@ The problem of defining computation was not confined to the logicians. Several o
 
 Turing's 1936 paper ``On Computable Numbers, with an Application to the Entscheidungsproblem'' contains one of the most extraordinary intellectual leaps in history. He did not \emph{propose} a definition of computation. He \emph{analyzed} what a human computer does and proved that his machine captures it.
 
-\begin{mentalLeap}\textbf{The Insight:} A human computer performing a calculation is a finite-state machine reading and writing symbols on an unbounded tape. The ``mental state'' of the computer is finite. The symbols are from a finite alphabet. The operations are local: read a symbol, change state, write a symbol, move left or right. \emph{That is all computation is.}\end{mentalLeap}There is no ``understanding'' in the machine. There is only state transition. The meaning lives entirely in the \emph{interpretation} we give to the input and output. The machine itself is pure syntax.
+\textbf{The Insight:} A human computer performing a calculation is a finite-state machine reading and writing symbols on an unbounded tape. The ``mental state'' of the computer is finite. The symbols are from a finite alphabet. The operations are local: read a symbol, change state, write a symbol, move left or right. \emph{That is all computation is.}There is no ``understanding'' in the machine. There is only state transition. The meaning lives entirely in the \emph{interpretation} we give to the input and output. The machine itself is pure syntax.
 
 This leap had three audacious components:
 
@@ -130,7 +130,7 @@ This leap had three audacious components:
 \item \textbf{Equivalence as Evidence:} Turing didn't just define his machines. He proved they coincide with Church's $\lambda$-calculus and Kleene's recursive functions. Three independent formalisms, born from completely different intuitions, converged on the \emph{same class} of functions. This convergence is the strongest evidence that the class is \emph{natural} --- not an artifact of any one formalism.
 \end{enumerate}
 
-\begin{roadblockbox}[Why This Was Shocking]Before Turing, ``universal'' meant ``applies to everything in a domain.'' After Turing, ``universal'' meant ``a single machine that can simulate any other machine in the domain.'' The Universal Turing Machine is a \emph{programmable computer} --- and it was described before any physical computer existed. The abstraction predated the reality.\end{roadblockbox}
+Before Turing, ``universal'' meant ``applies to everything in a domain.'' After Turing, ``universal'' meant ``a single machine that can simulate any other machine in the domain.'' The Universal Turing Machine is a \emph{programmable computer} --- and it was described before any physical computer existed. The abstraction predated the reality.
 
 \subsection*{The Human Computer Analysis}
 
@@ -164,7 +164,7 @@ Turing's argument had seven steps:
 \item \textbf{Simulation:} The combination of these constraints yields a machine whose behavior is exactly that of a Turing machine. Therefore, any effective procedure can be executed by a Turing machine.
 \end{enumerate}
 
-\begin{highlightbox}[The Central Insight]Turing's analysis inverted the problem. Instead of asking ``What can a machine compute?'' he asked ``What does a human do when computing?'' By answering the second question, he answered the first. The human computer became the template for the machine computer.\end{highlightbox}
+Turing's analysis inverted the problem. Instead of asking ``What can a machine compute?'' he asked ``What does a human do when computing?'' By answering the second question, he answered the first. The human computer became the template for the machine computer.
 
 \subsubsection*{A Worked Example: Adding Two Numbers by Hand}
 
@@ -198,7 +198,7 @@ Every arithmetic procedure, no matter how sophisticated, decomposes similarly. T
 
 The leap from ``a Turing machine can compute any computable function'' to ``there is a single Turing machine that can simulate any other'' is not obvious. It requires that the machine's description be \emph{data} --- that we can encode the state table of $M$ as a string on $U$'s tape, and that $U$ can interpret this string as instructions.
 
-\begin{mentalLeap}\textbf{The Second Insight:} If a Turing machine can compute any computable function, and if the function of ``simulating another Turing machine'' is itself computable, then there must be a Turing machine that does it. This is the universal machine. The machine that can read its own program --- stored in the same memory as its data.\end{mentalLeap}
+\textbf{The Second Insight:} If a Turing machine can compute any computable function, and if the function of ``simulating another Turing machine'' is itself computable, then there must be a Turing machine that does it. This is the universal machine. The machine that can read its own program --- stored in the same memory as its data.
 This insight --- the stored program --- is the foundation of every modern computer. It means that hardware and software are separable: the same physical machine can become a word processor, a video game, or a scientific simulator, simply by loading different data into its memory.
 
 %======================================================================
@@ -499,7 +499,7 @@ The $Y$-combinator is the most famous fixed-point combinator, but there are othe
 
 Each of these provides a way to define recursive functions in a language with no built-in recursion.
 
-\begin{connectionbox}[Connection to Denotational Semantics]Fixed-point combinators are the theoretical foundation of recursion in programming languages. In denotational semantics, the meaning of a recursive program is defined as the least fixed point of a continuous function on a complete partial order. The $Y$-combinator is the syntactic counterpart of this semantic fixed point.\end{connectionbox}
+Fixed-point combinators are the theoretical foundation of recursion in programming languages. In denotational semantics, the meaning of a recursive program is defined as the least fixed point of a continuous function on a complete partial order. The $Y$-combinator is the syntactic counterpart of this semantic fixed point.
 
 \subsection{Smallest Universal Turing Machines}
 \label{sec:computation:smallest}
@@ -524,7 +524,7 @@ Minsky's machine operates on a circular tape (a loop). It uses:
 The machine works by simulating a 2-counter machine (which is Turing-complete) using a single tape with a special encoding. Each counter is represented by the distance between markers on the tape. The 4 finite states are sufficient to manage increment, decrement, and zero-test operations on both counters.
 \end{example}
 
-\begin{roadblockbox}[Why Small UTMs Matter]The search for the smallest UTM is not a mathematical curiosity. It reveals the fundamental complexity of universal computation --- exactly how much structure is needed to achieve universality. This relates to questions in physics (can the universe simulate itself?), biology (how simple must a self-replicating system be?), and the philosophy of mind (how simple a system can exhibit universal behavior?).\end{roadblockbox}
+The search for the smallest UTM is not a mathematical curiosity. It reveals the fundamental complexity of universal computation --- exactly how much structure is needed to achieve universality. This relates to questions in physics (can the universe simulate itself?), biology (how simple must a self-replicating system be?), and the philosophy of mind (how simple a system can exhibit universal behavior?).
 
 \subsection{Cellular Automata and Rule 110}
 \label{sec:computation:ca}
@@ -565,7 +565,7 @@ The proof simulates a cyclic tag system (a variant of Post's tag systems) using 
 Collisions between gliders encode logical operations. By carefully arranging initial conditions, one can simulate the operations of a tag system, which is known to be Turing-complete. Cook's proof was controversial --- it was originally presented in 2000 but rigorous peer review took four years due to the complexity of verifying the construction.
 \end{proof}
 
-\begin{connectionbox}[Emergent Computation]Rule 110 demonstrates that computation can emerge from simple, local interactions. This connects to modern work on reservoir computing, neuromorphic hardware, and the question of whether complex computation can arise spontaneously in physical systems. It also connects to Chapter 7 (Kolmogorov Complexity): Rule 110 shows that simple rules can generate computationally complex behavior.\end{connectionbox}
+Rule 110 demonstrates that computation can emerge from simple, local interactions. This connects to modern work on reservoir computing, neuromorphic hardware, and the question of whether complex computation can arise spontaneously in physical systems. It also connects to Chapter 7 (Kolmogorov Complexity): Rule 110 shows that simple rules can generate computationally complex behavior.
 
 \subsection{The Universal Machine Construction}
 \label{sec:computation:universal}
@@ -668,7 +668,7 @@ A(m, n) = A(m-1, A(m, n-1))
 The Ackermann function is recursive but not primitive recursive --- it grows faster than any primitive recursive function. This shows that minimization (the $\mu$ operator) genuinely increases the expressiveness of the formalism.
 \end{example}
 
-\begin{connectionbox}[Recursion Theory Throughout the Book]The recursive functions framework will recur throughout this book: in Chapter 2 (the halting problem as a non-recursive set), in Chapter 4 (Rice's theorem as a property of index sets), and in Chapter 7 (Kolmogorov complexity, where the set of random strings is not recursively enumerable).\end{connectionbox}
+The recursive functions framework will recur throughout this book: in Chapter 2 (the halting problem as a non-recursive set), in Chapter 4 (Rice's theorem as a property of index sets), and in Chapter 7 (Kolmogorov complexity, where the set of random strings is not recursively enumerable).
 
 \subsection{Post Canonical Systems}
 \label{sec:computation:post}
@@ -729,7 +729,7 @@ The definition of computation changed everything:
 \item \textbf{Cloud Computing and Virtualization:} A virtual machine is a software implementation of a universal Turing machine running on a physical one. The hypervisor simulates the guest OS just as $U$ simulates $M$. Every ``hello world'' in a Docker container, every AWS EC2 instance, traces its lineage to Turing's universal machine.
 \end{enumerate}
 
-\begin{connectionbox}[The Ripple Effect]Each of these consequences depends on the foundational insight that computation can be formalized. Without a precise definition, none of them would be possible --- we could not prove undecidability, measure complexity, build compilers, or design stored-program computers. The abstraction of computation is what makes the entire field of computer science possible.\end{connectionbox}
+Each of these consequences depends on the foundational insight that computation can be formalized. Without a precise definition, none of them would be possible --- we could not prove undecidability, measure complexity, build compilers, or design stored-program computers. The abstraction of computation is what makes the entire field of computer science possible.
 
 %======================================================================
 % SECTION 7: PHILOSOPHICAL SIGNIFICANCE
@@ -777,15 +777,12 @@ The definition of computation changed everything:
 \item \textbf{Computational Biology:} The genome is a digital program (string over $\{A, C, G, T\}$), the ribosome is a reader/executor, and evolution is a stochastic optimization algorithm. This analogy --- made precise by Turing's definition --- has transformed biology into an information science. The Human Genome Project, CRISPR gene editing, and computational drug design all depend on the view of DNA as executable code.
 \end{itemize}
 
-\begin{connectionbox}[Connections]
 \begin{itemize}
 \item Chapter 2 (Halting Problem): The first fundamental limit of computation.
 \item Chapter 3 (G\"odel): The mathematical precedent for encoding syntax as data.
 \item Chapter 8 (Complexity): From ``what is computable?'' to ``what is efficiently computable?''.
 \item Chapter 11 (Zero Knowledge): Computation as a tool for proving knowledge without revealing it.
 \end{itemize}
-
-\end{connectionbox}
 
 %======================================================================
 % SECTION 9: LESSONS FOR FUTURE SCIENTISTS

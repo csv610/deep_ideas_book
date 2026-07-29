@@ -22,7 +22,7 @@ The problem arises everywhere: Bitcoin nodes must agree on which transaction is 
 
 The consensus problem is fundamentally about \emph{ordering}. Every distributed system that maintains state must decide the order of operations. The only question is who decides, how they decide, and what happens when they disagree. Consensus is the mechanism by which a distributed system turns multiple independent views into a single authoritative history.
 
-\begin{question}How can computers agree if some of them fail?\end{question}
+How can computers agree if some of them fail?
 
 \begin{definition}[Consensus Properties]
 A consensus protocol must satisfy:
@@ -34,10 +34,7 @@ A consensus protocol must satisfy:
 \end{enumerate}
 \end{definition}
 
-\begin{highlightbox}[The Core Question]
 Can a distributed system reach \emph{agreement} (safety) and \emph{termination} (liveness) despite faulty components and asynchronous communication?
-
-\end{highlightbox}
 
 %======================================================================
 % SECTION 2: WHY IT SEEMED IMPOSSIBLE
@@ -55,15 +52,9 @@ Can a distributed system reach \emph{agreement} (safety) and \emph{termination} 
 \item \textbf{The CAP Theorem (2000/2002):} Brewer (conjecture), Gilbert-Lynch (proof): In a partitioned network, you can have at most 2 of 3: Consistency, Availability, Partition Tolerance. A \emph{CP} system (like Paxos) chooses consistency and partition tolerance; an \emph{AP} system (like DNS) chooses availability; a \emph{CA} system must sacrifice partition tolerance (impossible in practice because networks do partition). Consensus is inherently CP — it sacrifices availability during partitions. The CAP proof: partition nodes into two groups; a write to group A cannot be visible to a read in group B; either the read blocks (losing availability) or returns stale data (losing consistency).
 \end{enumerate}
 
-\begin{roadblockbox}[The FLP Wall]
 ``Deterministic consensus in async with one crash failure is impossible.'' This was a \emph{theorem}, not a heuristic. It meant: \emph{randomization, synchrony, or failure detectors} are \emph{required}. You cannot just ``try harder.''
 
-\end{roadblockbox}
-
-\begin{roadblockbox}[The Byzantine Barrier]
 Byzantine faults are strictly harder than crash faults. A crash-stop process is a special case of Byzantine — one that behaves correctly until it stops. But a Byzantine process can send arbitrary messages, collude with other Byzantines, and delay messages strategically. Classical BFT requires $3f+1$ replicas where crash tolerance requires only $2f+1$. This 50\% overhead is the price of arbitrary fault tolerance.
-
-\end{roadblockbox}
 
 %======================================================================
 % SECTION 3: HISTORICAL CONTEXT
@@ -71,7 +62,6 @@ Byzantine faults are strictly harder than crash faults. A crash-stop process is 
 \section{Historical Context: What Was Known at the Time}
 \label{sec:consensus:context}
 
-\begin{historicalbox}[The Consensus Timeline]
 \begin{itemize}
 \item \textbf{1975:} Gray: Two Generals Problem (reliable messaging).
 \item \textbf{1978:} Lamport: Time, Clocks, and the Ordering of Events (logical clocks).
@@ -99,36 +89,19 @@ Byzantine faults are strictly harder than crash faults. A crash-stop process is 
 \item \textbf{2023:} Sui mainnet: Narwhal-Bullshark DAG consensus in production.
 \end{itemize}
 
-\end{historicalbox}
-
-\begin{biographicalbox}[Leslie Lamport (1941--)]
 Lamport made foundational contributions to distributed systems: logical clocks (1978), the Byzantine Generals Problem (1982), and Paxos (1998). His paper ``Time, Clocks, and the Ordering of Events in a Distributed System'' won the 2014 Dijkstra Prize. He also developed LaTeX (1983--1985), originally as a set of macros for his own book. Lamport's style is distinctive: mathematical rigor dressed in intuitive analogy. The Part-Time Parliament paper presents Paxos as a fictional legislative protocol on the Greek island of Paxi — a framing that initially hindered adoption because readers thought it was a real historical system.
-\end{biographicalbox}
 
-\begin{biographicalbox}[Fischer, Lynch, Paterson]
 Michael Fischer, Nancy Lynch, and Michael Paterson proved the FLP Impossibility Result (1985), which won the 2001 Dijkstra Prize in Distributed Computing. Nancy Lynch is particularly notable: her 1996 book ``Distributed Algorithms'' remains the definitive textbook. The FLP proof is deceptively simple — it uses only elementary combinatorics on configurations — yet its implications are profound. The result was discovered independently during a sabbatical visit; Lynch and Fischer were at Yale, Paterson at Warwick. The paper was rejected twice before acceptance at JACM because reviewers found it ``too simple.''
-\end{biographicalbox}
 
-\begin{biographicalbox}[Satoshi Nakamoto (2008--2011)]
 The anonymous creator of Bitcoin and inventor of Nakamoto consensus. \cite{nakamoto2008}, Nakamoto published the Bitcoin whitepaper in October 2008 and released the reference client in January 2009. The key innovation was combining proof-of-work (Hashcash, Back 1997) with the longest-chain rule to create a probabilistic Byzantine fault-tolerant protocol in an open-membership setting. Nakamoto is estimated to hold approximately 1 million bitcoins. Their identity remains unknown despite extensive investigation. The pseudonym likely encodes a combination of names — Tominaga, Nakamochi — or is simply a carefully chosen Japanese moniker. Nakamoto's final known communication was in April 2011, after which they withdrew entirely. The mystery of Nakamoto's identity has spawned extensive speculation, but no definitive evidence has emerged.
-\end{biographicalbox}
 
-\begin{biographicalbox}[Barbara Liskov (1939--)]
 Computer scientist who pioneered practical Byzantine fault tolerance. With Miguel Castro, she developed PBFT (1999), the first protocol to demonstrate that Byzantine agreement could be made efficient enough for practical systems (thousands of requests per second). Liskov won the 2008 Turing Award for her work on programming languages and system design, including data abstraction and the Liskov substitution principle. Her work on PBFT bridged two decades of theoretical Byzantine agreement research with real-world distributed systems.
-\end{biographicalbox}
 
-\begin{biographicalbox}[Pease, Shostak, and the SRI Team]
 Robert Shostak and Marshall Pease, working with Leslie Lamport at SRI International, formulated the Byzantine Generals Problem in 1982. Shostak was a computer scientist specializing in automated reasoning and program verification; Pease was an electrical engineer working on fault-tolerant computing. Their collaboration produced one of the most influential results in distributed computing. The Byzantine Generals paper won the 2005 PODC Influential Paper Award. Shostak later co-founded the company that became Synopsys; Pease continued research in fault-tolerant systems at SRI.
-\end{biographicalbox}
 
-\begin{biographicalbox}[Nancy Lynch (1948--)]
 One of the most influential figures in distributed computing theory. Lynch co-authored the FLP impossibility result (1985) and the CAP theorem proof (2002). Her 1996 textbook ``Distributed Algorithms'' remains the definitive reference. She founded the Theory of Distributed Systems group at MIT, supervising dozens of PhD students who became leaders in the field. Lynch's approach combines mathematical rigor with algorithmic insight — her proofs are known for their clarity and precision.
-\end{biographicalbox}
 
-\begin{connectionbox}[Connection to Chapters 1, 2, 8]
 FLP uses \emph{valency} arguments (bivalent/univalent configurations) — a form of \emph{combinatorial topology} on the state space. This connects to \emph{distributed computing as topology} (Herlihy, Shavit 1999). FLP is the \emph{distributed} analogue of the halting problem (Chapter 2): a fundamental limit. Chapter 8's complexity classes inform the communication complexity of consensus protocols.
-
-\end{connectionbox}
 
 %======================================================================
 % SECTION 4: THE MENTAL LEAP
@@ -138,22 +111,22 @@ FLP uses \emph{valency} arguments (bivalent/univalent configurations) — a form
 
 There are several leaps, each circumventing a different impossibility:
 
-\begin{mentalLeap}[Leap 1 (Lamport 1982)]\emph{Byzantine Agreement is Possible if $n > 3t$.}\end{mentalLeap}
+\emph{Byzantine Agreement is Possible if $n > 3t$.}
 The traitors can lie, but loyal generals \emph{exchange messages about messages}. Recursive structure: ``General A says General B said...'' After $t+1$ rounds, the lie is exposed by majority. The algorithm OM($m$) works as follows: The commander sends his value to all lieutenants. Each lieutenant who receives a value relays it to all other lieutenants. In round $k$, each lieutenant sends what they heard in round $k-1$ to all lieutenants. After $m = t$ rounds, each lieutenant takes majority of received values. The recursion depth equals the number of traitors — each round ``peels off'' one layer of possible deception. The key lemma: OM($m$) satisfies \emph{agreement} if $n > 3m$ and the commander is loyal. By induction, loyal lieutenants hear the same value. \emph{Oral messages} $\to$ $n > 3t$. \emph{Signed messages} (Dolev-Strong 1983) $\to$ $n > 2t$.
 
-\begin{mentalLeap}[Leap 2 (Ben-Or 1983 / Rabin 1983)]\emph{Randomization Beats FLP.}\end{mentalLeap}
+\emph{Randomization Beats FLP.}
 FLP says \emph{deterministic} async consensus impossible. But if processes flip coins, they can \emph{probabilistically} break symmetry. Ben-Or's protocol: each round $r$, process $i$ broadcasts its value $v_i^r$. If $i$ sees $> 2n/3$ copies of value $x$, it sets $v_i^{r+1} = x$ and broadcasts ``propose $x$''. If $i$ sees $> n/3$ copies of $x$, it sets $v_i^{r+1} = x$ (adopts). Otherwise, it flips a fair coin and sets $v_i^{r+1}$ to the result. Expected $O(2^n)$ rounds for Ben-Or, but later work (Feldman-Micali 1988) achieves expected constant rounds. Rabin's approach uses a shared random coin — if processes agree on the coin, they can escape bivalent states deterministically once the coin is known. \emph{Las Vegas} algorithms: always correct, eventually terminate. This insight spawned the entire subfield of randomized distributed algorithms.
 
-\begin{mentalLeap}[Leap 3 (Lamport 1998)]\emph{Paxos — Leaders and Quorums.}\end{mentalLeap}
+\emph{Paxos — Leaders and Quorums.}
 Instead of all-to-all, elect a \emph{leader} (proposer). Leader proposes value. \emph{Quorums} (majorities) overlap $\to$ safety. If leader fails, new leader elected with higher ballot number. The safety proof is elegant: any two majorities intersect in at least one process; if proposal $a$ is accepted by majority $Q_1$ with value $v$, and proposal $b$ by majority $Q_2$ with value $w$, then at least one process belongs to both $Q_1$ and $Q_2$, forcing $v = w$. Paxos works in an asynchronous model with crash-recovery — processes can fail and restart, preserving state in stable storage. The protocol guarantees safety under arbitrary asynchrony; liveness requires a period of synchrony to elect a leader. \emph{Multi-Paxos} for log replication: once a leader is stable, the Prepare phase is skipped for subsequent log entries. The insight: \emph{consensus on a log} = state machine replication.
 
-\begin{mentalLeap}[Leap 4 (Nakamoto 2008)]\emph{Probabilistic Consensus in Open Membership.}\end{mentalLeap}
+\emph{Probabilistic Consensus in Open Membership.}
 No fixed $n$, no identities. \emph{Proof-of-Work} = Sybil resistance + random leader election. Consensus is \emph{probabilistic finality} (wait $k$ blocks). Longest chain = heaviest work. \emph{Incentives} align honesty. The key security argument: if the honest majority controls more than 50\% of hashrate, the probability that an attacker's private chain catches up from $k$ blocks behind decays exponentially in $k$. Specifically, $P(\text{reversal}) \le (q/p)^k$ where $q$ is adversary hashrate and $p$ is honest hashrate. This result follows from the theory of gambler's ruin: the attacker must overcome a deficit of $k$ blocks with a probability $q$ of winning each race. This is not classical BFT — it's a new model that trades deterministic finality for open participation and robustness. The breakthrough was recognizing that \emph{permissionless} consensus was possible if Sybil attacks were made economically irrational.
 
-\begin{mentalLeap}[Leap 5 (Chandra-Toueg 1996)]\emph{Failure Detectors Circumvent FLP.}\end{mentalLeap}
+\emph{Failure Detectors Circumvent FLP.}
 The FLP impossibility assumes no timing information. But real systems have timeouts. Chandra and Toueg classified failure detectors by completeness (does it suspect all faulty processes?) and accuracy (does it ever suspect a correct process?). The weakest failure detector for consensus is $\Diamond \mathcal{S}$ (eventually strong — eventually trusts only correct processes, eventually suspects all faulty). With $\Diamond \mathcal{S}$, consensus becomes solvable in asynchronous systems. The reduction works by rotating through leader proposals: the $\Diamond \mathcal{S}$ detector ensures that eventually some correct leader is never suspected, and that leader's proposal will be accepted. This bridges theory and practice: real systems \emph{do} have imperfect failure detectors (timeouts), and these are provably sufficient.
 
-\begin{mentalLeap}[Leap 6 (Narwhal-Bullshark 2021)]\emph{DAG-based Consensus Separates Dissemination from Ordering.}\end{mentalLeap}
+\emph{DAG-based Consensus Separates Dissemination from Ordering.}
 Traditional BFT protocols interleave data dissemination with ordering decisions. Narwhal-Bullshark separates these concerns: a mempool layer (Narwhal) reliably broadcasts transactions as a directed acyclic graph (DAG) of certificates; an ordering layer (Bullshark) deterministically orders the DAG vertices using Byzantine agreement on the DAG structure itself. This separation enables pipelining: data dissemination proceeds independently of ordering, improving throughput by an order of magnitude over PBFT (200,000+ tx/sec with 50 nodes). The DAG structure also provides natural censorship resistance: a leader cannot suppress a transaction that has been certified into the DAG. Subsequent work (Mysticeti, 2024) further reduces latency by using the DAG for both dissemination and ordering in a single round trip.
 
 %======================================================================
@@ -186,10 +159,7 @@ Consensus algorithms are defined by their system model — a set of assumptions 
 
 The choice of system model determines what is possible. A protocol designed for synchrony fails in asynchrony. A protocol designed for crash failures fails under Byzantine faults. \emph{Model honesty} — using only assumptions you actually have — is the cardinal rule. A system that assumes synchrony but experiences a network partition will have catastrophic safety failures; a system that assumes crash-only failures but encounters a Byzantine fault may violate agreement entirely.
 
-\begin{roadblockbox}[Model Mismatch Catastrophes]
 The 2021 Poly Network hack exploited differences in consensus models across chains. The 2023 Solana outage was caused by a timing disagreement in the Tower BFT consensus. These incidents show that model violations — not just implementation bugs — cause consensus failures.
-
-\end{roadblockbox}
 
 \subsection{FLP Impossibility}
 \label{sec:consensus:flp}
@@ -222,15 +192,9 @@ The FLP impossibility extends to \emph{wait-free} consensus in shared-memory sys
 
 The FLP theorem is often misunderstood. It does NOT say consensus is impossible in practice — only that no protocol can guarantee ``always safe, always live'' under all possible asynchronous schedules. Real systems use timeouts, failure detectors, or randomization to circumvent the impossibility. The theorem's value is prescriptive: it tells us exactly what assumptions must be relaxed to achieve consensus.
 
-\begin{roadblockbox}[Practical Impact of FLP]
 FLP's practical lesson: every consensus protocol must embed \emph{synchrony assumptions} somewhere. Paxos uses leader election (which requires a timeout). PBFT uses view-change timeouts. Nakamoto uses the honest-majority + bounded-delay assumption. Raft uses randomized election timeouts. There is no escape from FLP — only circumvention.
 
-\end{roadblockbox}
-
-\begin{roadblockbox}[Synchrony in Practice]
 Most deployed consensus systems (Spanner, etcd, Kafka) assume \emph{partial synchrony}: they work correctly in practice because datacenter networks are usually fast and reliable. But when networks partition — links fail, routers misbehave, latency spikes — these systems must fall back to CP semantics (blocking) or risk consistency violations. The art of building consensus systems is choosing synchrony assumptions that match the deployment environment.
-
-\end{roadblockbox}
 
 \subsection{The Byzantine Generals Protocol}
 \label{sec:consensus:byzantine}
@@ -511,10 +475,7 @@ More formally: consider two atomic registers $R_1$ and $R_2$ on two nodes $N_1, 
 
 The CAP theorem forces architects to choose: CP systems (Paxos, Spanner, Zookeeper) sacrifice availability during partitions; AP systems (DNS, CDNs, Cassandra) sacrifice consistency (they are eventually consistent). In practice, most systems are ``CP or AP'' depending on configuration. Modern systems (Spanner with TrueTime) achieve ``strong consistency with high availability'' by relaxing the pure asynchronous model — TrueTime provides bounded clock uncertainty, effectively making the system partially synchronous.
 
-\begin{roadblockbox}[PACELC Extension (Abadi 2012)]
 CAP treats partitions as exceptional. The PACELC extension adds: \emph{If there is a partition (P), trade off Consistency vs Availability (A). Else (E), trade off Latency vs Consistency (C).} Even when the network is healthy, systems make tradeoffs: Dynamo chooses low latency (eventual consistency); Spanner chooses consistency (higher latency for cross-region commits). PACELC reminds us that the consistency-vs-availability tradeoff exists \emph{always}, not just during partitions.
-
-\end{roadblockbox}
 
 \subsection{Failure Detectors (Chandra-Toueg)}
 \label{sec:consensus:detectors}
@@ -667,7 +628,6 @@ For Byzantine failures: a quorum must intersect another quorum in at least $f+1$
 \item \textbf{Consensus in Space and Ad-Hoc Networks:} Satellite constellations (Starlink), drone swarms, and IoT networks use consensus for coordination without fixed infrastructure. These settings push consensus into new domains: high latency, intermittent connectivity, asymmetric bandwidth. New protocols (e.g., Bullshark-like DAGs for mesh networks) are emerging.
 \end{itemize}
 
-\begin{connectionbox}[Connections]
 \begin{itemize}
 \item Chapter 1 (Computation): State machine replication = universal TM replicated.
 \item Chapter 2 (Halting): FLP = distributed halting problem.
@@ -675,8 +635,6 @@ For Byzantine failures: a quorum must intersect another quorum in at least $f+1$
 \item Chapter 10 (Crypto): Signatures, VRFs, threshold crypto, PoW/PoS.
 \item Chapter 11 (ZK): ZK light clients, ZK consensus proofs.
 \end{itemize}
-
-\end{connectionbox}
 
 %======================================================================
 % SECTION 9: LESSONS FOR FUTURE SCIENTISTS

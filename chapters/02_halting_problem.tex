@@ -12,11 +12,11 @@
 
 After Turing defined what computation \emph{is}, the immediate next question was: \emph{What can computation do?} Specifically, can a computer program analyze another computer program and predict its behavior?
 
-\begin{question}Can a computer determine whether another computer will ever stop?\end{question}
+Can a computer determine whether another computer will ever stop?
 
 More formally: Does there exist a program $H$ such that for any program $P$ and input $x$, $H(P, x)$ outputs ``halts'' if $P$ halts on $x$, and ``loops'' if $P$ runs forever on $x$?
 
-\begin{highlightbox}[The Core Question]Is the halting behavior of a program a decidable property? Can we automate the task of debugging infinite loops — the most frustrating and time-consuming aspect of programming?\end{highlightbox}
+Is the halting behavior of a program a decidable property? Can we automate the task of debugging infinite loops — the most frustrating and time-consuming aspect of programming?
 
 This wasn't just a practical question about debugging. It was the \emph{Entscheidungsproblem} in disguise. If we could decide halting, we could decide any mathematical statement expressible as ``does this program halt?'' — which, via G\"odel numbering, is essentially all of mathematics.
 
@@ -44,15 +44,9 @@ The idea that we \emph{cannot} build a halting detector was deeply counterintuit
 \item \textbf{Every problem has an algorithm:} Hilbert's program was rooted in the belief that all mathematical questions are decidable in principle. The prevailing view among mathematicians in the early 20th century was that any well-posed problem has a solution that can be found by mechanical reasoning.
 \end{enumerate}
 
-\begin{roadblockbox}[The Intuition Trap]
 ``Just simulate it for a very long time. If it hasn't halted by then, it probably won't.'' This heuristic fails catastrophically: there are programs that run for $10^{10^{10}}$ steps and then halt. There is no computable bound on halting time. The busy beaver function $\Sigma(n)$ grows faster than any computable function; for $n=5$, $\Sigma(5) = 47,\!176,\!870$, but for $n=6$, the value is already beyond what any existing formal system can prove.
 
-\end{roadblockbox}
-
-\begin{roadblockbox}[Hilbert's Faith]
 Hilbert declared in 1930: ``Wir m\"ussen wissen — wir werden wissen'' (We must know — we shall know). This was not naive optimism; it was a deeply held philosophical conviction that the universe of mathematics is completely knowable. G\"odel, Church, and Turing shattered this conviction within six years.
-
-\end{roadblockbox}
 
 The mathematical community expected a positive answer. Hilbert's program \emph{required} it. The discovery that the answer is \textbf{no} — and that the proof is devastatingly simple — was a shock that reverberated through mathematics, logic, and philosophy.
 
@@ -62,7 +56,6 @@ The mathematical community expected a positive answer. Hilbert's program \emph{r
 \section{Historical Context: What Was Known at the Time}
 \label{sec:halting:context}
 
-\begin{historicalbox}[1936: The Annus Mirabilis of Computability]
 In a single year, three independent proofs of undecidability appeared:
 \begin{itemize}
 \item \textbf{Turing (May 1936):} Halting problem undecidable via diagonalization on Universal TM.
@@ -70,8 +63,6 @@ In a single year, three independent proofs of undecidability appeared:
 \item \textbf{Post (1936):} ``Post correspondence problem'' undecidable; tag systems.
 \end{itemize}
 Turing's proof is the most accessible and directly addresses the ``mechanical procedure'' intuition.
-
-\end{historicalbox}
 
 Key context:
 
@@ -85,10 +76,7 @@ Key context:
 \item \textbf{Finite Combinatory Processes (Post 1936):} Emil Post independently developed a formulation of computation nearly identical to Turing's. His paper ``Finite Combinatory Processes — Formulation 1'' described what we now call a Post machine. Tragically, Post suffered from bipolar disorder and his work was delayed; he received word of Turing's results before publishing, but his contributions were acknowledged.
 \end{itemize}
 
-\begin{connectionbox}[Connection to Chapter 1]
 The Universal Turing Machine (Chapter 1) is the \emph{enabler} of the halting problem proof. Without a single machine that can simulate all others, diagonalization across ``all programs'' has no formal meaning. Universality makes the set of all programs a single, well-defined object.
-
-\end{connectionbox}
 
 \subsection*{The Priority Dispute}
 
@@ -108,7 +96,6 @@ Emil Post is a figure whose work was profoundly affected by bipolar disorder. He
 
 Post later posed what became known as \emph{Post's problem}: Do there exist recursively enumerable sets that are neither decidable nor complete (i.e., of intermediate Turing degree)? This question drove research in computability theory for over a decade until its solution by Friedberg and Muchnik in 1956-57.
 
-\begin{historicalbox}[Key Figures]
 \begin{itemize}
 \item \textbf{Alan Turing (1912--1954):} British mathematician, logician, cryptanalyst, and computer scientist. Defined the Turing machine, broke the Enigma code at Bletchley Park, and made foundational contributions to artificial intelligence (Turing test), morphogenesis, and early computer design.
 
@@ -118,8 +105,6 @@ Post later posed what became known as \emph{Post's problem}: Do there exist recu
 
 \item \textbf{Stephen C. Kleene (1909--1994):} American mathematician. Student of Church. Developed the recursion theorem, the arithmetical hierarchy, and the theory of recursive functions. Coined the term ``Church--Turing thesis.''
 \end{itemize}
-
-\end{historicalbox}
 
 \subsection*{The G\"odel--Turing Correspondence}
 
@@ -151,7 +136,7 @@ Post struggled with bipolar disorder throughout his life, eventually dying by el
 \section{The Mental Leap: The Creative Insight That Changed Everything}
 \label{sec:halting:leap}
 
-\begin{mentalLeap}[The Insight]Turn the universal machine against itself. If a halting decider $H$ exists, build a machine $D$ that does the \emph{opposite} of what $H$ predicts on its own code. Feed $D$ its own description. Contradiction.\end{mentalLeap}
+Turn the universal machine against itself. If a halting decider $H$ exists, build a machine $D$ that does the \emph{opposite} of what $H$ predicts on its own code. Feed $D$ its own description. Contradiction.
 
 The leap is not the diagonalization — Cantor did that. The leap is: \emph{programs are data}. A program can take \emph{itself} as input. The universal machine makes ``program-as-data'' possible, and self-application is the dagger.
 
@@ -166,10 +151,7 @@ Turing's proof constructs a \emph{liar machine}:
 \item Therefore $H$ cannot exist.
 \end{enumerate}
 
-\begin{roadblockbox}[Why This Was Hard to See]
 Before Turing, ``a program analyzing another program'' was a meta-level activity — something a \emph{human} does. The idea that a program could \emph{be} the input to another program (including itself) required the stored-program concept: code = data. This is the conceptual leap from ``calculating with numbers'' to ``calculating with calculations.''
-
-\end{roadblockbox}
 
 \subsection*{The Diagonalization Pattern}
 
@@ -197,10 +179,7 @@ The halting problem proof reveals something significant about any system powerfu
 
 Lawvere's fixed-point theorem (1969) generalizes this pattern: in any category with sufficient structure, every endomorphism of an object that has a point-surjective map from itself to its function space has a fixed point. The halting problem, G\"odel's theorem, Russell's paradox, and Cantor's theorem are all instances of this same categorical principle.
 
-\begin{roadblockbox}[Self-Application as the Essential Ingredient]
 Turing's key innovation was not diagonalization itself — it was the realization that programs can be applied to themselves. The Universal Turing Machine from Chapter 1 computes a function $U(\langle P \rangle, x) = P(x)$. The halting proof uses $U$ with the same program in both positions: $U(\langle P \rangle, \langle P \rangle)$. This self-application is what creates the contradiction. Without it, diagonalization would have no purchase.
-
-\end{roadblockbox}
 
 %======================================================================
 % SECTION 5: THE MATHEMATICS
@@ -530,10 +509,7 @@ where $M_w$ ignores its input, writes $w$, and simulates $M$. The existence of $
 
 Post's problem, formulated by Emil Post in 1944, asks: Does there exist a recursively enumerable set $A$ that is neither decidable nor complete (i.e., neither $\emptyset \le_T A$ nor $\HALT \le_T A$)? In other words, is the structure of r.e. Turing degrees one-dimensional (just decidable and complete) or is there a richer structure?
 
-\begin{historicalbox}[Post's Problem]
 ``Post's problem'' was the most famous open problem in computability theory for over a decade. Post himself made numerous unsuccessful attempts to solve it, developing partial results and intermediate concepts. The problem was finally solved independently by Richard Friedberg (a 20-year-old undergraduate at Harvard) and Albert Muchnik (a graduate student in Moscow) in 1956--57. Their solution introduced the \emph{priority method}, which became the central technique in modern computability theory.
-
-\end{historicalbox}
 
 The \emph{priority method} (or \emph{finite injury} method) works as follows:
 
@@ -667,14 +643,11 @@ In fact, we can construct such a machine explicitly: let $M_{\text{G\"odel}}$ be
 
 This connection shows that the halting problem and G\"odel's theorem are two sides of the same coin. G\"odel showed that there are true but unprovable statements; Turing showed that among those statements are concrete claims about program behavior. The arithmetical hierarchy further refines this: at each level $\Sigma^0_n$, we encounter statements that are true but whose truth requires $n$ levels of unbounded quantification to express.
 
-\begin{connectionbox}[Connections to Later Chapters]
 \begin{itemize}
 \item Chapter 4 (Rice's Theorem): Generalizes the halting problem's undecidability to all non-trivial semantic properties of programs.
 \item Chapter 7 (Kolmogorov Complexity): The uncomputability of $K(x)$ follows from a reduction to $\HALT$.
 \item Chapter 8 (Complexity): The arithmetical hierarchy is the logical precursor to the polynomial hierarchy $\PH$, which separates problems by quantifier alternation in bounded time.
 \end{itemize}
-
-\end{connectionbox}
 
 %======================================================================
 % SECTION 6: CONSEQUENCES
@@ -718,10 +691,7 @@ The halting problem's undecidability is not a negative result — it is a \emph{
 \item \textbf{Protocol Verification:} Verifying that a communication protocol terminates (no infinite waits, no deadlocks) is undecidable for general infinite-state protocols. Tools like SPIN and TLA+ use finite-state abstractions or theorem proving.
 \end{enumerate}
 
-\begin{roadblockbox}[The Undecidability Tradeoff]
 Every static analysis tool faces the same fundamental tradeoff: soundness (no false negatives) is incompatible with completeness (no false positives) for any non-trivial property. This is not a flaw in the tool — it is the halting problem in action. The art of static analysis is choosing the right approximation to maximize useful answers while accepting the inevitable gaps.
-
-\end{roadblockbox}
 
 %======================================================================
 % SECTION 7: PHILOSOPHICAL SIGNIFICANCE
@@ -801,7 +771,6 @@ Every static analysis tool faces the same fundamental tradeoff: soundness (no fa
 \item \textbf{Programming Language Design:} Modern programming languages increasingly acknowledge the halting problem. Rust's borrow checker accepts a conservative approximation of memory safety. TypeScript's type system is deliberately not Turing-complete to ensure decidability. Even so, TypeScript's type-level computation can simulate a Turing machine, leading to undecidable type checking in pathological cases.
 \end{itemize}
 
-\begin{connectionbox}[Connections]
 \begin{itemize}
 \item Chapter 1 (Computation): Universal TM enables the proof.
 \item Chapter 3 (G\"odel): Halting problem is the computational face of incompleteness.
@@ -809,8 +778,6 @@ Every static analysis tool faces the same fundamental tradeoff: soundness (no fa
 \item Chapter 7 (Kolmogorov): Chaitin's $\Omega$ encodes $\HALT$; $K(x)$ is uncomputable (reduction from halting).
 \item Chapter 8 (Complexity): Halting is the ``decidable vs. undecidable'' boundary; P vs NP is the ``efficient vs. intractable'' boundary.
 \end{itemize}
-
-\end{connectionbox}
 
 %======================================================================
 % SECTION 9: LESSONS FOR FUTURE SCIENTISTS

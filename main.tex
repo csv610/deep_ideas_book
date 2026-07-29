@@ -1,4 +1,4 @@
-\documentclass[11pt,oneside,a4paper,margin=0.85in]{book}
+\documentclass[11pt,oneside,a4paper]{book}
 
 %------------------------------------------------
 % Packages
@@ -10,7 +10,6 @@
 \usepackage{enumitem}
 \usepackage{booktabs}
 \usepackage{longtable}
-\usepackage{titlesec}
 \usepackage{setspace}
 \usepackage{makeidx}
 \usepackage{tabularx}
@@ -47,56 +46,12 @@
 \newtheorem{conjecture}{Conjecture}[chapter]
 
 %------------------------------------------------
-% Custom Box Environments (xparse, paragraph-safe via +b)
+% Custom Box Environments (removed - using plain LaTeX)
 %------------------------------------------------
-\usepackage{xparse}
-
-\NewDocumentEnvironment{historicalbox}{o +b}{%
-  \par\medskip\noindent
-  \textbf{\IfNoValueTF{#1}{Historical Context}{#1}}\par
-  \noindent\ignorespaces #2
-  \par\medskip
-}{}
-
-\NewDocumentEnvironment{highlightbox}{o +b}{%
-  \par\medskip\noindent
-  \textbf{\IfNoValueTF{#1}{The Mental Leap}{#1}}\par
-  \noindent\ignorespaces #2
-  \par\medskip
-}{}
-
-\NewDocumentEnvironment{roadblockbox}{o +b}{%
-  \par\medskip\noindent
-  \textbf{\IfNoValueTF{#1}{Roadblock (Failed Approach)}{#1}}\par
-  \noindent\ignorespaces #2
-  \par\medskip
-}{}
-
-\NewDocumentEnvironment{connectionbox}{o +b}{%
-  \par\medskip\noindent
-  \textbf{\IfNoValueTF{#1}{Connections to Other Chapters}{#1}}\par
-  \noindent\ignorespaces #2
-  \par\medskip
-}{}
-
-\NewDocumentEnvironment{biographicalbox}{o +b}{%
-  \par\medskip\noindent
-  \textbf{\IfNoValueTF{#1}{Biographical Sketch}{#1}}\par
-  \noindent\ignorespaces #2
-  \par\medskip
-}{}
 
 % Header/Footer
 %------------------------------------------------
-\usepackage{fancyhdr}
-\setlength{\headheight}{25.2232pt}
-\pagestyle{fancy}
-\fancyhf{}
-\fancyhead[LE,RO]{\thepage}
-\fancyhead[RE]{\leftmark}
-\fancyhead[LO]{\rightmark}
-\renewcommand{\headrulewidth}{0.4pt}
-\renewcommand{\footrulewidth}{0pt}
+\pagestyle{plain}
 
 %------------------------------------------------
 % Hyperref Setup
@@ -151,20 +106,7 @@
 \newcommand{\CFL}{\text{CFL}}
 \newcommand{\INF}{\text{INF}}
 
-% Chapter structure macros (paragraph-safe environments)
-\NewDocumentEnvironment{question}{o +b}{%
-  \par\medskip\noindent\textbf{Question:} \IfNoValueTF{#1}{}{#1}\par\noindent\ignorespaces #2\par\medskip
-}{}
-\NewDocumentEnvironment{mentalLeap}{o +b}{%
-  \par\medskip\noindent\textbf{The Mental Leap:} \IfNoValueTF{#1}{}{#1}\par\noindent\ignorespaces #2\par\medskip
-}{}
-\NewDocumentEnvironment{roadblock}{o +b}{%
-  \par\medskip\noindent\textbf{Roadblock (Failed Approach):} \IfNoValueTF{#1}{}{#1}\par\noindent\ignorespaces #2\par\medskip
-}{}
-\NewDocumentEnvironment{historicalnoteMacro}{o +b}{%
-  \par\medskip\noindent\textbf{Historical Context:} \IfNoValueTF{#1}{}{#1}\par\noindent\ignorespaces #2\par\medskip
-}{}
-\newcommand{\connection}[1]{\par\medskip\noindent\textbf{Connections to Other Chapters:} #1\par\medskip}
+% Chapter structure macros (removed - using plain LaTeX)
 
 \pdfstringdefDisableCommands{
   \let\emph\relax
@@ -176,18 +118,8 @@
 }
 
 %------------------------------------------------
-% Chapter Title Formatting
-%------------------------------------------------
-\titleformat{\chapter}[display]
-  {\normalfont\huge\bfseries\sloppy}{\chaptertitlename\ \thechapter}{20pt}{\Huge}
-\titlespacing*{\chapter}{0pt}{-20pt}{40pt}
-
-%------------------------------------------------
 % Reduce Overfull Boxes
 %------------------------------------------------
-\sloppy
-\emergencystretch=3em
-\setlength{\parfillskip}{0pt}
 
 \begin{document}
 
@@ -207,82 +139,21 @@
 
 \end{titlepage}
 
-\maketitle
-
 \tableofcontents
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter*{Preface}
 \addcontentsline{toc}{chapter}{Preface}
 
-This monograph presents a systematic study of the foundational ideas that shaped modern computer science, information theory, and computational complexity. Fourteen chapters examine breakthroughs spanning computability (Turing machines, the Church--Turing Thesis), undecidability (the halting problem, G{\"o}del's incompleteness theorems, Rice's Theorem), information theory (Shannon entropy, channel capacity, error-correcting codes), algorithmic information (Kolmogorov complexity, algorithmic randomness), computational complexity (P vs. NP, NP-completeness, the PCP theorem), cryptography (public-key systems, zero-knowledge proofs, post-quantum schemes), distributed computing (consensus protocols, the FLP impossibility theorem), and interactive proofs (IP = PSPACE). Each chapter develops the relevant mathematics rigorously, situating the results within their historical and conceptual context. The epilogue identifies nine recurring cognitive patterns across these breakthroughs and analyzes their applicability to contemporary research in computer science, artificial intelligence, and related disciplines.
+Every field has a handful of ideas that stop you cold. You read them, and the world looks different afterward.
 
-\section*{Methodology}
-\addcontentsline{toc}{section}{Methodology}
+I first encountered these ideas as an undergraduate---Turing's answer to the decision problem, Shannon's mathematical theory of communication, G{\"o}del's incompleteness theorems, the stunning realization that some problems are fundamentally beyond the reach of any algorithm. Each was a revelation: a reminder that the deepest insights often arrive not as answers to existing questions, but as entirely new ways of framing what a question even means.
 
-Each chapter is organized around a consistent analytical framework:
+This book grew out of a conviction that these breakthroughs---the ones that reshaped computer science at its foundations---share a common anatomy. They did not emerge from incremental tinkering or the steady accumulation of facts. They came from cognitive leaps: sudden reframings, analogies across distant domains, the willingness to question assumptions so basic they had become invisible. The Turing machine is not a faster adding machine. Shannon entropy is not a clever way to compress files. G{\"o}del's proof is not a technical trick. Each is a new lens---and once you look through it, you cannot unsee.
 
-\begin{enumerate}
-\item \textbf{The Question} --- What problem was the community trying to solve?
-\item \textbf{Why It Seemed Impossible} --- What conceptual barriers prevented progress?
-\item \textbf{Historical Context} --- What was known at the time, and what related ideas were emerging?
-\item \textbf{The Mental Leap} --- The creative insight that resolved the impasse.
-\item \textbf{The Mathematics} --- A rigorous development of the theory, with formal definitions, theorems, and proofs.
-\item \textbf{Consequences} --- What became possible as a result of this breakthrough?
-\item \textbf{Philosophical Significance} --- What does this reveal about the nature of knowledge, computation, or reality?
-\item \textbf{Modern Legacy} --- Where does this idea appear in contemporary research and applications?
-\item \textbf{Summary and Key Takeaways} --- A concise synthesis of the chapter's arguments and results.
-\end{enumerate}
+What you hold is a map of those lenses. It traces the chain of insights that led from the Entscheidungsproblem to the limits of computation, from Shannon's noisy channel to error-correcting codes, from Cook's theorem to the edifice of complexity theory, from Diffie and Hellman's key exchange to modern cryptography. It tries to reconstruct not just what was discovered, but how---the intellectual barriers that made each breakthrough seem impossible, the flash of insight that dissolved them, and the consequences that followed.
 
-This framework is not prescriptive; it is descriptive. The nine sections reflect the structure that emerges when a breakthrough is analyzed retrospectively: the question that motivated it, the barriers that obscured it, the insight that dissolved it, and the consequences that followed.
-
-\section*{Selection Criteria}
-\addcontentsline{toc}{section}{Selection Criteria}
-
-Every chapter satisfies \emph{all} of the following criteria:
-
-\begin{enumerate}
-\item Introduced an entirely new conceptual framework.
-\item Permanently changed computer science, mathematics, or engineering.
-\item Influenced adjacent disciplines beyond its immediate domain.
-\item Retains significance and generates active research more than a decade after its discovery.
-\item Represents a qualitative advance rather than an incremental improvement.
-\end{enumerate}
-
-These criteria are deliberately restrictive. Many important ideas in computer science are excluded: they are technically significant but represent refinements of existing frameworks rather than the creation of new ones. The book focuses on discoveries that could not have been anticipated from the state of knowledge that preceded them.
-
-\section*{Scope and Organization}
-\addcontentsline{toc}{section}{Scope and Organization}
-
-The chapters are organized into four parts:
-
-\begin{itemize}
-\item \textbf{Part I: The Nature of Computation} (Chapters 1--4) --- Establishes the foundations of computability theory.
-\item \textbf{Part II: Information} (Chapters 5--7) --- Develops the theory of information and its manipulation.
-\item \textbf{Part III: Difficulty and Coordination} (Chapters 8--13) --- Explores computational complexity, cryptography, and distributed consensus.
-\item \textbf{Part IV: Epilogue} (Chapter 14) --- Identifies recurring patterns of insight across the preceding chapters.
-\end{itemize}
-
-Part I establishes the formal notion of computation and its limits. Part II extends the discussion to information, its measurement, and its protection. Part III examines the nature of computational difficulty, the harnessing of hardness for cryptographic purposes, and the coordination of distributed systems. Part IV synthesizes the preceding material into a taxonomy of cognitive patterns underlying breakthrough discoveries.
-
-\section*{Intended Audience and Background}
-\addcontentsline{toc}{section}{Intended Audience and Background}
-
-This monograph is intended for graduate students and researchers in theoretical computer science, mathematics, and related fields. The prerequisites include:
-
-\begin{itemize}
-\item \textbf{Discrete mathematics:} Sets, functions, relations, induction, combinatorics.
-\item \textbf{Linear algebra:} Vector spaces, matrices, eigenvalues, determinants (primarily Chapters 6 and 12).
-\item \textbf{Probability theory:} Random variables, expectation, variance, concentration inequalities (primarily Chapters 8--13).
-\item \textbf{Basic programming:} Understanding of algorithmic correctness (helpful for computational exercises).
-\end{itemize}
-
-A self-contained review of mathematical prerequisites is provided in the appendix. Each chapter is largely self-contained; however, earlier chapters provide essential background for later ones.
-
-\section*{Notation}
-\addcontentsline{toc}{section}{Notation}
-
-Standard notation from computability theory, complexity theory, and information theory is used throughout. Key notation is summarized in the Mathematical Prerequisites appendix. Greek letters denote mathematical objects ($\mathbb{N}$, $\mathbb{Z}$, $\mathbb{Q}$, $\mathbb{R}$, $\mathbb{C}$), capital Roman letters denote complexity classes (P, NP, PSPACE, EXP), and lowercase Roman letters denote specific algorithms or protocols.
+The book is written for anyone who has felt that thrill of recognition when a beautiful idea clicks into place. Whether you are a student encountering these concepts for the first time, a researcher looking to see familiar territory from a new angle, or simply someone who wonders how we came to understand the nature of computation, this book is an invitation: to appreciate not just the theorems, but the thinking that produced them.
 
 \mainmatter
 

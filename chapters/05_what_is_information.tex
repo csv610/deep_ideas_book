@@ -20,14 +20,11 @@ By the 1940s, communication engineering faced a crisis. Telephone networks were 
 
 Before Shannon, each communication medium was studied in isolation. Telegraph engineers optimized dot-dash timing. Telephone engineers worried about voice clarity over long lines. Radio engineers fought atmospheric noise. There was no common language — no way to say ``a telephone call and a page of text carry the same amount of information.'' The field needed exactly what thermodynamics had found decades earlier: a universal measure.
 
-\begin{question}What exactly is information? Can it be measured, like mass or energy?\end{question}
+What exactly is information? Can it be measured, like mass or energy?
 
-\begin{highlightbox}[The Core Question]Is there a universal, quantitative measure of information — independent of meaning, language, or medium — that captures the fundamental limits of communication and compression?\end{highlightbox}
+Is there a universal, quantitative measure of information — independent of meaning, language, or medium — that captures the fundamental limits of communication and compression?
 
-\begin{connectionbox}[Connection to Thermodynamics]
 The predicament was strikingly similar to 19th-century thermodynamics. Engineers could build steam engines but had no theory of efficiency. Carnot's insight — that efficiency depends only on temperature difference — was purely abstract. Shannon's abstraction was equally radical: information is not about what a message says, but about how many possibilities it eliminates.
-
-\end{connectionbox}
 
 %======================================================================
 % SECTION 2: WHY IT SEEMED IMPOSSIBLE
@@ -49,15 +46,9 @@ Before Shannon, ``information'' was synonymous with ``meaning.'' A sentence in E
 \item \textbf{No Notion of Channel-Pair Matching:} A radio channel is good for analog broadcasts but terrible for digital ones — unless you use the right code. Before Shannon, there was no way to ask: ``given this channel, what is the best possible signaling scheme?''
 \end{enumerate}
 
-\begin{roadblockbox}[The Meaning Barrier]
 ``Information is what reduces uncertainty.'' This sounds circular. Uncertainty \emph{about what}? The recipient's knowledge? The sender's intent? The state of the world? Shannon's key contribution was to define uncertainty \emph{mathematically} — without reference to any knower.
 
-\end{roadblockbox}
-
-\begin{roadblockbox}[The Circularity Objection]
 Critics objected: ``If information is defined as what reduces uncertainty, and uncertainty is defined by information content, isn't this circular?'' The answer is no: uncertainty is defined by a probability distribution over possible messages — a purely mathematical object. The receiver's subjective state never enters the definition.
-
-\end{roadblockbox}
 
 %======================================================================
 % SECTION 3: HISTORICAL CONTEXT
@@ -65,14 +56,11 @@ Critics objected: ``If information is defined as what reduces uncertainty, and u
 \section{Historical Context: What Was Known at the Time}
 \label{sec:information:context}
 
-\begin{historicalbox}[Claude Shannon (1916--2001)]
 Shannon was born in Petoskey, Michigan, and grew up in Gaylord. He built model airplanes, a telegraph system to a friend's house a mile away, and a barbed-wire telephone line. At the University of Michigan (1932--1936), he studied electrical engineering and mathematics. His 1937 MIT Master's thesis — ``A Symbolic Analysis of Relay and Switching Circuits'' — founded digital circuit design (Boolean algebra = switching circuits). Von Neumann called it ``one of the most important master's theses ever written.'' His 1940 PhD: ``An Algebra for Theoretical Genetics'' — applying algebra to population genetics. At Bell Labs (1941--1972), he worked on cryptography (with Turing, 1943), fire control, and communication theory.
 
 Beyond his technical work, Shannon was a playful inventor. He built a maze-solving mouse (``Theseus''), a juggling machine, the ``Ultimate Machine'' (a box with a switch that turns itself off), a Roman numeral calculator (THROBAC), and a flame-throwing trumpet. He rode a unicycle through Bell Labs hallways while juggling. His playful spirit was inseparable from his creativity.
 
 1948: ``A Mathematical Theory of Communication'' — the founding paper of information theory. Vannevar Bush described it as ``one of the greatest works of the century.''
-
-\end{historicalbox}
 
 Key precursors:
 
@@ -85,15 +73,9 @@ Key precursors:
 \item \textbf{1948:} Shannon's two-part paper in \emph{Bell System Technical Journal} — 55 pages that created a field. It appeared in July and October 1948. By 1949, Warren Weaver had popularized it in a book version that added the famous diagram: Source $\to$ Transmitter $\to$ Channel $\to$ Receiver $\to$ Destination.
 \end{itemize}
 
-\begin{connectionbox}[Connection to Chapter 1]
 Shannon, like Turing, analyzed a human activity (communication) and extracted a mathematical essence. Turing asked ``What is a mechanical procedure?'' Shannon asked ``What is a message?'' Both answered by \emph{stripping away meaning} — syntax without semantics.
 
-\end{connectionbox}
-
-\begin{highlightbox}[Shannon's Personality]
 Shannon was notoriously uninterested in fame and career-building. After his 1948 paper made him a celebrity, he often declined speaking invitations. He preferred tinkering in his basement workshop — building mechanical mice, juggling machines, and a computer that played chess in Roman numerals. When asked about his greatest contribution, he once said the relay-switching thesis was his favorite, not information theory. His lesson: pursue what fascinates you, not what others admire.
-
-\end{highlightbox}
 
 %======================================================================
 % SECTION 4: THE MENTAL LEAP
@@ -101,7 +83,7 @@ Shannon was notoriously uninterested in fame and career-building. After his 1948
 \section{The Mental Leap: The Creative Insight That Changed Everything}
 \label{sec:information:leap}
 
-\begin{mentalLeap}[The Insight]Information is not \emph{meaning} — it is \emph{choice}. The information content of a message is the logarithm of the number of \emph{equally likely alternatives} it selects from. A message that eliminates more uncertainty carries more information. Meaning is irrelevant; only the \emph{probability distribution} of possible messages matters.\end{mentalLeap}
+Information is not \emph{meaning} — it is \emph{choice}. The information content of a message is the logarithm of the number of \emph{equally likely alternatives} it selects from. A message that eliminates more uncertainty carries more information. Meaning is irrelevant; only the \emph{probability distribution} of possible messages matters.
 
 This leap had three revolutionary components:
 
@@ -123,15 +105,9 @@ C = \max_{p(x)} I(X;Y) = \max_{p(x)} [H(Y) - H(Y|X)]
 \textbf{Below $C$:} arbitrarily reliable communication is possible (with coding). \textbf{Above $C$:} impossible. This is the \emph{Channel Coding Theorem} — the central result of information theory.
 \end{enumerate}
 
-\begin{roadblockbox}[Why This Was Shocking]
 Engineers expected a tradeoff curve: more power $\to$ less errors, more bandwidth $\to$ more rate. Shannon proved there is a \emph{cliff}: a sharp threshold $C$. Below it, error $\to$ 0 exponentially with block length. Above it, error $\to$ 1. No gradual degradation. This was the first ``phase transition'' in engineering.
 
-\end{roadblockbox}
-
-\begin{highlightbox}[Hartley's Anticipation]
 In 1928, Ralph Hartley had already proposed that information is $\log s^n = n\log s$ for $s$ symbols transmitted $n$ times. But Hartley assumed all symbols were equally likely — he had no notion of noise, no probability, and no way to handle unequal probabilities. Shannon generalized Hartley's formula by replacing the count of symbols with their probability: $H = -\sum p_i \log p_i$. This one change — from counting to expectation — unlocked everything.
-
-\end{highlightbox}
 
 %======================================================================
 % SECTION 5: THE MATHEMATICS
@@ -351,10 +327,10 @@ Joint typicality extends the AEP to pairs of sequences. It is the foundation of 
 For sequences $x^n$ and $y^n$ drawn i.i.d.\ from joint distribution $p(x,y)$, the jointly typical set $J_\epsilon^{(n)}$ is:
 \begin{equation*}
 \begin{aligned}
-J_\epsilon^{(n)} = \left\{ (x^n,y^n) : \;&
+J_\epsilon^{(n)} = \bigl\{ (x^n,y^n) : \;&
 \left|-\frac{1}{n}\log p(x^n)-H(X)\right| < \epsilon, \\
 &\left|-\frac{1}{n}\log p(y^n)-H(Y)\right| < \epsilon, \\
-&\left|-\frac{1}{n}\log p(x^n,y^n)-H(X,Y)\right| < \epsilon \;\right\}
+&\left|-\frac{1}{n}\log p(x^n,y^n)-H(X,Y)\right| < \epsilon \;\bigr\}
 \end{aligned}
 \end{equation*}
 \end{definition}
@@ -665,10 +641,7 @@ and $R(D)=0$ for $D > \sigma^2$. This is the Shannon lower bound for continuous 
 
 Rate-distortion theory is the foundation of lossy compression: JPEG (image), MP3 (audio), H.264/HEVC (video), and deep learning-based compression all operate in the rate-distortion framework.
 
-\begin{highlightbox}[The Blahut--Arimoto Algorithm]
 Computing $R(D)$ or $C = \max_{p(x)} I(X;Y)$ requires solving a convex optimization problem. The Blahut--Arimoto algorithm (1972) provides an iterative method that is guaranteed to converge to the optimal solution. It alternates between updating the conditional distribution $p(y|x)$ and the marginal distribution $p(x)$, using the fact that the mutual information is convex in one argument and concave in the other. The algorithm is widely used in practice to compute channel capacities and rate-distortion functions numerically.
-
-\end{highlightbox}
 
 \begin{example}[Reverse Water-Filling]
 For a Gaussian vector source $\mathbf{X} \sim \mathcal{N}(0,\Sigma)$ with squared error distortion, the optimal rate allocation follows a reverse water-filling rule: allocate bits to components proportional to $\max(0, \frac{1}{2}\log(\lambda_i/\theta))$, where $\lambda_i$ are the eigenvalues of $\Sigma$ and $\theta$ is chosen to satisfy the distortion constraint. Components with $\lambda_i < \theta$ receive zero bits (their contribution is below the noise floor). This is the information-theoretic justification for transform coding (DCT in JPEG, wavelet transforms in JPEG2000).
@@ -703,10 +676,7 @@ For a Gaussian vector source $\mathbf{X} \sim \mathcal{N}(0,\Sigma)$ with square
 
 \end{enumerate}
 
-\begin{connectionbox}[Connection to Gordon Moore]
 Moore's Law was about transistor count doubling every two years. But without Shannon, those transistors would have no theory of how to communicate. The Shannon limit set the target; Moore's Law provided the computational power to approach it. The information age is the product of both.
-
-\end{connectionbox}
 
 %======================================================================
 % SECTION 7: PHILOSOPHICAL SIGNIFICANCE
@@ -761,7 +731,6 @@ Moore's Law was about transistor count doubling every two years. But without Sha
 
 \end{itemize}
 
-\begin{connectionbox}[Connections]
 \begin{itemize}
 \item Chapter 6 (Error Correction): The direct consequence of Channel Coding Theorem.
 \item Chapter 7 (Kolmogorov): Algorithmic entropy vs. Shannon entropy.
@@ -769,8 +738,6 @@ Moore's Law was about transistor count doubling every two years. But without Sha
 \item Chapter 11 (Zero Knowledge): Proving knowledge without revealing information (mutual information with verifier = 0).
 \item Quantum Computing: Von Neumann entropy, quantum channel capacity.
 \end{itemize}
-
-\end{connectionbox}
 
 %======================================================================
 % SECTION 9: LESSONS FOR FUTURE SCIENTISTS

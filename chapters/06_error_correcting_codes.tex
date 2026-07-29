@@ -12,22 +12,19 @@
 
 Shannon's 1948 Channel Coding Theorem proved that \emph{reliable} communication at rates up to channel capacity $C$ is possible — but it was an \emph{existence proof} using random codes. It did not tell engineers \emph{how} to build practical encoders/decoders.
 
-\begin{question}How can we add redundancy to a message so that errors introduced by a noisy channel can be detected and corrected — efficiently, with practical encoding and decoding algorithms?\end{question}
+How can we add redundancy to a message so that errors introduced by a noisy channel can be detected and corrected — efficiently, with practical encoding and decoding algorithms?
 
 The problem: Noise is inevitable. Thermal noise, cosmic rays, crosstalk, fading, interference — every physical channel corrupts bits. Naive repetition (send each bit 3 times, take majority) works but is terribly inefficient (rate 1/3). We need codes that approach capacity with feasible complexity.
 
 Every communication system faces the same trilemma: power, bandwidth, and reliability. Increasing transmitter power helps but is expensive and constrained by physics and regulation. Increasing bandwidth trades one scarce resource for another. The only free parameter is coding: can we add redundancy in a clever way that provides reliability without sacrificing throughput?
 
-\begin{roadblockbox}[The Pre-Shannon Engineering Mindset]Engineers before Shannon believed that to communicate reliably over a noisy channel, your only options were to shout louder (increase power) or repeat yourself more often (decrease rate). The idea that you could add redundancy in a structured way and \emph{simultaneously} maintain high rate and high reliability seemed like a contradiction in terms.\end{roadblockbox}
+Engineers before Shannon believed that to communicate reliably over a noisy channel, your only options were to shout louder (increase power) or repeat yourself more often (decrease rate). The idea that you could add redundancy in a structured way and \emph{simultaneously} maintain high rate and high reliability seemed like a contradiction in terms.
 
-\begin{highlightbox}[The Core Question]Can we achieve Shannon's promised rates with \emph{structured} codes that have \emph{efficient} (polynomial-time) encoding and decoding algorithms? Or is the gap between theory and practice fundamental?\end{highlightbox}
+Can we achieve Shannon's promised rates with \emph{structured} codes that have \emph{efficient} (polynomial-time) encoding and decoding algorithms? Or is the gap between theory and practice fundamental?
 
 The stakes could not be higher. Every system that stores or transmits digital data — from the memory in your phone to the satellite transmitting images from Mars — depends on error correction. The difference between a functioning system and a broken one is often a few dB of coding gain. The search for practical codes that approach the Shannon limit is one of the great engineering quests of the information age.
 
-\begin{connectionbox}[Shannon's Promise]
 Shannon proved that for any channel with capacity $C$, there exist codes at any rate $R < C$ with arbitrarily low error probability. But the proof was non-constructive — it used random codes and averaging arguments. This chapter is the story of the 60-year quest to make Shannon's promise concrete.
-
-\end{connectionbox}
 
 %======================================================================
 % SECTION 2: WHY IT SEEMED IMPOSSIBLE
@@ -47,16 +44,13 @@ Before Shannon, the prevailing intuition was:
 
 Each of these barriers rested on hidden assumptions. The first assumed that all redundancy is repetition, ignoring the possibility of \emph{structured} algebraic redundancy. The second assumed worst-case error patterns, whereas Shannon showed we need only handle \emph{typical} errors. The third assumed brute-force search was the only decoding strategy, overlooking the power of algebraic structure and iterative algorithms.
 
-\begin{roadblockbox}[The Decoding Complexity Barrier]For a $(1000, 500)$ code, there are $2^{500} \approx 10^{150}$ possible codewords — vastly more than the number of atoms in the observable universe. Brute-force maximum likelihood decoding is impossible at any scale. Yet modern LDPC decoders process codewords of this size in microseconds, using iterative message-passing algorithms that converge to near-ML performance.\end{roadblockbox}
+For a $(1000, 500)$ code, there are $2^{500} \approx 10^{150}$ possible codewords — vastly more than the number of atoms in the observable universe. Brute-force maximum likelihood decoding is impossible at any scale. Yet modern LDPC decoders process codewords of this size in microseconds, using iterative message-passing algorithms that converge to near-ML performance.
 
-\begin{roadblockbox}[The Pre-Shannon Intuition]``To communicate reliably, you must shout louder (increase power) or repeat yourself (decrease rate). There is no clever coding trick that beats physics.''\end{roadblockbox}
+``To communicate reliably, you must shout louder (increase power) or repeat yourself (decrease rate). There is no clever coding trick that beats physics.''
 
 Shannon proved this intuition wrong — but his proof used \emph{random codes} with no structure, requiring exponential-time decoding. The challenge: find \emph{structured} codes with \emph{efficient} decoding.
 
-\begin{connectionbox}[The Trilemma]
 The challenge of error-correcting codes mirrors the fundamental tension in communication theory: power, bandwidth, and complexity form a trilemma. Coding is the lever that lets us trade one for another. Before Shannon, engineers didn't know the lever existed.
-
-\end{connectionbox}
 
 %======================================================================
 % SECTION 3: HISTORICAL CONTEXT
@@ -64,7 +58,6 @@ The challenge of error-correcting codes mirrors the fundamental tension in commu
 \section{Historical Context: What Was Known at the Time}
 \label{sec:ec:context}
 
-\begin{historicalbox}[The Coding Theory Timeline]
 \begin{itemize}
 \item \textbf{1948:} Shannon proves capacity exists; random codes achieve it.
 \item \textbf{1950:} Hamming invents (7,4) Hamming code — first perfect single-error-correcting code. Algebraic coding theory born.
@@ -79,8 +72,6 @@ The challenge of error-correcting codes mirrors the fundamental tension in commu
 \item \textbf{2009:} Arıkan: Polar codes — first \emph{provably} capacity-achieving for symmetric channels with explicit construction and $O(n \log n)$ decoding.
 \end{itemize}
 
-\end{historicalbox}
-
 Key figures:
 \begin{itemize}
 \item \textbf{Richard Hamming (1915--1998):} Bell Labs. Frustrated by computer crashes on weekends — wanted automatic error correction.
@@ -90,40 +81,25 @@ Key figures:
 \item \textbf{Erdal Arıkan (1958--):} Bilkent. Polar codes (2009) — channel polarization, deterministic construction.
 \end{itemize}
 
-\begin{historicalbox}[Richard Hamming: The Reluctant Coding Theorist]
 Richard Hamming joined Bell Labs in 1946, working on the Bell Model V relay computer — one of the largest electromechanical computers ever built. The machine ran complex calculations unattended over weekends, but parity-check circuits would detect errors and halt the machine. When Hamming arrived Monday morning, he would find the machine stopped and have to reload the program from scratch. Frustrated, he asked: ``If the machine can detect an error, why can't it locate and correct it?'' This question led directly to the first error-correcting codes.
 
 Hamming's 1950 paper, \emph{Error Detecting and Error Correcting Codes}, founded the field of algebraic coding theory. His code was the first to show that redundancy could be added in a structured way such that errors were not just detected but automatically corrected. Every DRAM module in the world still uses a variant of Hamming's original code for single-error correction. Hamming later contributed to numerical analysis, operating systems, and the famous ``Hamming distance'' that bears his name. He once said: ``The purpose of computing is insight, not numbers.''
 
-\end{historicalbox}
-
-\begin{historicalbox}[Robert Gallager: Ahead of His Time]
 Robert Gallager's 1963 MIT PhD thesis, \emph{Low-Density Parity-Check Codes}, was decades ahead of its time. He proposed using sparse parity-check matrices — matrices with very few 1s per row and column — and decoding them with an iterative message-passing algorithm. The approach was elegant and theoretically well-motivated, but the computational power of the 1960s made practical implementation impossible. The thesis was published as a book by MIT Press but largely ignored.
 
 Thirty years later, the rediscovery of LDPC codes by MacKay and Neal (1996) and independently by Richardson and Urbanke (2001) sparked a revolution. Gallager's iterative decoding principle turned out to be not just a clever trick but a fundamental algorithmic paradigm — belief propagation on graphical models. Today, LDPC codes are the standard for WiFi (802.11n/ac/ax), 5G data channels, satellite communications, and SSD storage. Gallager also made foundational contributions to network information theory, including the capacity region of multiple-access channels and the celebrated ``Gallager bound.'' He received the Shannon Award in 1983 and passed away in 2021, having seen his forgotten thesis transform global communications.
 
-\end{historicalbox}
-
-\begin{historicalbox}[Claude Berrou and the Turbo Revolution]
 At the 1993 IEEE International Conference on Communications in Geneva, Claude Berrou, Alain Glavieux, and Punya Thitimajshima presented a paper that shook the coding world: \emph{Near Shannon Limit Error-Correcting Coding and Decoding: Turbo-Codes}. Their codes performed within 0.5 dB of the Shannon limit — a performance previously thought impossible for any practical code. The audience was skeptical; many believed the results were a mistake or a simulation error.
 
 Berrou named them ``turbo'' codes after the turbocharger in combustion engines, because of the feedback loop between two component decoders. The key insight was \emph{iterative decoding with extrinsic information exchange}: each decoder produces soft estimates of each bit, and the other decoder uses these estimates as prior information. The loop iterates until convergence. This principle — local message passing with feedback — turned out to be deeply connected to Gallager's earlier work and to belief propagation in probabilistic graphical models. Turbo codes were adopted in 3G and 4G cellular standards and remain one of the most impactful coding inventions of the 20th century.
 
-\end{historicalbox}
-
-\begin{historicalbox}[Erdal Arıkan and Channel Polarization]
 Erdal Arıkan, a professor at Bilkent University in Ankara, Turkey, spent over a decade searching for a provably capacity-achieving code with explicit construction and efficient decoding. The problem had been open since Shannon's 1948 paper: could one write down a deterministic, constructive family of codes that provably achieve capacity with polynomial-time encoding and decoding?
 
 His breakthrough came in 2008 with the concept of \emph{channel polarization}. Arıkan showed that by recursively combining and splitting independent copies of a binary-input memoryless channel, the channels ``polarize'': some become noiseless (capacity approaching 1) while others become completely noisy (capacity approaching 0). By transmitting information only through the noiseless channels, one achieves the symmetric capacity of the original channel. The construction was explicit, the encoding and decoding complexity was $O(N \log N)$, and the proof was rigorous. The coding community was stunned — a problem open for 60 years had been solved.
 
 In 2016, 3GPP adopted polar codes for the 5G NR control channel, making them the first provably capacity-achieving code to be standardized. Arıkan received the 2018 Claude E. Shannon Award and the 2019 IEEE Richard W. Hamming Medal.
 
-\end{historicalbox}
-
-\begin{connectionbox}[Connection to Chapter 5]
 Shannon's Channel Coding Theorem (Chapter 5) is the \emph{existence proof}. This chapter is the \emph{constructive quest} to realize that promise.
-
-\end{connectionbox}
 
 %======================================================================
 % SECTION 4: THE MENTAL LEAP
@@ -133,20 +109,17 @@ Shannon's Channel Coding Theorem (Chapter 5) is the \emph{existence proof}. This
 
 There isn't just one leap — there are \emph{four} major leaps, each breaking a different barrier:
 
-\begin{mentalLeap}[Leap 1 (Hamming 1950)]\emph{Algebraic Structure.} Represent codewords as vectors in $\mathbb{F}_2^n$ (or $\mathbb{F}_q^n$). Linear codes = subspaces. Encoding = matrix multiplication. Syndrome decoding = linear algebra. Errors become solvable equations.\end{mentalLeap}
+\emph{Algebraic Structure.} Represent codewords as vectors in $\mathbb{F}_2^n$ (or $\mathbb{F}_q^n$). Linear codes = subspaces. Encoding = matrix multiplication. Syndrome decoding = linear algebra. Errors become solvable equations.
 
-\begin{mentalLeap}[Leap 2 (Forney 1966)]\emph{Concatenation.} Don't try to build one perfect code. Build an \emph{inner} code for the channel (handles noise) and an \emph{outer} code for residual errors (handles bursts). The combination achieves exponentially low error with polynomial complexity.\end{mentalLeap}
+\emph{Concatenation.} Don't try to build one perfect code. Build an \emph{inner} code for the channel (handles noise) and an \emph{outer} code for residual errors (handles bursts). The combination achieves exponentially low error with polynomial complexity.
 
-\begin{mentalLeap}[Leap 3 (Berrou et al. 1993 / Gallager 1963)]\emph{Iterative Decoding on Sparse Graphs.} Long, random-like codes (LDPC, Turbo) decoded by \emph{message passing} on a Tanner graph. Local computations $\to$ global inference. ``Belief propagation'' approximates ML decoding.\end{mentalLeap}
+\emph{Iterative Decoding on Sparse Graphs.} Long, random-like codes (LDPC, Turbo) decoded by \emph{message passing} on a Tanner graph. Local computations $\to$ global inference. ``Belief propagation'' approximates ML decoding.
 
-\begin{mentalLeap}[Leap 4 (Arıkan 2009)]\emph{Channel Polarization.} Take $N$ independent copies of a channel. Combine them recursively. Some become \emph{perfect} (capacity 1), others \emph{useless} (capacity 0). Send data only through perfect ones. Deterministic, explicit, $O(N \log N)$.\end{mentalLeap}
+\emph{Channel Polarization.} Take $N$ independent copies of a channel. Combine them recursively. Some become \emph{perfect} (capacity 1), others \emph{useless} (capacity 0). Send data only through perfect ones. Deterministic, explicit, $O(N \log N)$.
 
 Each leap changed the \emph{design philosophy}: Algebra $\to$ Concatenation $\to$ Probabilistic/Graphical $\to$ Polarization/Deterministic.
 
-\begin{connectionbox}[The Unifying Thread]
 Each leap built on the limitations of the previous. Hamming's algebra worked beautifully for short codes but could not scale to long blocklengths. Forney's concatenation achieved exponentially decaying error probability but could not reach the Shannon limit. Gallager and Berrou's iterative decoding reached capacity empirically but lacked a rigorous proof. Arıkan's polarization provided both the proof and the explicit construction — closing the 60-year gap between Shannon's existence theorem and a practical, provably capacity-achieving code.
-
-\end{connectionbox}
 
 %======================================================================
 % SECTION 5: THE MATHEMATICS
@@ -318,10 +291,7 @@ where $\omega(x) = \Lambda(x)(1 + S(x)) \bmod x^{d-1}$ is the error evaluator po
 This four-step procedure (syndromes $\to$ BM $\to$ Chien $\to$ Forney) is the standard algebraic decoding pipeline for RS and BCH codes, and is implemented in billions of devices worldwide.
 \end{example}
 
-\begin{historicalbox}[Why RS Codes Rule the World]
 Burst errors (scratches on CDs, fading in wireless) corrupt consecutive bits. RS codes over $\mathbb{F}_{2^m}$ treat each symbol as $m$ bits $\to$ burst of $b$ bits affects $\le \lceil b/m \rceil$ symbols. RS corrects up to $\lfloor (n-k)/2 \rfloor$ symbol errors. This is why CDs, DVDs, QR codes, DSL, RAID-6 all use RS.
-
-\end{historicalbox}
 
 \subsection{BCH Codes}
 \label{sec:ec:bch}
@@ -364,10 +334,7 @@ This construction was used in Voyager (1977) and deep space communications for d
 
 Forney's key insight was \emph{divide and conquer}: rather than designing a single, monolithic code that simultaneously handles all noise patterns, split the problem into two layers. The inner code operates at the physical channel level, handling the raw bit errors. The outer code operates at a higher level, treating inner decoder failures as symbol errors. The overall error probability is the product of the two layers' error probabilities, leading to the exponential decay. Forney showed that with $n$ total blocklength, the error probability decays as $\exp(-n^\alpha)$ for some $\alpha > 0$, a dramatic improvement over uncoded transmission.
 
-\begin{connectionbox}[Voyager and the Golden Record]
 The Voyager spacecraft, launched in 1977, used a concatenated code: a $(255, 223)$ Reed-Solomon outer code over $\mathbb{F}_{256}$ concatenated with a $(2,1,7)$ convolutional inner code decoded by the Viterbi algorithm. This combination enabled communication from the edge of the solar system at data rates of just a few kilobits per second. The error correction was so effective that the Golden Record's images and sounds arrived at Earth with virtually no errors despite the 15-billion-kilometer journey.
-
-\end{connectionbox}
 
 \subsection{Convolutional Codes and Viterbi Algorithm}
 \label{sec:ec:conv}
@@ -744,7 +711,6 @@ Polarization extends to $q$-ary channels and channels with memory (via kernel ma
 \item \textbf{Space-Solaris and Deep Space Network:} NASA's Deep Space Network now uses rate-1/2 and rate-2/3 LDPC codes standardized by CCSDS. These codes enable communication with spacecraft at Jupiter, Saturn, and beyond.
 \end{itemize}
 
-\begin{connectionbox}[Connections]
 \begin{itemize}
 \item Chapter 5 (Information): Channel capacity is the \emph{limit}; codes are the \emph{construction}.
 \item Chapter 7 (Kolmogorov): Error correction $\leftrightarrow$ compressibility. A correctable error pattern has low Kolmogorov complexity.
@@ -752,8 +718,6 @@ Polarization extends to $q$-ary channels and channels with memory (via kernel ma
 \item Chapter 12 (Consensus): Error correction in Byzantine agreement (coded redundancy for fault tolerance).
 \item Chapter 14 (Information Theory and ML): Variational inference $\leftrightarrow$ belief propagation. Message-passing algorithms in deep learning (graph neural networks) share the same mathematical structure as iterative decoding.
 \end{itemize}
-
-\end{connectionbox}
 
 %======================================================================
 % SECTION 9: LESSONS FOR FUTURE SCIENTISTS
@@ -775,7 +739,7 @@ This chapter surveyed the theory and practice of error-correcting codes, tracing
 %======================================================================
 % EXERCISES
 %======================================================================
-The theory-to-practice pipeline for codes is brutally slow. After Gallager's 1963 thesis, LDPC codes waited 33 years for rediscovery and another 13 years for adoption in WiFi. Berrou's turbo codes went from ICC '93 to 3G in about 7 years — considered lightning fast. The lesson: revolutionary ideas often face a generation of resistance before they become infrastructure.\end{roadblockbox}
+The theory-to-practice pipeline for codes is brutally slow. After Gallager's 1963 thesis, LDPC codes waited 33 years for rediscovery and another 13 years for adoption in WiFi. Berrou's turbo codes went from ICC '93 to 3G in about 7 years — considered lightning fast. The lesson: revolutionary ideas often face a generation of resistance before they become infrastructure.
 
 %======================================================================
 % EXERCISES

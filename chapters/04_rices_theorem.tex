@@ -18,30 +18,19 @@ Formally, we can think of each Turing machine $M$ as having an index $\langle M 
 
 Each of these is a question about what a program \emph{does} --- its \emph{semantics} --- not about its syntactic structure. Before Rice's Theorem, the research community confronted a troubling pattern: every interesting semantic question about programs seemed to be undecidable, but the proofs were all different. Was there a \emph{unified} explanation?
 
-\begin{question}
 Why are almost all semantic questions about programs undecidable?
-\end{question}
 
 More formally: Let $\mathcal{P}$ be a non-trivial property of the function computed by a Turing machine (i.e., a property of the \emph{language} recognized or the \emph{function} computed). Is the set $\{ \langle M \rangle \mid L(M) \text{ has property } \mathcal{P} \}$ decidable?
 
 Rice's Theorem (1953) answers: \textbf{No} --- for \emph{any} non-trivial semantic property.
 
-\begin{highlightbox}[The Core Question]
 If the halting problem is undecidable, is that an isolated phenomenon? Or is undecidability the \emph{rule} for reasoning about what programs \emph{do} (as opposed to how they look)?
 
-\end{highlightbox}
-
-\begin{roadblockbox}[The Programmer's Lament]
 A working programmer might ask: ``Surely I can \emph{check} whether my program will crash on a given input? one runs it!'' But running it on \emph{one} input does not tell you about \emph{all} inputs. And running it on all inputs would take forever. The question is: can we inspect the code and \emph{decide}, once and for all, whether a property holds for every possible execution? Rice's Theorem says: not if the property is semantic and non-trivial.
-
-\end{roadblockbox}
 
 The theorem draws a sharp line through the space of all possible questions about programs. On one side lie syntactic questions --- ``does this program have more than 100 lines?'' --- which are trivially decidable. On the other side lie semantic questions --- ``does this program compute a prime number?'' --- which are uniformly undecidable. The boundary is not between easy and hard semantic questions; it is between semantic and syntactic questions \emph{tout court}.
 
-\begin{connectionbox}[Connection to Software Engineering]
 Every software engineer encounters Rice's Theorem in practice, even if they do not know its name. When a code review asks ``does this function handle all edge cases?'' or ``can this input cause a crash?'' --- these are semantic questions. The theorem tells us that no tool can answer them automatically for arbitrary programs. This is why code review, testing, and formal verification by human experts remain essential: they bring \emph{understanding} to bear where algorithms must fail.
-
-\end{connectionbox}
 
 %======================================================================
 % SECTION 2: WHY IT SEEMED IMPOSSIBLE
@@ -64,17 +53,11 @@ Before Rice, the landscape of undecidability was fragmented. Each new undecidabi
 
 Each required its own reduction proof, its own clever encoding, its own diagonalization. It seemed like undecidability was a property of \emph{specific} problems --- some semantic properties might be decidable, others not. There was no \emph{unifying principle}.
 
-\begin{roadblockbox}[The Intuition Trap]
 ``Surely \emph{some} semantic properties are decidable. For example: `Does this program accept the empty string?' --- just run it on $\epsilon$! If it accepts, yes. If it rejects or loops\ldots oh. We're back to halting.''
 
 The trap: any property that depends on the program's \emph{behavior} on \emph{infinite} inputs inherits the halting problem. But proving this \emph{generally} seemed to require a new proof for each property. Researchers in the 1940s and early 1950s were caught in a pattern of proving each undecidability result individually, without seeing the forest for the trees.
 
-\end{roadblockbox}
-
-\begin{roadblockbox}[The Hidden Assumption]
 Another intuition trap: ``What about syntactic semantic properties? For example: `Does this program have exactly 5 states and accept the empty string?' That mixes syntax and semantics --- surely we can decide it?'' The catch: the syntactic part (``5 states'') is decidable, but the semantic part (``accepts the empty string'') is not. The conjunction inherits undecidability from the semantic conjunct. Mixing syntax with semantics does not make the semantic part go away.
-
-\end{roadblockbox}
 
 Experts expected a case-by-case classification: some semantic properties decidable, some not. Rice showed this expectation was wrong --- the boundary is not between properties, but between \emph{trivial} and \emph{non-trivial}. The only decidable semantic properties are those that hold for \emph{every} program or \emph{no} program. Everything else is undecidable.
 
@@ -84,10 +67,7 @@ To appreciate the difficulty of Rice's insight, consider the state of knowledge 
 
 A skeptic in 1950 might have argued: ``But surely there are semantic properties that are decidable --- for instance, whether a program accepts an input of length exactly 42? We can just run it on all strings of length 42!'' The flaw, of course, is that running a program on all $256^{42}$ possible strings would not terminate if the program loops on any of them. The skeptic's mistake is assuming that ``running the program'' is the same as ``deciding the property.'' Rice's Theorem shows that this assumption is equivalent to solving the halting problem.
 
-\begin{connectionbox}[The P vs.\ NP Connection]
 Rice's Theorem also applies to complexity-theoretic properties. Deciding whether a program runs in polynomial time is a semantic property --- it depends on the resource usage of the computation, not the code. Rice tells us this is undecidable. This means that if $\mathsf{P} \neq \mathsf{NP}$, we cannot even \emph{algorithmically verify} that a program solves an $\mathsf{NP}$-complete problem in polynomial time, unless we accept the limitations that Rice imposes. This is one reason why the $\mathsf{P} \neq \mathsf{NP}$ question is so deep: proving that no polynomial-time algorithm exists for a problem is not just hard; it is embedded in a context where even \emph{recognizing} such algorithms is undecidable.
-
-\end{connectionbox}
 
 %======================================================================
 % SECTION 3: HISTORICAL CONTEXT
@@ -95,23 +75,17 @@ Rice's Theorem also applies to complexity-theoretic properties. Deciding whether
 \section{Historical Context: What Was Known at the Time}
 \label{sec:rice:context}
 
-\begin{historicalbox}[Henry Gordon Rice (1920--2003)]
 Henry Gordon Rice was born in 1920 in New York. He served in the United States Army during World War II, working on cryptographic problems --- an experience that likely sharpened his interest in the limits of mechanical computation. After the war, he pursued a PhD at Syracuse University under the supervision of J. C. E. Dekker, a leading figure in recursion theory who had made foundational contributions to the theory of creative sets and myriads (a generalization of the concept of ``almost all'' for sets of natural numbers).
 
 Rice's 1951 dissertation, ``Recursive and Recursively Enumerable Sets,'' contained the theorem that would bear his name. \cite{rice1953}. It was published in 1953 in the \emph{Transactions of the American Mathematical Society} under the title ``Classes of Recursively Enumerable Sets and Their Decision Problems.'' After a brief period at the National Security Agency (NSA) during the early Cold War, Rice joined the faculty at Cornell University, where he spent the remainder of his career teaching logic and the foundations of mathematics.
 
 Rice was a quiet, meticulous scholar. He did not seek fame; his theorem emerged from a careful study of the structure of index sets and the classification of recursively enumerable languages. He died in 2003, having witnessed his theorem become a cornerstone of computability theory and program analysis.
 
-\end{historicalbox}
-
 Rice's Theorem was not immediately recognized as the sweeping result it is. The 1950s were a time of rapid development in recursion theory, and many results were being discovered simultaneously. Post's problem --- whether there exist non-recursive, non-complete r.e. Turing degrees --- was solved independently by Friedberg and Muchnik in 1956 using the priority method, which dominated recursion theory for the next two decades. Rice's classification of index sets was initially seen as a helpful classification tool for organizing r.e. sets, but not as the foundational result about program analysis that we recognize today.
 
-\begin{historicalbox}[The Reception of Rice's Theorem]
 When Rice's Theorem first appeared, it was received as an elegant piece of recursion theory but not as a revolution. Logicians like Kleene and Post appreciated the classification of index sets, but the theorem's implications for computing practice were not immediately visible. The computing landscape of 1953 was dominated by punch-card machines, assembly language, and nascent compiler technology (Fortran would not appear until 1957). The idea that programs could have undecidable semantic properties was abstract and distant.
 
-It was only in the 1970s, as programming languages matured (ALGOL, Pascal, C), that the theorem's practical bite became clear. Compiler writers trying to optimize code, researchers building program verifiers, and engineers developing testing methodologies all found themselves bumping against Rice's wall. By the 1980s, the theorem was recognized as one of the most practically relevant results in computability theory --- a rare case of a deep mathematical theorem with direct engineering consequences.
-
-\end{historicalbox} Post's problem (whether there exist recursively enumerable sets of intermediate Turing degree) dominated the attention of recursion theorists. Rice's classification of index sets was initially seen as a technical lemma about the structure of r.e. sets rather than a foundational result about program analysis. It took the rise of programming languages, compiler construction, and static analysis in the 1960s and 1970s for the broader significance of Rice's Theorem to become apparent.
+It was only in the 1970s, as programming languages matured (ALGOL, Pascal, C), that the theorem's practical bite became clear. Compiler writers trying to optimize code, researchers building program verifiers, and engineers developing testing methodologies all found themselves bumping against Rice's wall. By the 1980s, the theorem was recognized as one of the most practically relevant results in computability theory --- a rare case of a deep mathematical theorem with direct engineering consequences. Post's problem (whether there exist recursively enumerable sets of intermediate Turing degree) dominated the attention of recursion theorists. Rice's classification of index sets was initially seen as a technical lemma about the structure of r.e. sets rather than a foundational result about program analysis. It took the rise of programming languages, compiler construction, and static analysis in the 1960s and 1970s for the broader significance of Rice's Theorem to become apparent.
 
 The theorem gained prominence through Rogers' influential 1967 textbook \emph{Theory of Recursive Functions and Effective Computability}, which presented Rice's result as one of the central theorems of recursion theory. Rogers showed how index sets could be classified using the arithmetical hierarchy, and how Rice's Theorem fit into the broader program of understanding the degrees of unsolvability. By the 1970s, Rice's Theorem was a standard part of every computability theory curriculum.
 
@@ -132,29 +106,17 @@ Timeline of undecidability results leading to Rice:
 \item \textbf{1960s:} Rogers --- \emph{Theory of Recursive Functions and Effective Computability} (standard reference that codified Rice's Theorem and its variants).
 \end{itemize}
 
-\begin{connectionbox}[Connection to Chapter 2]
 Rice's Theorem \emph{generalizes} the halting problem. The halting problem is the special case where $\mathcal{P} = \{ f \mid f(x) \text{ is defined} \}$ for a fixed input $x$. Rice shows this is not a special case at all --- it's the \emph{generic} case. Every non-trivial semantic property is at least as hard as the halting problem.
 
-\end{connectionbox}
-
-\begin{connectionbox}[Connection to G\"odel]
 Rice's Theorem is sometimes called ``G\"odel's Theorem for programmers.'' G\"odel showed that any sufficiently powerful formal system cannot decide all arithmetic truths. Rice showed that any sufficiently powerful programming language cannot decide all semantic properties of its own programs. Both are limitative theorems: they draw boundaries around what formal methods can achieve.
 
-\end{connectionbox}
-
-\begin{historicalbox}[The Syracuse School of Recursion Theory]
 Syracuse University in the late 1940s and early 1950s was a vibrant center for recursion theory. J. C. E. Dekker, a student of Emil Post at CCNY, had moved to Syracuse and built a research group. The ``Syracuse School'' included Rice, along with other notable recursion theorists. They focused on the structure of recursively enumerable sets, creative and productive sets, and the use of index sets to classify decision problems. This environment --- steeped in the Post program of classifying undecidable problems by their degree of unsolvability --- was the perfect incubator for Rice's unifying insight.
 
 The intellectual atmosphere at Syracuse was characterized by a blend of algebraic and computational thinking. Dekker had introduced the concept of a \emph{myriad} (a set that contains almost all natural numbers) and had developed the theory of creative sets, which are r.e. sets whose complement is productively non-r.e. These concepts provided the technical vocabulary that Rice used to formulate his theorem. The group met weekly to discuss new results, and the cross-pollination of ideas was intense. Rice's result emerged from this collaborative environment, combining Dekker's work on creative sets with Post's program of classifying undecidable problems.
 
 Dekker's influence on Rice cannot be overstated. Dekker had studied with Post at CCNY, where Post had formulated his famous problem: does there exist a recursively enumerable set that is neither recursive nor complete? (This became Post's problem, solved in 1956.) Dekker brought this problem-rich environment to Syracuse, and Rice absorbed the emphasis on understanding the structure of index sets. The result was a theorem that, in hindsight, seems almost inevitable given the tools available --- but it took Rice's key insight to see the connections.
 
-\end{historicalbox}
-
-\begin{connectionbox}[The Wider Intellectual Context]
 The 1950s was a remarkable decade for logic and computability. Shannon's information theory (1948) had shown that communication has fundamental limits. Von Neumann's architecture (1945) was enabling the first stored-program computers. The ENIAC (1946) had demonstrated that general-purpose computation was physically realizable. Against this backdrop, recursion theorists were mapping the theoretical limits of computation. Rice's Theorem, along with the recursion theorem (Kleene 1938), the arithmetical hierarchy (Kleene 1943), and Post's problem (1954), formed a coherent picture of the landscape of unsolvability. By the end of the 1950s, the foundations of computability theory were essentially complete.
-
-\end{connectionbox}
 
 %======================================================================
 % SECTION 4: THE MENTAL LEAP
@@ -162,25 +124,19 @@ The 1950s was a remarkable decade for logic and computability. Shannon's informa
 \section{The Mental Leap: The Creative Insight That Changed Everything}
 \label{sec:rice:leap}
 
-\begin{mentalLeap}[The Insight]A semantic property of programs is a property of the \emph{function} they compute, not the \emph{code} they contain. Any non-trivial such property partitions the set of all computable functions into two non-empty classes. To decide the property, we must distinguish these classes. But we can \emph{reduce} the halting problem to this distinction: given a program $M$ and input $x$, construct a program $M'$ that behaves like a function in class $A$ if $M$ halts on $x$, and like a function in class $B$ otherwise. Deciding the property decides halting.\end{mentalLeap}
+A semantic property of programs is a property of the \emph{function} they compute, not the \emph{code} they contain. Any non-trivial such property partitions the set of all computable functions into two non-empty classes. To decide the property, we must distinguish these classes. But we can \emph{reduce} the halting problem to this distinction: given a program $M$ and input $x$, construct a program $M'$ that behaves like a function in class $A$ if $M$ halts on $x$, and like a function in class $B$ otherwise. Deciding the property decides halting.
 
 The leap is recognizing that \emph{all} non-trivial semantic properties are ``equally hard'' --- they all sit at the same level of the arithmetical hierarchy ($\Sigma^0_1$ or $\Pi^0_1$ or higher). The proof doesn't care \emph{what} the property is --- only that it's non-trivial (true for some computable functions, false for others) and semantic (depends only on the function, not the code).
 
 To see the insight concretely, suppose we want to know whether a program $M$ halts on input $w$. Consider the property $\mathcal{P}$ = ``the language recognized by a TM contains the string `hello'.'' This is clearly semantic (it depends only on the language) and non-trivial (some TMs accept `hello', others don't). Now given $\langle M, w \rangle$, we construct a new TM $M_{M,w}$ as follows: on any input $x$, ignore $x$, simulate $M$ on $w$, and if $M$ halts, accept. Then $L(M_{M,w})$ is either empty (if $M$ does not halt on $w$) or $\Sigma^*$ (all strings, including `hello') if $M$ halts. Therefore, $M_{M,w}$ has property $\mathcal{P}$ iff $M$ halts on $w$. Deciding $\mathcal{P}$ would decide the halting problem.
 
-\begin{roadblockbox}[Why This Matters]
 Before Rice, one might hope: ``Maybe `does this program compute a polynomial-time function?' is decidable, even though halting isn't.'' Rice says: \textbf{No}. If the property is semantic and non-trivial, it's undecidable. The \emph{entire semantic landscape} is undecidable. This was surprising because it meant that the undecidability of the halting problem was not an isolated curiosity but the first instance of a universal phenomenon.
-
-\end{roadblockbox}
 
 The diagonalization argument underlying Rice's Theorem deserves special attention. Unlike the direct self-reference of the halting problem (a program that halts iff it does not halt), Rice's reduction constructs a program whose behavior \emph{simulates} another computation. It uses \emph{indirect} self-reference: the constructed program does not refer to itself, but rather to the halting behavior of another program. This indirect construction is more flexible and more general, which is why it subsumes so many individual undecidability proofs.
 
 Another way to understand Rice's insight is through the lens of \emph{extensionality}. An extensional property is one that respects the equivalence relation ``computes the same function.'' Rice's Theorem says that any non-trivial extensional property is undecidable. This is surprising because extensionality seems like a natural requirement --- if two programs do the same thing, shouldn't they satisfy the same properties? The paradox is that extensionality forces the property to be ``global'' --- it must look at the entire input-output behavior of the program, which is an infinite object. Finite algorithms cannot reliably decide properties of infinite objects.
 
-\begin{connectionbox}[Connection to Diagonalization]
 The halting problem proof uses a direct diagonalization: a program that asks about itself. Rice's proof uses a \emph{reduction} rather than a direct diagonalization. But the reduction is powered by the same insight: programs can be treated as data, and the ability to simulate one program inside another creates a pipeline from any halting question to any semantic property question. The capacity for self-reference --- encoded in the existence of a universal Turing machine --- is what makes both proofs work.
-
-\end{connectionbox}
 
 %======================================================================
 % SECTION 5: THE MATHEMATICS
@@ -269,10 +225,7 @@ Thus $\langle M, w \rangle \in \HALT \iff \langle M_{M,w} \rangle \in I_\mathcal
 
 The proof highlights the central technique: the construction $M_{M,w}$ acts as a ``bridge'' that transforms a question about halting into a question about property $\mathcal{P}$. The key is that $M_{M,w}$'s semantics --- its input-output behavior --- depends entirely on whether $M$ halts on $w$, not on the syntactic details of $M$ or $w$.
 
-\begin{roadblockbox}[A Closer Look at the Construction]
 The TM $M_{M,w}$ constructed in the proof is a \emph{conditional} program: it first simulates $M$ on $w$, ignoring its own input $x$. Only if the simulation halts does it proceed to behave like $M_{yes}$. This means $M_{M,w}$ either computes the same function as $M_{yes}$ (if $M(w) \downarrow$) or computes the nowhere-defined function (if $M(w) \uparrow$). The correctness of the reduction depends on $M_{yes}$ and the nowhere-defined function belonging to different sides of the $\mathcal{P}$ partition, which is guaranteed by non-triviality.
-
-\end{roadblockbox}
 
 We can also prove Rice's Theorem using the Kleene Recursion Theorem, which provides another perspective on why the theorem holds.
 
@@ -309,19 +262,13 @@ b & \text{if } e \in I_\mathcal{P}
 \]
 where $a \in I_\mathcal{P}$ and $b \notin I_\mathcal{P}$. If $I_\mathcal{P}$ were decidable, $f$ would be computable. By the Recursion Theorem, $f$ has a fixed point $e$: $\varphi_e = \varphi_{f(e)}$. But then $e \in I_\mathcal{P} \iff f(e) \in I_\mathcal{P}$. By construction, $f(e)$ belongs to the opposite side of $\mathcal{P}$ from $e$, so $e \in I_\mathcal{P} \iff e \notin I_\mathcal{P}$, a contradiction.
 
-\begin{roadblockbox}[Why Fixed Points Matter]
 The fixed-point perspective on Rice's Theorem reveals that undecidability is intimately connected to the impossibility of a global ``semantic equivalence test.'' If we could decide whether two programs compute the same function, we could decide any semantic property: a decision procedure for $I_\mathcal{P}$ would ask ``does $M$ compute the same function as a known $M_{yes}$?'' But the recursion theorem shows that this equivalence test is self-referentially unstable --- any attempt to define it creates a program that defeats it.
-
-\end{roadblockbox}
 
 The Recursion Theorem is also the foundation for understanding \emph{self-modifying code} and \emph{quines} (programs that output their own source code). A quine is a fixed point of the function that maps a program description to an output string. The existence of quines for any Turing-complete language follows from the Recursion Theorem. The connection to Rice's Theorem is that the existence of these fixed points --- programs that refer to themselves --- is what makes the index set structure so intricate. If programs could not self-refer, the arithmetical hierarchy would collapse and many semantic properties might become decidable.
 
 A particularly elegant application of the Recursion Theorem to Rice-style results is the following: define $f(e)$ as the index of a program that behaves like program $e$ on all inputs except that it outputs a specific constant $c$ on input $0$. This is computable by the s-m-n theorem. If $\mathcal{P}$ were decidable, we could decide whether $\varphi_e(0) = c$ --- but this is the halting problem. The Recursion Theorem thus provides a general method for proving undecidability of questions about program behavior.
 
-\begin{connectionbox}[Connection to \texorpdfstring{$\lambda$}{Lambda}-Calculus]
 In the $\lambda$-calculus, the fixed-point combinator $Y = \lambda f. (\lambda x. f(xx))(\lambda x. f(xx))$ satisfies $Y f = f(Y f)$ for any term $f$. This is the $\lambda$-calculus analog of the Recursion Theorem. Rice's Theorem in the $\lambda$-calculus says: any non-trivial property of $\beta$-normal forms (the ``output'' of a computation) is undecidable. The Church-Turing thesis ensures that this is equivalent to the Turing machine formulation. The $\lambda$-calculus perspective emphasizes the connection between undecidability and the inability to decide $\beta$-equivalence of arbitrary terms.
-
-\end{connectionbox}
 
 \subsection{Variants and Extensions}
 \label{sec:rice:variants}
@@ -364,10 +311,7 @@ The Myhill-Shepherdson Theorem is a ``Rice's Theorem for functionals'' --- it ch
 
 The relationship between Rice-Shapiro and Myhill-Shepherdson is subtle but important. Rice-Shapiro tells us which properties of r.e. sets are semi-decidable: those that are compact (finite subsets determine membership). Myhill-Shepherdson tells us which operations \emph{on} partial functions are computable: those that are continuous (finite outputs depend on finite inputs). Both are manifestations of the same underlying principle: computable operations on infinite objects must be determined by finite approximations. This principle, known as \emph{effective continuity}, is a cornerstone of computable analysis and domain theory.
 
-\begin{highlightbox}[Effective Continuity and the Scott Topology]
 The Scott topology on the set of partial functions $\mathbb{N} \rightharpoonup \mathbb{N}$ has as its open sets those sets $U$ such that (1) if $f \in U$ and $f \subseteq g$, then $g \in U$, and (2) if $f \in U$, then there exists a finite $f_0 \subseteq f$ with $f_0 \in U$. Rice-Shapiro says: a property $\mathcal{P}$ is semi-decidable iff the set of functions satisfying $\mathcal{P}$ is open in the Scott topology. Myhill-Shepherdson says: a functional $\Phi$ is computable iff it is Scott-continuous (preserves directed suprema). This topological perspective unifies the two theorems and reveals their deep connection to the mathematics of approximation.
-
-\end{highlightbox}
 
 \begin{theorem}[Rice's Theorem for Complexity Classes]
 Let $\mathcal{C}$ be a non-trivial complexity class (e.g., $\mathsf{P}$, $\mathsf{NP}$, $\mathsf{PSPACE}$) closed under finite variants. Then $\{ \langle M \rangle \mid L(M) \in \mathcal{C} \}$ is undecidable. (Even for $\mathsf{P}$!)
@@ -379,10 +323,7 @@ The proof mirrors the standard Rice reduction. Given $\langle M, w \rangle$, con
 A corrected construction: Let $M_{in}$ be a TM whose language is in $\mathcal{C}$ and $M_{out}$ be a TM whose language is not in $\mathcal{C}$. Given $\langle M, w \rangle$, build $M'$ that on input $x$ simulates $M$ on $w$ for $|x|$ steps. If $M$ halts within those $|x|$ steps, run $M_{in}$ on $x$; else, run $M_{out}$ on $x$. If $M$ halts on $w$ at all, it does so after some finite number $k$ of steps. Then for all $x$ with $|x| \geq k$, $M'$ behaves like $M_{in}$, so $L(M')$ differs from $L(M_{out})$ by at most finitely many strings. Since $\mathcal{C}$ is closed under finite variants, $L(M') \in \mathcal{C}$ iff $L(M_{in}) \in \mathcal{C}$, which is true. If $M$ never halts, then $M'$ always behaves like $M_{out}$, so $L(M') = L(M_{out}) \notin \mathcal{C}$. Thus $\HALT \leq_m I_\mathcal{C}$.
 \end{proof}
 
-\begin{roadblockbox}[Why This Matters for Complexity Theory]
 This theorem has a devastating consequence: we cannot algorithmically determine the complexity class of an arbitrary program. ``Is this program in $\mathsf{P}$?'' is undecidable. ``Does this program run in polynomial space?'' is undecidable. ``Is this program's worst-case running time $O(n^2)$?'' is undecidable. This means that automatic complexity analysis --- determining the asymptotic resource usage of arbitrary code --- is fundamentally impossible. All practical complexity analysis tools (e.g., Loop bound analysis in compilers) must use conservative approximations.
-
-\end{roadblockbox}
 
 \subsection{Index Sets and Their Properties}
 \label{sec:rice:indexsets}
@@ -442,17 +383,11 @@ The arithmetical hierarchy also has important closure properties. If a property 
 
 To determine the level of a property in the arithmetical hierarchy, express the property as a quantified formula over natural numbers. The number of quantifier alternations determines the level. For example, ``$L(M)$ is non-empty'' becomes $\exists s (\text{accepts}(M, s))$ --- one existential quantifier, hence $\Sigma^0_1$. ``$L(M)$ is infinite'' becomes $\forall n \exists s > n (\text{accepts}(M, s))$ --- a $\forall\exists$ alternation, hence $\Pi^0_2$. The classification is not always unique: a property may have multiple definitions with different quantifier structures, and the lowest level is the ``true'' complexity.
 
-\begin{highlightbox}[The Limit Lemma]
 Post's Theorem (1948) connects the arithmetical hierarchy to the Turing jump: a set is $\Sigma^0_{n+1}$ iff it is recursively enumerable in $\emptyset^{(n)}$ (the $n$-th Turing jump of the empty set). Equivalently, $\Sigma^0_{n+1} = \Sigma^1_n$ where $\Sigma^1_n$ denotes enumeration relative to the $n$-th jump. This means: to semi-decide a $\Sigma^0_{n+1}$ property of programs, you need an oracle for $\emptyset^{(n)}$. For $\Sigma^0_1$ (like non-emptiness), the halting problem oracle suffices. For $\Sigma^0_2$ (like finiteness), you need $\emptyset''$, and so on.
-
-\end{highlightbox}
 
 A striking consequence of the arithmetical hierarchy classification is that some properties of programs are \emph{more undecidable} than others. The halting problem is undecidable, but the set of indices of machines that accept infinite languages is strictly harder: it cannot be decided even with an oracle for the halting problem. This means there is an infinite hierarchy of undecidability, and semantic properties of programs populate its lower levels.
 
-\begin{roadblockbox}[The Jump Operator]
 The structure of index sets is intimately connected with the \emph{Turing jump}. The halting problem $\emptyset'$ (the jump of the empty set) is $\Sigma^0_1$-complete. The jump of $\emptyset'$ (written $\emptyset''$) is $\Sigma^0_2$-complete, and so on. The classification of index sets tells us: to decide whether a program's language is infinite, you need an oracle for $\emptyset''$; to decide if it is cofinite, you need $\emptyset'''$. The higher you climb in the hierarchy, the more oracle power you need.
-
-\end{roadblockbox}
 
 \subsection{Examples of Applying Rice's Theorem}
 \label{sec:rice:examples}
@@ -503,10 +438,7 @@ In each case, Rice's Theorem saves us the effort of constructing an explicit red
 
 This quick-reference table shows the pattern: Rice's Theorem applies to the first column (semantic + non-trivial) and does not apply to the others.
 
-\begin{roadblockbox}[When Rice's Theorem Does NOT Apply]
 Rice's Theorem has no force against syntactic properties. ``Does $M$ have fewer than 50 states?'' is decidable --- just count the states. ``Does $M$ use a specific tape symbol?'' is decidable. ``Does $M$ contain a loop?'' is syntactic and decidable (assuming we can parse the machine description). The boundary is not between easy and hard properties; it is between properties of \emph{code} (syntactic) and properties of \emph{behavior} (semantic). Also, Rice's Theorem requires the property to be non-trivial: ``Does $M$ accept a language?'' is trivial (all TMs accept some language), so it is trivially decidable (always true).
-
-\end{roadblockbox}
 
 %======================================================================
 % SECTION 6: CONSEQUENCES
@@ -556,14 +488,11 @@ The abstract interpreter then computes in the abstract domain instead of the con
 \]
 This ensures that results computed in the abstract domain are sound over-approximations of concrete results.
 
-\begin{highlightbox}[A Concrete Example: Interval Analysis]
 Consider a program with integer variables. The concrete domain is $\mathcal{P}(\mathbb{Z})$ (sets of integers). The abstract domain is $\mathsf{Interval} = \{ [l, u] \mid l \leq u, l \in \mathbb{Z} \cup \{-\infty\}, u \in \mathbb{Z} \cup \{\infty\} \} \cup \{\bot\}$. The abstraction of a set $S \subseteq \mathbb{Z}$ is $\alpha(S) = [\min(S), \max(S)]$ (or $\bot$ if $S = \emptyset$). Concretization of $[l,u]$ is $\{ z \mid l \leq z \leq u \}$.
 
 Addition in the abstract domain: $[l_1, u_1] + [l_2, u_2] = [l_1 + l_2, u_1 + u_2]$. This is sound: if $x \in [l_1, u_1]$ and $y \in [l_2, u_2]$, then $x + y \in [l_1 + l_2, u_1 + u_2]$.
 
 By iterating this abstract semantics, the analyzer can prove that an array index $i$ at a program point is always within $[0, 9]$, guaranteeing no out-of-bounds access --- without examining every possible execution path individually.
-
-\end{highlightbox}
 
 The soundness condition $\alpha(\llbracket f \rrbracket(c)) \sqsubseteq \llbracket f \rrbracket^\#(\alpha(c))$ ensures that every concrete behavior is captured by the abstract computation. However, the converse need not hold: the abstract computation may produce results that do not correspond to any concrete execution. This over-approximation is what makes abstract interpretation sound (no false negatives for the properties it checks), but incomplete (it may report false positives because the over-approximation introduces spurious behaviors).
 
@@ -585,15 +514,12 @@ To ensure termination of the abstract computation on loops, abstract interpretat
 \item \textbf{Narrowing} ($\triangle$): Applied after widening to recover some lost precision, narrowing improves the result without losing termination guarantees.
 \end{itemize}
 
-\begin{roadblockbox}[How Tools Use Abstract Interpretation]
 \begin{itemize}
 \item \textbf{Astr\'ee} (Airbus): Verifies absence of runtime errors (division by zero, buffer overflow, floating-point overflow) in flight control software. Uses a combination of intervals, octagons, and decision diagrams. Analyzes 400,000+ lines of C in a few hours, with zero false negatives for its target properties.
 \item \textbf{Facebook Infer}: Uses separation logic and bi-abduction to find memory safety bugs, resource leaks, and concurrency issues in Android/Java/C/Objective-C code. Deployed on every code change at Meta.
 \item \textbf{Polyspace} (MathWorks): Applies abstract interpretation to embedded C/C++ code to prove absence of critical runtime errors. Used in automotive, aerospace, and medical devices.
 \item \textbf{Frama-C}: An open-source framework for C code analysis. Combines abstract interpretation with value analysis, dependency analysis, and weakest-precondition verification.
 \end{itemize}
-
-\end{roadblockbox}
 
 This is the theoretical foundation of tools like Astree (Airbus flight control verification), Infer (Facebook), and Polyspace. Each tool chooses an abstract domain that makes the target property decidable by over-approximation, accepting incompleteness (false positives) in exchange for soundness and termination.
 
@@ -606,19 +532,13 @@ Consider a simple C-like program with a loop:
 \texttt{\}}
 \end{quote}
 
-\begin{highlightbox}[A Concrete Abstract Interpretation Walkthrough]
 An interval-based abstract interpreter analyzes this loop as follows. Initially, $i \in [0,0]$. After the loop body, $i \in [1,1]$. The analyzer computes the join (union) of the entering and looping-back states: $i \in [0,0] \sqcup [1,1] = [0,1]$. On the second iteration, the exit state is $i \in [1,2]$, and the join becomes $[0,2]$. Without widening, this sequence grows indefinitely: $[0,0], [0,1], [0,2], \ldots, [0,n], \ldots$
 
 With widening (after, say, 3 iterations), the loop bound is extrapolated: $[0,2] \nabla [0,3] = [0, \infty]$. This stabilized state represents ``$i$ is some non-negative integer.'' The analyzer then checks the array access: $a[i]$ with $i \in [0, \infty]$. If $a$ is declared as \texttt{int a[100]}, the analyzer reports a potential buffer overflow (a false positive, since the loop only runs while $i < 100$) --- unless the abstract domain is expressive enough to track the loop condition. This example illustrates the fundamental trade-off: interval analysis is sound (it does not miss overflows) but imprecise (it may report spurious overflows).
 
 After widening, \emph{narrowing} can recover some precision. For the loop above, after widening to $[0, \infty]$, narrowing with the loop condition $i < 100$ might refine the bound to $[0, 99]$ if the analyzer tracks loop exit conditions. The combination of widening and narrowing gives a terminating analysis that is more precise than widening alone, though still potentially imprecise for complex loop conditions.
 
-\end{highlightbox}
-
-\begin{roadblockbox}[What Rice's Theorem Does NOT Say]
 Rice's Theorem is often misinterpreted as saying ``all interesting properties of programs are undecidable.'' This is too broad. What it actually says is: all non-trivial \emph{semantic} properties of programs are undecidable. Many useful properties are syntactic (``does this program contain a memory deallocation after every allocation?'') and are decidable. Many semantic properties become decidable when restricted to finite-state programs (model checking), bounded executions (bounded model checking), or when approximations are accepted (abstract interpretation). The theorem does not say analysis is useless; it says exact analysis of arbitrary behavior is impossible.
-
-\end{roadblockbox}
 
 \subsection*{The Undecidability Trilemma in Practice}
 
@@ -707,7 +627,6 @@ The Chinese Room thought experiment asks: if a person follows syntactic rules to
 \item \textbf{Program Repair and Automatic Bug Fixing:} Automatically repairing a program to satisfy a specification is doubly affected by Rice's Theorem. First, determining that the original program is buggy (does not satisfy the specification) is undecidable. Second, verifying that the repaired program satisfies the specification is also undecidable. This is why program repair tools use test suites, syntactic templates, and bounded verification --- accepting that their repairs may be incomplete or unsound.
 \end{itemize}
 
-\begin{connectionbox}[Connections]
 \begin{itemize}
 \item Chapter 2 (Halting): Special case of Rice's Theorem.
 \item Chapter 5 (Uncomputability): Deeper exploration of the arithmetical hierarchy and Turing degrees.
@@ -716,8 +635,6 @@ The Chinese Room thought experiment asks: if a person follows syntactic rules to
 \item Chapter 11 (Zero Knowledge): Proving a program has a property without revealing it --- the property itself is undecidable to verify, placing fundamental limits on zero-knowledge proofs for arbitrary program properties.
 \item Chapter 14 (Static Analysis): Abstract interpretation as the practical response to Rice's Theorem; detailed treatment of Galois connections, widening, and narrowing.
 \end{itemize}
-
-\end{connectionbox}
 
 %======================================================================
 % SECTION 9: LESSONS FOR FUTURE SCIENTISTS

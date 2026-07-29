@@ -18,11 +18,11 @@ By the early 20th century, mathematics faced a foundational crisis. Paradoxes in
 \item \textbf{Decidable:} There is an algorithm to determine whether any given statement is provable (the Entscheidungsproblem).
 \end{enumerate}
 
-\begin{question}Can mathematics prove every truth? Can a formal system prove its own consistency?\end{question}
+Can mathematics prove every truth? Can a formal system prove its own consistency?
 
 Hilbert believed the answer was yes. He famously declared in 1930: \emph{``Wir müssen wissen, wir werden wissen''} (``We must know, we shall know''). Gödel proved the answer is \emph{no} --- twice.
 
-\begin{highlightbox}[The Core Question]Is there a formal system that captures all mathematical truth? Or are there true statements that can never be proven within the system? And can a system prove its own consistency?\end{highlightbox}
+Is there a formal system that captures all mathematical truth? Or are there true statements that can never be proven within the system? And can a system prove its own consistency?
 
 The second of Hilbert's famous 23 problems (1900) asked for a proof of the consistency of the arithmetic axioms. Hilbert believed that such a proof would forever secure mathematics against paradox. When he retired in 1930, his address to the Society of German Scientists and Physicians reiterated his unwavering faith: no mathematical truth would remain unknown. Within a year, a 25-year-old Austrian logician had shattered this vision.
 
@@ -42,10 +42,7 @@ The idea that a formal system could be both complete and consistent was not just
 \item \textbf{Self-Reference as Paradox:} The liar paradox (``This statement is false'') shows that self-referential statements break logic. Gödel's insight was to \emph{harness} self-reference, not avoid it. But before Gödel, self-reference in formal systems was considered a bug to be eliminated (Russell's type theory), not a tool.
 \end{enumerate}
 
-\begin{roadblockbox}[The Liar Paradox Barrier]
 ``This statement is false.'' If true, it's false. If false, it's true. Classical logic bans such statements. Russell's type theory (1908) stratified propositions to prevent self-reference. Tarski (1933) later showed that a language cannot define its own truth predicate without paradox. Gödel had to \emph{encode} self-reference in arithmetic --- where no one expected it to live.
-
-\end{roadblockbox}
 
 The prevailing view was that any foundational crisis could be resolved by more careful axiomatization. After all, Zermelo-Fraenkel set theory (1908--1922) had eliminated the known paradoxes. Hilbert's program was the logical next step: prove once and for all that the new foundations were sound.
 
@@ -55,10 +52,7 @@ The prevailing view was that any foundational crisis could be resolved by more c
 \section{Historical Context: What Was Known at the Time}
 \label{sec:godel:context}
 
-\begin{historicalbox}[Hilbert's Program (1920s)]
 David Hilbert, the most influential mathematician of his era, proposed: formalize mathematics completely, then prove the formal system consistent using only finitary reasoning (reasoning about concrete symbols, not infinite sets). This would secure mathematics against paradoxes forever. The program had two phases: \emph{axiomatization} (express all mathematics in formal language) and \emph{consistency proving} (use finitary metamathematics to show no contradiction can be derived).
-
-\end{historicalbox}
 
 Key precursors to Gödel's breakthrough:
 
@@ -72,10 +66,7 @@ Key precursors to Gödel's breakthrough:
 \item \textbf{1931:} ``Über formal unentscheidbare Sätze der Principia Mathematica und verwandter Systeme I'' --- the Incompleteness Theorems.
 \end{itemize}
 
-\begin{connectionbox}[Connection to Chapter 1]
 Gödel numbering (encoding syntax as arithmetic) is the direct predecessor of Turing's encoding of machines as data. Both rely on: \emph{syntax can be made into data}. Turing read Gödel's 1931 paper and used the same technique for his 1936 paper. The stored-program computer (von Neumann architecture) is a physical realization of this principle: programs are data.
-
-\end{connectionbox}
 
 \subsection*{The Pre-Gödel Landscape}
 
@@ -112,7 +103,7 @@ Gödel's philosophical legacy is as significant as his mathematical one. He wrot
 \section{The Mental Leap: The Creative Insight That Changed Everything}
 \label{sec:godel:leap}
 
-\begin{mentalLeap}[The Insight]Statements \emph{about} a formal system (provability, consistency) can be translated into statements \emph{within} the system (arithmetic) by encoding symbols, formulas, and proofs as numbers. The statement ``Formula $\phi$ is provable'' becomes an arithmetic statement about the Gödel number of $\phi$. Then, using diagonalization, construct a sentence $G$ that says ``I am not provable.'' If $G$ is provable, the system is inconsistent. If $G$ is not provable, $G$ is true but unprovable --- the system is incomplete.\end{mentalLeap}
+Statements \emph{about} a formal system (provability, consistency) can be translated into statements \emph{within} the system (arithmetic) by encoding symbols, formulas, and proofs as numbers. The statement ``Formula $\phi$ is provable'' becomes an arithmetic statement about the Gödel number of $\phi$. Then, using diagonalization, construct a sentence $G$ that says ``I am not provable.'' If $G$ is provable, the system is inconsistent. If $G$ is not provable, $G$ is true but unprovable --- the system is incomplete.
 
 This leap had three audacious components:
 
@@ -124,10 +115,7 @@ This leap had three audacious components:
 \item \textbf{Truth $\neq$ Provability:} The sentence $G$ is \emph{true} (in the standard model $\N$) because it asserts its own unprovability, and indeed it is unprovable (assuming consistency). But the system cannot prove $G$. Truth has escaped provability.
 \end{enumerate}
 
-\begin{roadblockbox}[Why This Was Shocking]
 Before Gödel, ``true'' and ``provable'' were conflated for formal systems. Hilbert's program \emph{required} them to coincide (completeness). Gödel showed they diverge: there are arithmetic truths that no finite proof can reach. The map is not the territory. More subtly, Gödel showed that \emph{every} consistent, sufficiently strong system suffers this divergence --- it is not a defect of a particular system but a law of mathematical reality.
-
-\end{roadblockbox}
 
 \subsection*{The Structure of the Proof}
 
@@ -481,10 +469,7 @@ Löb's theorem shows that the system cannot prove its own soundness for any non-
 
 Löb's theorem also implies that the provability predicate $\mathsf{Prov}$ satisfies the modal logic GL (Gödel-Löb), whose defining axiom is $\Box(\Box p \to p) \to \Box p$. This modal logic captures the structural behavior of provability in any sufficiently strong formal system.
 
-\begin{highlightbox}[Löb's Theorem Intuition]
 Löb's theorem says: the only formulas $\phi$ for which the system can prove ``if $\phi$ is provable then $\phi$ is true'' are those that are already theorems. The system cannot prove its own soundness on any non-theorem. This is a precise formalization of the idea that the system cannot ``trust'' itself beyond what it has already proven.
-
-\end{highlightbox}
 
 \subsection{Tarski's Undefinability of Truth (1933)}
 \label{sec:godel:tarski}
@@ -752,10 +737,7 @@ Gödel wrote: ``I am convinced that the incompleteness theorems do not contradic
 
 \textbf{Constructivism} and \textbf{intuitionism} were also affected. The incompleteness theorems apply to constructive systems as well (if they are rich enough to encode arithmetic). However, intuitionists reject the notion of ``truth in the standard model'' as a primitive, so the force of the theorems is different: they show the incompleteness of formal systems, not the transcendence of truth over proof.
 
-\begin{highlightbox}[Gödel's Own Philosophy]
 Kurt Gödel was a mathematical Platonist. He believed that mathematical objects (sets, numbers, functions) exist independently of human thought and that the axioms of set theory describe a real universe. He wrote extensively on the philosophy of mathematics, arguing that intuition plays a role in discovering new axioms (such as large cardinal axioms) that extend the reach of formal systems. His Platonism influenced his work on the constructible universe $L$ and his belief that the Continuum Hypothesis has a definite truth value (unlike the view of formalists, who see it as a matter of choice).
-
-\end{highlightbox}
 
 %======================================================================
 % SECTION 8: MODERN LEGACY
@@ -779,7 +761,6 @@ Kurt Gödel was a mathematical Platonist. He believed that mathematical objects 
 \item \textbf{Cryptography and Zero-Knowledge Proofs:} Gödel's encoding of proofs as numbers anticipates the use of encodings in cryptography. Zero-knowledge proofs allow one to prove knowledge of a mathematical proof without revealing it --- a direct descendant of the arithmetization of metamathematics.
 \end{itemize}
 
-\begin{connectionbox}[Connections]
 \begin{itemize}
 \item Chapter 1 (Computation): Gödel numbering $\to$ Turing's encoding of machines.
 \item Chapter 2 (Halting): Incompleteness $\leftrightarrow$ Undecidability. $G$ is true $\leftrightarrow$ halting problem instance.
@@ -787,8 +768,6 @@ Kurt Gödel was a mathematical Platonist. He believed that mathematical objects 
 \item Chapter 7 (Kolmogorov): Chaitin's $\Omega$ --- incompleteness as randomness.
 \item Chapter 11 (Zero Knowledge): Proving knowledge of a proof without revealing it.
 \end{itemize}
-
-\end{connectionbox}
 
 %======================================================================
 % SECTION 9: LESSONS FOR FUTURE SCIENTISTS

@@ -12,26 +12,17 @@
 
 Turing (1936) answered ``What is computable?'' But not all computable problems are equal. Some take seconds; others take longer than the age of the universe. The question that birthed complexity theory:
 
-\begin{question}What makes a problem \emph{inherently} difficult? Can we classify problems by their intrinsic computational cost, independent of algorithms or hardware?\end{question}
+What makes a problem \emph{inherently} difficult? Can we classify problems by their intrinsic computational cost, independent of algorithms or hardware?
 
-\begin{highlightbox}[The Core Question]
 Is there a fundamental difference between problems solvable in polynomial time and those requiring exponential time? Can we prove that certain problems \emph{require} exponential resources — or is every problem in EXP actually in P, waiting for a clever algorithm?
-
-\end{highlightbox}
 
 Before complexity theory, ``difficulty'' was not a mathematical concept. A sorting algorithm might be ``slow'' for large inputs, but the problem of sorting itself was not considered intrinsically hard or easy. The radical idea: difficulty is a property of the \emph{problem}, not the \emph{algorithm} — and it can be measured, classified, and proven.
 
 The distinction between polynomial and exponential growth is stark. A problem solvable in $n^3$ steps on a $10^9$ ops/sec machine can handle inputs of size $10^6$ within seconds. An exponential $2^n$ algorithm struggles at $n = 50$. This gap defines the boundary between the feasible and the intractable.
 
-\begin{roadblockbox}[The Classification Problem]
 Even after defining polynomial time as ``efficient,'' we face a deeper question: can we determine, for any given problem, which class it belongs to? The P vs NP question — are efficient verification and efficient solution the same? — remains open after 50 years and \$1M Clay Prize. The entire field orbits this single question.
 
-\end{roadblockbox}
-
-\begin{connectionbox}[Connection to Chapter 7]
 Kolmogorov complexity measures the \emph{descriptive} difficulty of individual strings. Computational complexity measures the \emph{computational} difficulty of \emph{sets} of strings (languages). Both confront the same question: what does it mean for something to be ``hard?'' Chapter 7 defines randomness via incompressibility; this chapter defines intractability via resource lower bounds.
-
-\end{connectionbox}
 
 %======================================================================
 % SECTION 2: WHY IT SEEMED IMPOSSIBLE
@@ -48,20 +39,11 @@ Before the 1960s, ``difficulty'' was not a mathematical concept:
 \item \textbf{The ``Clever Programmer'' Hope:} For every ``hard'' problem, experts believed a clever algorithm would eventually make it easy. The concept of \emph{inherent intractability} was foreign.
 \end{enumerate}
 
-\begin{historicalbox}[The Pre-History of Lower Bounds]
 Before the 1960s, the only lower bounds were trivial: any algorithm solving a problem that depends on all $n$ input bits must read them all ($\Omega(n)$). Subroutines like comparison-based sorting had $\Omega(n \log n)$ lower bounds but these were model-specific (comparison trees), not about TMs. The idea of a \emph{universal} lower bound — one that holds for every possible algorithm in any reasonable model — was considered hopeless.
 
-\end{historicalbox}
-
-\begin{roadblockbox}[The Lower Bound Barrier]
 Proving upper bounds is easy: exhibit an algorithm. Proving lower bounds requires showing \emph{no algorithm exists} — a universal quantification over all possible algorithms. This is why we have P $\neq$ NP (conjectured) but almost no unconditional lower bounds beyond trivial ones (reading input takes $\Omega(n)$). The only unconditional separations we have are via diagonalization (hierarchy theorems), which work by constructing problems with built-in self-reference — not by analyzing natural problems.
 
-\end{roadblockbox}
-
-\begin{roadblockbox}[The Relativization Barrier]
 Baker, Gill, and Solovay (1975) showed that there exist oracles $A$ and $B$ such that $\mathsf{P}^A = \mathsf{NP}^A$ and $\mathsf{P}^B \neq \mathsf{NP}^B$. This means any proof resolving P vs NP must be \emph{non-relativizing} — it cannot treat all TMs uniformly as black boxes. This eliminated diagonalization (which relativizes) as a viable approach. Later, Aaronson and Wigderson (2008) identified an even broader class of techniques (algebrization) that also cannot resolve the question.
-
-\end{roadblockbox}
 
 %======================================================================
 % SECTION 3: HISTORICAL CONTEXT
@@ -69,7 +51,6 @@ Baker, Gill, and Solovay (1975) showed that there exist oracles $A$ and $B$ such
 \section{Historical Context: What Was Known at the Time}
 \label{sec:complexity:context}
 
-\begin{historicalbox}[The Birth of Complexity Theory (1960s)]
 \begin{itemize}
 \item \textbf{1960:} Rabin: ``Degree of difficulty of computing a function.''
 \item \textbf{1965:} Hartmanis \& Stearns: ``On the Computational Complexity of Algorithms'' — defined time/space complexity classes, hierarchy theorems, founded the field.
@@ -80,23 +61,13 @@ Baker, Gill, and Solovay (1975) showed that there exist oracles $A$ and $B$ such
 \item \textbf{1973:} Levin (USSR): Universal search problems — independent discovery of NP-completeness.
 \end{itemize}
 
-\end{historicalbox}
-
-\begin{historicalnoteMacro}[Juris Hartmanis (1928--)]
 Born in Latvia, Hartmanis experienced World War II as a refugee, fleeing the Soviet occupation. He earned his PhD from Caltech in 1955 and joined Cornell, where he collaborated with Richard Stearns. Their 1965 paper founded computational complexity theory. Hartmanis later served as Cornell's department chair and received the Turing Award in 1993 (with Stearns). His work bridged the gap between recursive function theory and practical computation.
-\end{historicalnoteMacro}
 
-\begin{historicalnoteMacro}[Richard Stearns (1936--)]
 Stearns earned his PhD from Princeton (1961) working on game theory and sequential machines. At GE Research Lab, he met Hartmanis at a conference and they began a collaboration that produced the hierarchy theorems. Stearns also contributed to automata theory, distributed computing (the Byzantine Generals problem), and received the Turing Award (1993). His career exemplifies how theoretical insight can emerge from industrial research laboratories.
-\end{historicalnoteMacro}
 
-\begin{historicalnoteMacro}[Jack Edmonds (1934--)]
 Edmonds revolutionized combinatorial optimization. His 1965 paper ``Paths, Trees, and Flowers'' gave the first polynomial-time algorithm for maximum matching in general graphs (the ``blossom algorithm''). In it, he explicitly defined polynomial time as the criterion for an algorithm to be ``good.'' This was a deliberate choice: ``For practical purposes, the difference between algebraic and exponential order is more crucial than the difference between finite and non-finite.'' He also proved that matroid intersection is in P and conjectured that P $\neq$ NP.
-\end{historicalnoteMacro}
 
-\begin{historicalnoteMacro}[Alan Cobham (1927--2011)]
 Cobham independently formulated the polynomial-time thesis in his 1965 paper ``The Intrinsic Computational Difficulty of Functions.'' Writing from IBM's Watson Research Center, he proposed that problems solvable in polynomial time form the natural boundary of tractability — now called ``Cobham's thesis.'' His work was less algorithmically oriented than Edmonds' but equally influential in formalizing the notion of efficient computation.
-\end{historicalnoteMacro}
 
 Key precursors:
 \begin{itemize}
@@ -106,10 +77,7 @@ Key precursors:
 \item \textbf{1959--1962:} Rabin, Yamada, and others studied time-bounded computation but lacked the key insight of polynomial time as a robust class.
 \end{itemize}
 
-\begin{connectionbox}[Connection to Chapter 1]
 Hartmanis-Stearns used \emph{multitape Turing machines} as the cost model. The \emph{invariance thesis} (extended Church-Turing): any ``reasonable'' model of computation can be simulated on a TM with polynomial overhead. This makes P, NP, EXP \emph{model-independent} classes. Chapter 1 asked ``what is computation?'' — this chapter asks ``what is the \emph{cost} of computation?''
-
-\end{connectionbox}
 
 %======================================================================
 % SECTION 4: THE MENTAL LEAP
@@ -117,13 +85,13 @@ Hartmanis-Stearns used \emph{multitape Turing machines} as the cost model. The \
 \section{The Mental Leap: The Creative Insight That Changed Everything}
 \label{sec:complexity:leap}
 
-\begin{mentalLeap}[The Insight]\emph{Polynomial time} ($n^{O(1)}$) is the correct mathematical formalization of ``tractable,'' ``feasible,'' ``efficiently computable.''\end{mentalLeap}
+\emph{Polynomial time} ($n^{O(1)}$) is the correct mathematical formalization of ``tractable,'' ``feasible,'' ``efficiently computable.''
 
 This is not obvious: why not $n \log n$? Why not $2^{\sqrt{n}}$? Why not $n^{100}$? The answer: \textbf{polynomials are closed under composition}. If subroutine A runs in $p(n)$ and calls subroutine B running in $q(n)$, the total is $p(q(n))$ — still polynomial. This \emph{modularity} makes polynomial time the only complexity class that supports abstraction and composition — the essence of engineering.
 
 The second leap (Cook 1971, Levin 1973, Karp 1972):
 
-\begin{mentalLeap}[The Insight]\emph{Reduction} is the right tool for comparing difficulty. If problem A reduces to problem B (A $\le_p$ B), then B is ``at least as hard as'' A. This creates a \emph{partial order} on problems. The \emph{maximal} elements of NP under this order are the \emph{NP-complete} problems — the ``hardest'' problems in NP. If \emph{any} NP-complete problem is in P, then P = NP.\end{mentalLeap}
+\emph{Reduction} is the right tool for comparing difficulty. If problem A reduces to problem B (A $\le_p$ B), then B is ``at least as hard as'' A. This creates a \emph{partial order} on problems. The \emph{maximal} elements of NP under this order are the \emph{NP-complete} problems — the ``hardest'' problems in NP. If \emph{any} NP-complete problem is in P, then P = NP.
 
 Together, these insights created a \emph{taxonomy of difficulty}:
 \begin{itemize}
@@ -337,10 +305,7 @@ For $A$, take a PSPACE-complete language. Then $\mathsf{NP}^A \subseteq \mathsf{
 
 This makes P, BPP, etc. \emph{physically} meaningful — not just TM artifacts. Quantum computers challenge this (BQP $\not\subseteq$ BPP?).
 
-\begin{historicalbox}[The Invariance Thesis]
 The invariance thesis, formalized by Pippenger and Fischer (1979), states that all ``reasonable'' sequential models (RAM machines, pointer machines, $\lambda$-calculus, cellular automata) simulate each other with polynomial overhead. The key is that Turing machines with multiple tapes can simulate $k$-tape TMs with $O(\log k)$ overhead, and RAM machines simulate TMs with $O(n^2)$ overhead. This robustness justifies P as a model-independent class.
-
-\end{historicalbox}
 
 \subsection{Circuit Complexity and Non-Uniform Models}
 \label{sec:complexity:circuits}
@@ -415,10 +380,7 @@ But the image of $G$ has size $2^{n^c}$, which is $\mathsf{P}/\mathsf{poly}$ (ea
 This barrier explains why we cannot prove P $\neq$ NP via circuit lower bounds — unless we find non-constructive or non-large properties. Most known circuit lower bound techniques (including the switching lemma and Razborov-Smolensky) give natural properties, which means they cannot separate P from NP.
 \end{proof}
 
-\begin{roadblockbox}[Implications of Natural Proofs]
 The Razborov-Rudich barrier is not just a technical result — it is a deep insight about the limits of current mathematical reasoning. Most lower bound techniques (random restrictions, polynomial approximation, combinatorial discrepancy) produce ``natural'' properties. The barrier says: if cryptography is possible (one-way functions exist), then these techniques \emph{cannot} prove NP $\not\subseteq$ P/poly. To separate P from NP, we need entirely new methods — perhaps those that exploit the \emph{uniformity} of computation (the fact that a single algorithm works for all input sizes). This is why progress on P vs NP has been so slow: the obvious tools are provably inadequate.
-
-\end{roadblockbox}
 
 \subsection{Derandomization and Pseudorandomness}
 \label{sec:complexity:derand}
@@ -462,10 +424,7 @@ If $\mathsf{E}$ requires exponential-size circuits (i.e., $\mathsf{E} \not\subse
 Thus every BPP algorithm can be simulated in P, assuming sufficiently strong circuit lower bounds.
 \end{proof}
 
-\begin{connectionbox}[Hardness vs. Randomness]
 The IW theorem establishes a deep duality: hardness (worst-case circuit lower bounds) is equivalent to randomness (the ability to derandomize). This is one of the most beautiful connections in complexity theory. It says: either some problem is truly hard (exponential circuit complexity), or randomness gives no power at all (BPP = P). We cannot have both: strong pseudorandomness \emph{requires} and \emph{implies} hardness.
-
-\end{connectionbox}
 
 \subsection{Quantum Complexity}
 \label{sec:complexity:quantum}
@@ -531,10 +490,7 @@ The acceptance probability of a quantum circuit can be expressed as a sum of exp
 
 Open questions: $\mathsf{BQP}$ vs $\mathsf{PH}$? $\mathsf{BQP}$ vs $\mathsf{NP}$? Is factoring in P? Does quantum supremacy (random circuit sampling) imply $\mathsf{BQP} \not\subseteq \mathsf{PH}$?
 
-\begin{connectionbox}[Quantum Supremacy]
 Google's 2019 experiment (Sycamore processor) claimed to demonstrate that random circuit sampling is beyond classical simulation. The complexity-theoretic basis: if sampling from the output distribution of random quantum circuits were in $\mathsf{BPP}$, then $\mathsf{PH}$ would collapse to the third level. This is a conditional hardness result: being in BPP is unlikely because it would have implausible consequences for the polynomial hierarchy. Thus, quantum supremacy experiments are complexity-theoretic, not just engineering feats.
-
-\end{connectionbox}
 
 \subsection{Fine-Grained Complexity}
 \label{sec:complexity:fine}
@@ -726,16 +682,13 @@ Feasible interpolation: if a proof system has feasible interpolation, then lower
 
 \end{itemize}
 
-\begin{connectionbox}[Connections]
 \begin{itemize}
 \item Chapter 9 (NP-Completeness): The central open problem of this chapter.
 \item Chapter 10 (Cryptography): One-way functions $\to$ P $\neq$ NP (necessary but not sufficient).
-\item Chapter 11 (Zero Knowledge): ZK \subseteq IP = PSPACE. Complexity classes as proof systems.
+\item Chapter 11 (Zero Knowledge): ZK $\subseteq$ IP = PSPACE. Complexity classes as proof systems.
 \item Chapter 12 (Interactive Proofs): Interactive proofs collapse the polynomial hierarchy; IP = PSPACE.
 \item Chapter 13 (Consensus): Distributed complexity (LOCAL, CONGEST models). FLP = async consensus impossible.
 \end{itemize}
-
-\end{connectionbox}
 
 %======================================================================
 % SECTION 9: LESSONS FOR FUTURE SCIENTISTS

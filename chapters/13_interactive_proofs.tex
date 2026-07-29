@@ -25,27 +25,17 @@ Consider these scenarios:
 
 The classical proof model assumes that verification is a \emph{one-way} process: the prover sends a message, the verifier checks it, and the interaction ends. But what if the verifier can \emph{ask questions}? What if the proof is a \emph{conversation} rather than a \emph{document}?
 
-\begin{question}
 Can a verifier be convinced of a statement's truth through interaction with a prover, even when the full proof is too long to write down?
-\end{question}
 
-\begin{highlightbox}[The Core Question]
 What computational power does interaction give a verifier? Can a probabilistic polynomial-time verifier, by exchanging messages with an unbounded prover, be convinced of truths that are intractable to verify from a static proof alone?
-\end{highlightbox}
 
 In 1985, Goldwasser, Micali, and Rackoff asked this question in their paper ``The Knowledge Complexity of Interactive Proof Systems.'' They introduced a new model of computation --- the \emph{interactive proof system} --- and showed that interaction fundamentally changes what a polynomial-time verifier can check. The answer was: \emph{much more than NP}.
 
-\begin{connectionbox}[Connection to Chapter 9 (NP-Completeness)]
 Chapter 9 defined NP as the class of problems with \emph{static} proofs verifiable in polynomial time. Interactive proofs generalize this: instead of a single certificate, the verifier engages in a \emph{dialogue} with the prover. This dialogue can extract information that no static certificate could convey efficiently. The class IP contains NP (trivially, the prover sends the NP certificate and the verifier checks it in one round). But IP also contains problems that are not known to be in NP --- such as Graph Non-Isomorphism, which is in the second level of the Polynomial Hierarchy but not known to be in NP.
-\end{connectionbox}
 
-\begin{connectionbox}[Connection to Chapter 8 (Computational Complexity)]
 Chapter 8 established that P (efficiently solvable) and NP (efficiently verifiable) are the two fundamental classes. Interactive proofs introduce a \emph{third} axis: interaction. A problem can be in NP (static verification) but not require interaction. A problem can require interaction but not be in NP. The class IP sits between NP and PSPACE, and the landmark result IP = PSPACE (Shamir 1992) showed that interaction is \emph{extremely} powerful --- it allows a polynomial-time verifier to check any problem solvable with polynomial space.
-\end{connectionbox}
 
-\begin{connectionbox}[Connection to Chapter 11 (Zero Knowledge)]
 Zero-knowledge proofs, introduced in the same paper as interactive proofs (Goldwasser, Micali, Rackoff 1985), are a refinement of the interactive proof model. A zero-knowledge proof convinces the verifier of a statement's truth without revealing \emph{anything beyond the truth of the statement}. This separation of \emph{conviction} from \emph{knowledge} is one of the deepest insights in all of computer science.
-\end{connectionbox}
 
 %======================================================================
 % SECTION 2: WHY IT SEEMED IMPOSSIBLE
@@ -69,13 +59,9 @@ Before 1985, the notion of a ``proof'' was monolithic: a written document, check
 \item \textbf{The Collapse of the Polynomial Hierarchy:} In 1985, the polynomial hierarchy (PH) was believed to be the ``top'' of the verification landscape. NP was the first level, co-NP the second, and higher levels alternated quantifiers. The question was whether anything lay \emph{above} PH. Interactive proofs showed that the hierarchy collapses: IP contains the entire polynomial hierarchy (AM = NP $\cap$ coAM at the second level, and more generally, the Arthur-Merlin hierarchy collapses to a finite number of levels). This was unexpected: interaction was more powerful than alternation.
 \end{enumerate}
 
-\begin{roadblockbox}[The Classical Barrier]
 Before Goldwasser, Micali, and Rackoff, the standard model of verification was: prover sends certificate $\to$ verifier checks in polynomial time. This is NP. The question was: can we do \emph{better}? Can a verifier check something that requires more than polynomial-time static reasoning? The barrier was conceptual: everyone assumed that if a statement is true, there exists a static proof of polynomial size. Interactive proofs shattered this assumption by showing that the \emph{process} of verification --- not just its output --- can encode computational power.
-\end{roadblockbox}
 
-\begin{roadblockbox}[The Complexity Theory Barrier]
 In 1985, the polynomial hierarchy (PH) was believed to be the ``top'' of the verification landscape. NP was the first level, co-NP the second, and higher levels alternated quantifiers. The question was whether anything lay \emph{above} PH. Interactive proofs showed that the hierarchy collapses: IP contains the entire polynomial hierarchy (AM = NP $\cap$ coAM at the second level, and more generally, the Arthur-Merlin hierarchy collapses to a finite number of levels). This was unexpected: interaction was more powerful than alternation.
-\end{roadblockbox}
 
 %======================================================================
 % SECTION 3: HISTORICAL CONTEXT
@@ -83,7 +69,6 @@ In 1985, the polynomial hierarchy (PH) was believed to be the ``top'' of the ver
 \section{Historical Context: What Was Known at the Time}
 \label{sec:ip:context}
 
-\begin{historicalbox}[The Pre-1985 Landscape]
 By 1985, complexity theory had established a rich taxonomy of classes:
 \begin{itemize}
 \item \textbf{P} (polynomial time): Solvable efficiently.
@@ -103,7 +88,6 @@ The \emph{polynomial hierarchy} (PH) was \cite{stockmeyer1976}, defined by Megid
 PH was believed to be strictly contained in PSPACE (since each level adds an alternation of quantifiers, and PSPACE allows arbitrary alternations).
 
 \textbf{Arthur-Merlin games} (Babai 1985, building on Goldwasser-Sipser 1986) introduced a two-party game: Merlin (unbounded prover) sends messages to Arthur (polynomial-time randomized verifier). The key innovation: Arthur's messages are \emph{public random coins}. This model was studied before GMR but became central to understanding the power of interaction.
-\end{historicalbox}
 
 Key developments converging in the 1980s:
 
@@ -119,9 +103,7 @@ Key developments converging in the 1980s:
 \item \textbf{Shamir (1992):} ``IP = PSPACE.'' The landmark result: interactive proofs can verify \emph{everything} solvable with polynomial space.
 \end{itemize}
 
-\begin{connectionbox}[Connection to Chapter 9 (NP-Completeness)]
 Cook and Levin (1971) showed that SAT is NP-complete: every problem in NP reduces to SAT. Interactive proofs generalize this reduction concept. Instead of reducing a problem to a single certificate, interaction reduces a problem to a \emph{protocol}. The prover's strategy in the protocol encodes the solution to the problem, and the verifier's random challenges test the consistency of that strategy. This is a form of reduction --- but instead of mapping instances to certificates, it maps instances to \emph{interactive strategies}.
-\end{connectionbox}
 
 \begin{subsection}{Key Figures}
 \begin{itemize}
@@ -145,7 +127,6 @@ Cook and Levin (1971) showed that SAT is NP-complete: every problem in NP reduce
 
 There are three major leaps here, each building on the last:
 
-\begin{mentalLeap}[Leap 1 (GMR 1985): Interaction Is a Computational Resource]
 \textbf{The Insight:} Verification is not a static process; it is a \emph{protocol}. A verifier can gain computational power not by thinking harder, but by \emph{asking better questions}. Randomness in the verifier's questions forces the prover to be honest across many dimensions simultaneously. A cheating prover cannot predict the verifier's challenges and must therefore commit to a consistent strategy --- and consistency is hard to fake.
 
 Formally: an interactive proof system is a pair of machines $(P, V)$ where $P$ is unbounded and $V$ is probabilistic polynomial time. For language $L \in \mathsf{IP}$:
@@ -156,17 +137,13 @@ Formally: an interactive proof system is a pair of machines $(P, V)$ where $P$ i
 The constants $2/3$ and $1/3$ are arbitrary; they can be amplified to $1 - 2^{-n}$ by repeating the protocol. The key insight: the verifier's \emph{randomness} is the resource that enables verification beyond NP.
 
 \textbf{Why this was revolutionary:} Before GMR, the only way to increase verification power was to give the verifier more computational resources. Interactive proofs showed that the \emph{structure of interaction} itself is a resource --- independent of the verifier's computational power. A polynomial-time verifier with interaction can verify problems far beyond NP.
-\end{mentalLeap}
 
-\begin{mentalLeap}[Leap 2 (Goldwasser-Sipser 1986): Public Coins Are Nearly as Powerful]
 \textbf{The Insight:} The verifier's private randomness (messages chosen secretly) can largely be replaced by public randomness (messages chosen openly). The Arthur-Merlin model: Merlin sends a message, Arthur responds with a random challenge, Merlin responds again, and so on. The total number of rounds is polynomial, and the public coins are recorded for all to see.
 
 Result: $AM \subseteq NP \cap coAM$ at the second level. For any constant $k \ge 2$, $AM[k] = AM[2]$. The hierarchy of public-coin protocols collapses to two rounds. This was surprising: private coins can be strictly more powerful for some tasks, but public coins capture essentially all the power for verification.
 
 \textbf{Why this matters:} Public coins are more practical. In a public-coin protocol, anyone can verify the transcript of the interaction. In a private-coin protocol, only the participants can verify. The collapse to $AM[2]$ means that two rounds of public randomness suffice for essentially all verification tasks.
-\end{mentalLeap}
 
-\begin{mentalLeap}[Leap 3 (Shamir 1992): IP = PSPACE]
 \textbf{The Insight:} A polynomial-time interactive verifier can check \emph{any} computation that fits in polynomial space. The proof uses \emph{arithmeticization}: encoding a PSPACE computation as a polynomial over a finite field, then using interactive techniques to verify the polynomial's value.
 
 Sketch: Let $M$ be a PSPACE machine. We want to verify that $M$ accepts the empty input. Define the polynomial:
@@ -178,11 +155,8 @@ where $\text{Config}(t)$ is the configuration at time $t$, and $\text{Transition
 This result showed that interaction is \emph{extremely} powerful: a weak verifier, through conversation with an unbounded prover, can verify computations that require polynomial space --- far beyond NP.
 
 \textbf{The technique:} Arithmeticization --- lifting Boolean computations to polynomials over finite fields --- became one of the most influential techniques in theoretical computer science. It gave rise to the PCP theorem, hardness of approximation, and the modern theory of zero-knowledge proofs.
-\end{mentalLeap}
 
-\begin{roadblockbox}[Why IP = PSPACE Was Surprising]
 Before Shamir, the consensus was that IP was strictly between NP and PSPACE. The polynomial hierarchy (PH) was believed to be a proper subset of IP, and IP a proper subset of PSPACE. The proof that they are equal required a completely new technique --- arithmeticization --- that had no precedent in complexity theory. It showed that the boundary between ``interactive verification'' and ``space-bounded computation'' was not a barrier but a mirror: every PSPACE computation can be reinterpreted as an interactive proof.
-\end{roadblockbox}
 
 %======================================================================
 % SECTION 5: THE MATHEMATICS
@@ -273,13 +247,9 @@ where $\text{Init}$ checks that $C_0$ is the initial configuration, $\text{Trans
 \end{enumerate}
 \end{enumerate}
 
-\begin{connectionbox}[Connection to Chapter 9 (NP-Completeness)]
 The PCP theorem (Arora, Safra 1992; Arora, Lund, Motwani, Sudan, Szegedy 1992) states that every NP proof can be transformed into a ``probabilistically checkable proof'' where the verifier reads only $O(1)$ bits. The proof of PCP uses arithmeticization, the same technique as IP = PSPACE. This shows that the conceptual breakthrough of interactive proofs rippled outward: it gave rise to inapproximability results, hardness of approximation, and the modern theory of proof systems.
-\end{connectionbox}
 
-\begin{connectionbox}[Connection to Chapter 11 (Zero Knowledge)]
 Zero-knowledge proofs, introduced in the same paper as interactive proofs (Goldwasser, Micali, Rackoff 1985), are a refinement of the interactive proof model. A zero-knowledge proof convinces the verifier of a statement's truth without revealing \emph{anything beyond the truth of the statement}. The GMW protocol (Goldreich, Micali, Wigderson 1991) showed that every NP statement has a zero-knowledge interactive proof, assuming one-way functions exist. This connected interactive proofs to cryptography in a deep and unexpected way.
-\end{connectionbox}
 
 %======================================================================
 % SECTION 6: CONSEQUENCES

@@ -18,23 +18,17 @@ Before the digital age, key distribution was a logistical problem: couriers, dip
 
 The question that crystallized in the 1970s was deceptively simple:
 
-\begin{question}How can secrecy exist in a public world? Can two parties communicate securely over a channel that anyone can listen to — without any prior shared secret?\end{question}
+How can secrecy exist in a public world? Can two parties communicate securely over a channel that anyone can listen to — without any prior shared secret?
 
-\begin{highlightbox}[The Core Question]
 Is \emph{public-key cryptography} possible? Can encryption and decryption use \emph{different} keys, where the encryption key is public but the decryption key remains private?
 
 This would overturn 3000 years of cryptographic assumptions. Every cipher from Caesar to Enigma required the sender and receiver to share a secret beforehand. Public-key cryptography would make secrecy available to anyone, anywhere, without prior arrangement.
-
-\end{highlightbox}
 
 The stakes were enormous. The US National Bureau of Standards (now NIST) had just standardized DES (Data Encryption Standard, 1977) — a symmetric cipher requiring pre-shared keys. For the internet (then ARPANET) to become a global commerce platform, strangers needed to transact securely. Without a solution, e-commerce, online banking, and private communication on the open internet would be impossible.
 
 The problem was not merely academic. By the early 1970s, organizations with geographically dispersed operations (banks, military, multinational corporations) faced a growing crisis: how to secure communication with remote offices without physically shipping keys. The US government alone distributed millions of cryptographic keys annually via armed couriers — a system that was slow, expensive, and imperfectly secure. The key distribution bottleneck was widely recognized as the single greatest obstacle to universal communication security.
 
-\begin{roadblockbox}[The Key Distribution Problem]
 For $n$ parties to communicate securely with symmetric cryptography, each pair needs a unique key: $\binom{n}{2} = O(n^2)$ keys. For $n = 1$ billion internet users, that is $\sim 5 \times 10^{17}$ keys. Distributing these securely seemed to require \emph{another} secure channel — a circular dependency. This is the \emph{key distribution problem}, and it appeared unsolvable for open networks.
-
-\end{roadblockbox}
 
 %======================================================================
 % SECTION 2: WHY IT SEEMED IMPOSSIBLE
@@ -56,12 +50,9 @@ For $n$ parties to communicate securely with symmetric cryptography, each pair n
 \item \textbf{The Computational Gap:} In the 1970s, even if one conceived of a trapdoor function, the computational cost seemed prohibitive. Early RSA implementations on 1970s hardware took seconds per operation — far slower than symmetric ciphers. Skeptics argued that public-key crypto would never be practical. Moore's law ultimately proved them wrong (exponentially faster hardware closed the gap), but the concern was genuine at the time.
 \end{enumerate}
 
-\begin{roadblockbox}[The Symmetry Dogma]
 ``Encryption and decryption are inverses. If the encryption algorithm is public, anyone can run it backwards.'' This was the prevailing view. The concept of a \emph{one-way function} — easy to compute, hard to invert without a trapdoor — was the missing conceptual breakthrough.
 
 Even after Diffie and Hellman published their key exchange, many experts doubted it could work. The NSA reportedly told industry partners that public-key cryptography was impossible. When Rivest, Shamir, and Adleman announced RSA in 1977, they offered a \$100 prize for breaking it (which stood until 1994, when a distributed effort factoring RSA-129 with 1600 computers over 8 months cracked it). The incredulity was so deep that even after the paper was published, many believed it was a hoax.
-
-\end{roadblockbox}
 
 %======================================================================
 % SECTION 3: HISTORICAL CONTEXT
@@ -69,7 +60,6 @@ Even after Diffie and Hellman published their key exchange, many experts doubted
 \section{Historical Context: What Was Known at the Time}
 \label{sec:crypto:context}
 
-\begin{historicalbox}[The 1970s Revolution]
 \begin{itemize}
 \item \textbf{1974:} Ralph Merkle (Berkeley undergrad) proposes \emph{public-key cryptography} in a class project (rejected initially). Publishes 1978.
 \item \textbf{1976:} Whitfield Diffie \& Martin Hellman (Stanford): ``New Directions in Cryptography'' — public-key key exchange (Diffie-Hellman), digital signatures, one-way functions.
@@ -80,8 +70,6 @@ Even after Diffie and Hellman published their key exchange, many experts doubted
 \item \textbf{2000s:} Pairing-based crypto (Boneh-Franklin IBE, BLS signatures).
 \item \textbf{2010s:} Post-quantum crypto (lattices, isogenies, codes, hashes).
 \end{itemize}
-
-\end{historicalbox}
 
 The story of public-key cryptography is remarkable for its simultaneous discovery. Three groups — Merkle, Diffie-Hellman, and the classified GCHQ team — converged on the same concept within a few years, each approaching it from a different angle. This phenomenon (multiple discovery) is common in science (calculus, evolution by natural selection, the oxygen theory of combustion) but unusually condensed here: the GCHQ breakthroughs (1973-1977), Merkle's class project (1974), and Diffie-Hellman's academic publication (1976) all occurred within a span of four years, entirely independently.
 
@@ -101,50 +89,23 @@ Key figures:
 \item \textbf{Koblitz \& Miller:} Independently proposed elliptic curve groups for crypto (1985).
 \end{itemize}
 
-\begin{historicalbox}[Biographical Sketch: Whitfield Diffie]
 Whitfield Diffie (b. 1944) began his career at MIT working on symbolic mathematics (MACSYMA). Fascinated by the key distribution problem, he independently began exploring public-key cryptography in the early 1970s. His famous 1976 paper with Martin Hellman, ``New Directions in Cryptography,'' is one of the most influential papers in computer science. Diffie served as Chief Security Officer at Sun Microsystems and later at ICANN. He won the Turing Award in 2015 with Hellman.
 
-\end{historicalbox}
-
-\begin{historicalbox}[Biographical Sketch: Martin Hellman]
 Martin Hellman (b. 1945) was a professor at Stanford when Diffie arrived as a visiting researcher. Hellman provided the mathematical rigor and group theory background that grounded Diffie's visionary ideas. Together they developed the Diffie-Hellman key exchange and the concept of digital signatures. After his pioneering crypto work, Hellman turned to studying existential risks (nuclear war, climate change). He received the Turing Award in 2015.
 
-\end{historicalbox}
-
-\begin{historicalbox}[Biographical Sketch: Ralph Merkle]
 Ralph Merkle (b. 1952) proposed public-key cryptography as an undergraduate at UC Berkeley in 1974. His professor deemed the idea impossible. Undeterred, Merkle developed \emph{Merkle's puzzles}, a protocol for two parties to agree on a secret key by solving many small cryptographic puzzles — a quadratic-cost protocol that anticipated public-key exchange. He also invented Merkle trees (hash trees), now fundamental to blockchains, Git, and certificate transparency. Merkle later worked on nanotechnology and space development.
 
-\end{historicalbox}
-
-\begin{historicalbox}[Biographical Sketch: Ron Rivest]
 Ron Rivest (b. 1947) is a professor at MIT and a founder of RSA Security. After reading Diffie and Hellman's 1976 paper, Rivest began trying to construct a practical trapdoor function. He made dozens of attempts — each broken by Adleman — until the RSA scheme emerged in April 1977. Beyond RSA, Rivest contributed to DES, RC4, MD4, MD5, and several other foundational algorithms. He was a co-founder of Verisign and is a Turing Award winner (2002).
 
-\end{historicalbox}
-
-\begin{historicalbox}[Biographical Sketch: Adi Shamir]
 Adi Shamir (b. 1952) is an Israeli cryptographer who co-invented RSA while a visiting scientist at MIT in 1977. He has made seminal contributions across cryptography: Shamir's secret sharing scheme, differential cryptanalysis (analytic attack on DES), the Boneh-Shamir visual cryptography scheme, and the TWINKLE factoring device. He is a Turing Award winner (2002) and continues to be active in cryptanalysis and post-quantum crypto.
 
-\end{historicalbox}
-
-\begin{historicalbox}[Biographical Sketch: Leonard Adleman]
 Leonard Adleman (b. 1945) is a theoretical computer scientist at USC. While at MIT in 1977, he played the role of the ``breaker'' — Rivest proposed schemes and Adleman found the attacks. The three went through 42 proposals before RSA. Beyond cryptography, Adleman co-invented the Miller-Adleman primality test (later Miller-Rabin) and founded the field of DNA computing. He is a Turing Award winner (2002).
 
-\end{historicalbox}
-
-\begin{historicalbox}[Biographical Sketch: Neal Koblitz]
 Neal Koblitz (b. 1948) is a mathematician at the University of Washington. In 1985, he independently proposed using elliptic curves for public-key cryptography, publishing ``Elliptic Curve Cryptosystems'' in Mathematics of Computation. Koblitz is also known for his textbooks on number theory and cryptography, his critiques of poorly designed cryptographic systems, and his role in developing hyperelliptic curve cryptography.
 
-\end{historicalbox}
-
-\begin{historicalbox}[Biographical Sketch: Victor Miller]
 Victor Miller (b. 1947) is an American mathematician and cryptographer who independently discovered elliptic curve cryptography in 1985 (a few months before Koblitz). At the time, Miller was at IBM Research. His paper ``Use of Elliptic Curves in Cryptography'' was presented at CRYPTO 1985. Miller also contributed to the development of the Weil pairing and made contributions to computational biology and automated theorem proving.
 
-\end{historicalbox}
-
-\begin{connectionbox}[Connection to Chapters 8 \& 9]
 Public-key crypto \emph{requires} computational hardness assumptions ($\mathsf{P} \neq \mathsf{NP}$, factoring $\notin \mathsf{P}$, DLP $\notin \mathsf{P}$). NP-completeness (Chapter 9) gives a framework: we base crypto on problems \emph{believed} hard on average, not worst-case. The \emph{average-case} vs \emph{worst-case} gap is central. The entire field depends on the existence of one-way functions — which Impagliazzo and Luby (1989) proved is equivalent to $\mathsf{P} \neq \mathsf{NP}$ in a distributional sense.
-
-\end{connectionbox}
 
 %======================================================================
 % SECTION 4: THE MENTAL LEAP
@@ -154,11 +115,8 @@ Public-key crypto \emph{requires} computational hardness assumptions ($\mathsf{P
 
 There are multiple leaps here, each overturning a different assumption:
 
-\begin{mentalLeap}
 \textbf{Leap 1 (Diffie-Hellman 1976):} \emph{Asymmetry.} Encryption and decryption need not be symmetric. A \emph{public key} $pk$ encrypts; a \emph{private key} $sk$ decrypts. $pk$ can be shouted from rooftops; only $sk$ unlocks. The mathematical primitive: a \emph{trapdoor one-way function} family. The asymmetry breaks 3000 years of cryptographic tradition at a stroke.
-\end{mentalLeap}
 
-\begin{mentalLeap}
 \textbf{Leap 2 (Diffie-Hellman 1976):} \emph{Key Exchange Without Secrets.} Alice and Bob can compute a shared secret over a public channel!
 \begin{enumerate}
 \item Public: group $G$, generator $g$.
@@ -167,26 +125,16 @@ There are multiple leaps here, each overturning a different assumption:
 \item Shared secret: $g^{ab} = (g^a)^b = (g^b)^a$.
 \end{enumerate}
 An eavesdropper sees $g^a, g^b$ but cannot compute $g^{ab}$ (Computational Diffie-Hellman assumption). The beauty is in the commutativity: exponentiation commutes in the exponent, so both parties arrive at the same value despite broadcasting different intermediate values.
-\end{mentalLeap}
 
-\begin{mentalLeap}
 \textbf{Leap 3 (RSA 1977):} \emph{A Concrete Trapdoor.} The trapdoor is \emph{factoring}. $N = pq$ (public). $\phi(N) = (p-1)(q-1)$ (secret). $e$ public, $d = e^{-1} \bmod \phi(N)$ private. Encryption: $c = m^e \bmod N$. Decryption: $m = c^d \bmod N$. Factoring $N$ reveals $\phi(N)$ reveals $d$. But factoring is hard (believed). RSA gave the first practical implementation of the vision Diffie and Hellman had outlined.
-\end{mentalLeap}
 
-\begin{mentalLeap}
 \textbf{Leap 4 (Koblitz-Miller 1985):} \emph{Groups from Geometry.} Elliptic curves $E(\mathbb{F}_q)$ give groups where DLP is exponentially harder (no subexponential algorithms). 256-bit ECC $\approx$ 3072-bit RSA. Smaller keys, faster, same security. This leap showed that the group used for cryptography could be decoupled from the arithmetic of finite fields — opening the door to a rich variety of algebraic structures.
-\end{mentalLeap}
 
-\begin{mentalLeap}
 \textbf{Leap 5 (Gentry 2009):} \emph{Computation on Secrets.} Homomorphic encryption allows arbitrary computations on encrypted data without decrypting. Gentry's bootstrapping theorem showed that if a scheme can evaluate its own decryption circuit, it can compute anything — a self-referential leap reminiscent of Gödel's incompleteness theorems (Chapter 3). This was considered impossible since the invention of public-key crypto.
-\end{mentalLeap}
 
 Each leap replaced \emph{secrecy of mechanism} with \emph{secrecy of key} (Kerckhoffs's principle) and then replaced \emph{shared secret} with \emph{asymmetric mathematics}.
 
-\begin{connectionbox}[The Common Thread]
 What unites these five leaps? Each one discovers a form of \emph{asymmetry} — a difference between public and private, between forward and inverse, between easy and hard — and then exploits that asymmetry to eliminate the need for prior trust. Public-key cryptography is the art of finding asymmetry in mathematics and using it to break symmetry in communication.
-
-\end{connectionbox}
 
 %======================================================================
 % SECTION 5: THE MATHEMATICS
@@ -234,10 +182,7 @@ This theorem is fundamental: it tells us that the entire edifice of cryptography
 
 \textbf{Hard-core bits:} A one-way function $f$ may still leak some information about its input $x$. A \emph{hard-core predicate} $h(x)$ is a bit that is unpredictable given $f(x)$. Goldreich-Levin (1989): for any OWF $f$, the function $f'(x, r) = (f(x), r)$ has a hard-core bit $h(x, r) = \langle x, r \rangle \bmod 2$. This elegant construction enables the extraction of pseudorandom bits from any OWF, forming the foundation of pseudorandom generators (PRGs) via the Blum-Micali construction (1984) and the HILL theorem (Håstad-Impagliazzo-Levin-Luby 1999): PRGs exist if and only if OWFs exist.
 
-\begin{highlightbox}[Average-Case vs Worst-Case Hardness]
 OWFs require hardness \emph{on average}: a random instance must be hard to invert with high probability. This is stronger than NP-hardness, which only guarantees worst-case hardness. Bridging this gap — constructing average-case hard problems from worst-case ones — is a central achievement of lattice-based cryptography (Regev 2005). The LWE problem is \emph{provably} as hard on average as certain worst-case lattice problems (GapSVP, SIVP).
-
-\end{highlightbox}
 
 \subsection{Symmetric Encryption and the Symmetric-Key Landscape}
 \label{sec:crypto:symmetric}
@@ -305,10 +250,7 @@ Let $p = 61$, $q = 53$. Then $N = 61 \times 53 = 3233$, $\phi(N) = 60 \times 52 
 \item \textbf{Side channels:} Timing (Kocher 1996), power, cache. Counter: constant-time implementation, blinding.
 \end{itemize}
 
-\begin{roadblockbox}[Textbook RSA is Insecure]
 RSA as described above (without padding) is \emph{deterministic} and \emph{malleable}: the same plaintext always encrypts to the same ciphertext, and given $c = m^e \bmod N$, an adversary can compute $c' = (2m)^e \bmod N$ and obtain the encryption of $2m$. Modern RSA uses OAEP (Optimal Asymmetric Encryption Padding, Bellare-Rogaway 1994) to add randomness and achieve IND-CCA security.
-
-\end{roadblockbox}
 
 \subsection{ElGamal Encryption}
 \label{sec:crypto:elgamal}
@@ -345,10 +287,7 @@ Security: \emph{EUF-CMA} (Existential Unforgeability under Chosen Message Attack
 \item \textbf{EdDSA (Ed25519):} Deterministic nonce ($k = H(x, m)$), high-speed twisted Edwards curve, constant-time implementation. No nonce misuse possible. Bernstein's Curve25519 family (X25519 for DH, Ed25519 for signatures) is the de facto standard for modern protocols.
 \end{itemize}
 
-\begin{highlightbox}[The Nonce Reuse Catastrophe]
 In DSA/ECDSA, the random nonce $k$ must be \emph{unique} per signature. Reusing $k$ reveals the private key algebraically. The 2010 Sony Playstation 3 firmware used a static $k$, allowing attackers to extract Sony's ECDSA signing key. This is why EdDSA uses a \emph{deterministic} nonce derived from the private key and message — eliminating the need for a secure random number generator.
-
-\end{highlightbox}
 
 \subsection{Hash Functions}
 \label{sec:crypto:hash}
@@ -482,10 +421,7 @@ Cryptographic algorithms are mathematically secure, but their implementations le
   \end{itemize}
 \end{itemize}
 
-\begin{roadblockbox}[The Implementation Gap]
 A mathematically perfect cryptosystem can be completely broken through implementation flaws. The OpenSSL Heartbleed bug (2014) leaked private keys from memory. Rowhammer attacks (2014) flip bits in DRAM to break security. The lesson: cryptography is a system property, not just an algorithm property. Formal verification (fiat-crypto, hacspec) is increasingly used to produce provably correct implementations.
-
-\end{roadblockbox}
 
 \subsection{Merkle Puzzles and Merkle Trees}
 \label{sec:crypto:merkle}
@@ -658,10 +594,7 @@ Compute $f(x_1,\dots,x_n)$ without revealing inputs.
 \item \textbf{The Quantum Era as a Forcing Function:} The coming quantum threat has forced cryptography to prepare for a world where all current public-key assumptions are false. This has been a massive positive force: it drove investment in lattice-based crypto, formal verification of implementations, protocol agility, and hybrid deployments. The crypto community's response to quantum — not denial, but proactive reinvention — is a model for how science should respond to paradigm shifts.
 \end{enumerate}
 
-\begin{connectionbox}[Connection to the Philosophy of Mathematics]
 Public-key cryptography gives a practical example of the difference between \emph{existence} and \emph{construction}. We know that trapdoor functions must exist if $\mathsf{P} \neq \mathsf{NP}$, but constructing concrete candidates (RSA, ElGamal, ECC, LWE) required deep mathematical insight. The bridge between abstract existence and concrete construction is the art of cryptography.
-
-\end{connectionbox}
 
 %======================================================================
 % SECTION 8: MODERN LEGACY
@@ -701,7 +634,6 @@ Public-key cryptography gives a practical example of the difference between \emp
 \item \textbf{Differential Privacy and Cryptographic Building Blocks:} Differential privacy (Dwork et al. 2006) uses cryptographic concepts (randomness, indistinguishability, composition) to define and achieve privacy in statistical databases. While not a cryptographic primitive itself, DP's formal definition of privacy as indistinguishability between adjacent databases draws directly from the semantic security paradigm. Techniques like secure aggregation (used by Apple, Google in federated learning) combine DP with MPC to protect individual data contributions.
 \end{itemize}
 
-\begin{connectionbox}[Connections]
 \begin{itemize}
 \item Chapter 8/9 (Complexity): Security = average-case hardness assumptions; P vs NP underpins all of cryptography.
 \item Chapter 11 (ZK): ZK proofs use commitments, hash functions, pairings, groups — all primitives introduced here.
@@ -710,8 +642,6 @@ Public-key cryptography gives a practical example of the difference between \emp
 \item Chapter 2 (Halting): Undecidability as a resource? Cryptography uses undecidability-adjacent hardness; the halting problem is a reminder that some things are provably impossible regardless of computational power.
 \item Chapter 7 (Kolmogorov Complexity): OWFs relate to incompressibility; cryptographic security relies on the computational indistinguishability of true randomness from pseudorandomness.
 \end{itemize}
-
-\end{connectionbox}
 
 %======================================================================
 % SECTION 9: LESSONS FOR FUTURE SCIENTISTS

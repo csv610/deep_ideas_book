@@ -93,6 +93,8 @@
 \newcommand{\TOT}{\text{TOT}}
 \newcommand{\EQ}{\text{EQ}}
 \newcommand{\NP}{\text{NP}}
+\newcommand{\coNP}{\text{coNP}}
+\newcommand{\BQP}{\text{BQP}}
 \newcommand{\Pclass}{\text{P}}
 \newcommand{\NPcomplete}{\text{NP-complete}}
 \newcommand{\NPhard}{\text{NP-hard}}
@@ -100,6 +102,12 @@
 \newcommand{\PSPACE}{\text{PSPACE}}
 \newcommand{\EXP}{\text{EXP}}
 \newcommand{\BPP}{\text{BPP}}
+\newcommand{\RP}{\text{RP}}
+\newcommand{\coRP}{\text{coRP}}
+\newcommand{\ZPP}{\text{ZPP}}
+\newcommand{\PPclass}{\text{PP}}
+\newcommand{\Ppoly}{\text{P}/\text{poly}}
+\newcommand{\E}{\mathbb{E}}
 \newcommand{\ZK}{\text{ZK}}
 \newcommand{\EMPTY}{\text{EMPTY}}
 \newcommand{\REG}{\text{REG}}
@@ -134,7 +142,7 @@
 
 \noindent\begin{minipage}{0.85\textwidth}
 \small
-\textbf{Abstract.}---This monograph presents a systematic study of the foundational ideas that shaped modern computer science, information theory, and computational complexity. Fourteen chapters examine breakthroughs spanning computability (Turing machines, the Church--Turing Thesis), undecidability (the halting problem, Gödel's incompleteness theorems, Rice's Theorem), information theory (Shannon entropy, channel capacity, error-correcting codes), algorithmic information (Kolmogorov complexity, algorithmic randomness), computational complexity (P vs NP, NP-completeness, the PCP theorem), cryptography (public-key systems, zero-knowledge proofs, post-quantum schemes), distributed computing (consensus protocols, the FLP impossibility theorem), and interactive proofs (IP = PSPACE, multi-prover systems). Each chapter develops the relevant mathematics rigorously, situating the results within their historical and conceptual context. The epilogue identifies nine recurring cognitive patterns across these breakthroughs and analyzes their applicability to contemporary research in computer science, artificial intelligence, and related disciplines. The intended audience includes graduate students and researchers in theoretical computer science, mathematics, and the foundations of computation. Prerequisites include discrete mathematics, linear algebra, and probability theory.
+\textbf{Abstract.}---This monograph presents a systematic study of the foundational ideas that shaped modern computer science, information theory, and computational complexity. Fifteen chapters examine breakthroughs spanning computability (Turing machines, the Church--Turing Thesis), undecidability (the halting problem, Gödel's incompleteness theorems, Rice's Theorem), information theory (Shannon entropy, channel capacity, error-correcting codes), algorithmic information (Kolmogorov complexity, algorithmic randomness), computational complexity (P vs NP, NP-completeness, the PCP theorem), randomized computation (BPP, probabilistic algorithms, derandomization), cryptography (public-key systems, zero-knowledge proofs, post-quantum schemes), distributed computing (consensus protocols, the FLP impossibility theorem), and interactive proofs (IP = PSPACE, multi-prover systems). Each chapter develops the relevant mathematics rigorously, situating the results within their historical and conceptual context. The epilogue identifies nine recurring cognitive patterns across these breakthroughs and analyzes their applicability to contemporary research in computer science, artificial intelligence, and related disciplines. The intended audience includes graduate students and researchers in theoretical computer science, mathematics, and the foundations of computation. Prerequisites include discrete mathematics, linear algebra, and probability theory.
 \end{minipage}
 
 \end{titlepage}
@@ -184,6 +192,7 @@ The book is written for anyone who has felt that thrill of recognition when a be
 \include{chapters/zero_knowledge_proofs}
 \include{chapters/interactive_proofs}
 \include{chapters/consensus}
+\include{chapters/randomized_computation}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \part{Epilogue}

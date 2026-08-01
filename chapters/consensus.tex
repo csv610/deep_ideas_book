@@ -611,7 +611,7 @@ For Byzantine failures: a quorum must intersect another quorum in at least $f+1$
 
 \item \textbf{BFT Renaissance:} HotStuff (Linear BFT) $\to$ Diem/Libra, Aptos, Sui, Flow. Tendermint $\to$ Cosmos ecosystem (200+ IBC-connected chains). PBFT $\to$ Hyperledger Fabric. The demand for permissioned and permissionless BFT drove a decade of protocol innovation.
 
-\item \textbf{Ethereum Gasper:} LMD-GHOST (fork choice) + Casper FFG (finality). Two consensus layers. Sync committee for light clients. Gasper separates block proposal (GHOST) from finality (Casper), enabling fast confirmation with eventual finality every 32-epoch checkpoint.
+\item \textbf{Ethereum Gasper:} LMD-GHOST (fork choice) + Casper FFG (finality). Two consensus layers. Sync committee for light clients. Gasper separates block proposal (GHOST) from finality (Casper), enabling fast optimistic confirmation with finality about two epochs (roughly 12.8 minutes) after a block is proposed, with each epoch comprising 32 slots.
 
 \item \textbf{DAG-based:} Narwhal-Bullshark (DAG for data dissemination + BFT for ordering). AlephBFT, Dagster, Mysticeti. High throughput (200k+ tx/sec). Sui mainnet uses Narwhal-Bullshark for consensus on owned objects, making it the first production DAG-BFT system.
 

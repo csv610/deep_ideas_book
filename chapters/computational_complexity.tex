@@ -18,7 +18,7 @@ Is there a fundamental difference between problems solvable in polynomial time a
 
 Before complexity theory, ``difficulty'' was not a mathematical concept. A sorting algorithm might be ``slow'' for large inputs, but the problem of sorting itself was not considered intrinsically hard or easy. The radical idea: difficulty is a property of the \emph{problem}, not the \emph{algorithm} — and it can be measured, classified, and proven.
 
-The distinction between polynomial and exponential growth is stark. A problem solvable in $n^3$ steps on a $10^9$ ops/sec machine can handle inputs of size $10^6$ within seconds. An exponential $2^n$ algorithm struggles at $n = 50$. This gap defines the boundary between the feasible and the intractable.
+The distinction between polynomial and exponential growth is stark. A problem solvable in $n^3$ steps on a $10^9$ ops/sec machine can handle inputs of size $10^3$ within a second ($10^9/10^9 = 1$); even $10^4$ takes $10^{12}$ steps, i.e. $10^3$ seconds, and $10^6$ would take $10^{18}$ steps --- about 31.7 years. An exponential $2^n$ algorithm struggles at $n = 50$. This gap defines the boundary between the feasible and the intractable.
 
 Even after defining polynomial time as ``efficient,'' we face a deeper question: can we determine, for any given problem, which class it belongs to? The P vs NP question — are efficient verification and efficient solution the same? — remains open after 50 years and \$1M Clay Prize. The entire field orbits this single question.
 
@@ -54,8 +54,8 @@ Baker, Gill, and Solovay (1975) showed that there exist oracles $A$ and $B$ such
 \begin{itemize}
 \item \textbf{1960:} Rabin: ``Degree of difficulty of computing a function.''
 \item \textbf{1965:} Hartmanis \& Stearns: ``On the Computational Complexity of Algorithms'' — defined time/space complexity classes, hierarchy theorems, founded the field.
-\item \textbf{1965:} \cite{edmonds1965}, Edmonds: ``Paths, Trees, and Flowers'' — proposed \emph{polynomial time} as the formal definition of ``tractable'' (``good algorithms'').
-\item \textbf{1967:} \cite{cobham1965}, Cobham: ``The Intrinsic Computational Difficulty of Functions'' — independently proposed polynomial time = feasible.
+\item \textbf{1965:} \cite{Edmonds1965}, Edmonds: ``Paths, Trees, and Flowers'' — proposed \emph{polynomial time} as the formal definition of ``tractable'' (``good algorithms'').
+\item \textbf{1967:} \cite{Cobham1965}, Cobham: ``The Intrinsic Computational Difficulty of Functions'' — independently proposed polynomial time = feasible.
 \item \textbf{1971:} Cook: ``The Complexity of Theorem-Proving Procedures'' — NP-completeness, SAT is NP-complete.
 \item \textbf{1972:} Karp: ``Reducibility Among Combinatorial Problems'' — 21 NP-complete problems.
 \item \textbf{1973:} Levin (USSR): Universal search problems — independent discovery of NP-completeness.
@@ -305,7 +305,7 @@ For $A$, take a PSPACE-complete language. Then $\mathsf{NP}^A \subseteq \mathsf{
 
 This makes P, BPP, etc. \emph{physically} meaningful — not just TM artifacts. Quantum computers challenge this (BQP $\not\subseteq$ BPP?).
 
-The invariance thesis, formalized by Pippenger and Fischer (1979), states that all ``reasonable'' sequential models (RAM machines, pointer machines, $\lambda$-calculus, cellular automata) simulate each other with polynomial overhead. The key is that Turing machines with multiple tapes can simulate $k$-tape TMs with $O(\log k)$ overhead, and RAM machines simulate TMs with $O(n^2)$ overhead. This robustness justifies P as a model-independent class.
+The invariance thesis states that all ``reasonable'' sequential models (RAM machines, pointer machines, $\lambda$-calculus, cellular automata) simulate each other with polynomial overhead. For example, Hennie and Stearns (1966) showed that any $k$-tape Turing machine can be simulated by a two-tape machine in $O(n \log n)$ time, and RAM machines simulate Turing machines with polynomial overhead (Pippenger and Fischer 1979 refined the associated time--reversal tradeoffs). This robustness justifies P as a model-independent class.
 
 \subsection{Circuit Complexity and Non-Uniform Models}
 \label{sec:complexity:circuits}
@@ -600,7 +600,7 @@ If a CNF formula $F$ has resolution complexity $S$, then there exists a proof of
 \end{theorem}
 
 \begin{proof}[Sketch]
-The upper bound: any resolution proof can be ``compressed'' to a proof with bounded width by a careful extraction of a subproof. The lower bound: define a graph whose vertices are clauses; clause width corresponds to the number of variables. The size-width relationship shows that exponential-size lower bounds follow from linear-width lower bounds. This is used to prove that the pigeonhole principle requires exponential resolution proofs ($\mathsf{PHP}_n^{n+1}$ has no poly-size resolution refutation).
+The upper bound: any resolution proof can be ``compressed'' to a proof with bounded width by a careful extraction of a subproof. The lower bound: define a graph whose vertices are clauses; clause width corresponds to the number of variables. The size-width relationship shows that exponential-size lower bounds follow from linear-width lower bounds; a classic application (see the example below) is the pigeonhole principle.
 \end{proof}
 
 \begin{example}[Pigeonhole Principle: Proof Complexity Lower Bound]

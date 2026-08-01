@@ -10,7 +10,7 @@
 \section{The Question: What Patterns Unite These Breakthroughs?}
 \label{sec:anatomy:question}
 
-We have traced fifteen breakthroughs across computation, information, difficulty, and collective intelligence. Each chapter asked the same nine questions. Now we ask the meta-question:
+We have traced fourteen breakthroughs across computation, information, difficulty, and coordination. Each chapter asked the same nine questions. Now we ask the meta-question:
 
 What recurring patterns of creativity appear across all these breakthroughs? Can we extract a ``periodic table'' of intellectual revolutions?
 
@@ -100,9 +100,9 @@ Across our fifteen chapters, nine cognitive moves appear again and again. They a
 
 \item \textbf{Simplex Algorithm (Case Study):} Optimization over continuous space $\to$ vertex-walking on a polytope. The optimal solution lies at a vertex; the algorithm moves from vertex to vertex along edges of decreasing cost.
 
-\item \textbf{Lempel-Ziv (Ch. 6):} Variable-length codes $\to$ dictionary-based compression. Instead of assigning codes to symbols, build a dictionary of repeated substrings and encode pointers.
+\item \textbf{Lempel-Ziv (Ch. 5):} Variable-length codes $\to$ dictionary-based compression. Instead of assigning codes to symbols, build a dictionary of repeated substrings and encode pointers.
 
-\item \textbf{Differential Privacy (Ch. 7):} Query response $\to$ randomized mechanism. A single bit of output is replaced by a probability distribution over outputs, calibrated to the sensitivity of the query.
+\item \textbf{Differential Privacy (Ch. 10):} Query response $\to$ randomized mechanism. A single bit of output is replaced by a probability distribution over outputs, calibrated to the sensitivity of the query.
 \end{itemize}
 
 \textbf{Pattern:} \emph{Re-representation is the universal solvent.} When stuck, don't push harder change the language. The right representation makes the solution visible.
@@ -124,7 +124,7 @@ Across our fifteen chapters, nine cognitive moves appear again and again. They a
 
 \item \textbf{Shannon (Ch. 5):} Zero-error capacity $\to$ $\epsilon$-error capacity. The channel coding theorem shows that vanishing error is possible below capacity, but zero error requires zero rate.
 
-\item \textbf{PAC Learning (Ch. 6):} Exact concept learning is NP-hard in general $\to$ Probably Approximately Correct learning. Valiant accepted that we cannot learn concepts exactly, but can learn them ``with high probability'' and ``approximate correctness.''
+\item \textbf{PAC Learning (Ch. 8):} Exact concept learning is NP-hard in general $\to$ Probably Approximately Correct learning. Valiant accepted that we cannot learn concepts exactly, but can learn them ``with high probability'' and ``approximate correctness.''
 
 \item \textbf{Zero-Knowledge (Ch. 11):} Trivial zero-knowledge for all of NP seemed impossible $\to$ GMW protocol using commitment and interaction. The impossibility of non-interactive ZK for all NP (without OWFs) led to interactive ZK protocols.
 
@@ -160,11 +160,11 @@ Across our fifteen chapters, nine cognitive moves appear again and again. They a
 
 \item \textbf{Bloom Filters (Case Study):} $k$ independent hash functions map each element to $k$ bits. The false positive rate $(1 - e^{-kn/m})^k$ is controlled by the ratio of hash functions to bits.
 
-\item \textbf{Differential Privacy (Ch. 7):} Randomized response adds calibrated noise. The Laplace mechanism adds noise $\text{Lap}(\Delta f / \epsilon)$ to the query output, providing $\epsilon$-differential privacy.
+\item \textbf{Differential Privacy (Ch. 10):} Randomized response adds calibrated noise. The Laplace mechanism adds noise $\text{Lap}(\Delta f / \epsilon)$ to the query output, providing $\epsilon$-differential privacy.
 
 \item \textbf{Shannon (Ch. 5):} Random coding achieves channel capacity. Shannon proved existence of capacity-achieving codes by averaging over random codebooks a probabilistic method argument.
 
-\item \textbf{PAC Learning (Ch. 6):} Random examples drawn from unknown distribution $D$. The learner receives labeled examples $(x, c(x))$ where $x \sim D$, not adversarially chosen queries.
+\item \textbf{PAC Learning (Ch. 8):} Random examples drawn from unknown distribution $D$. The learner receives labeled examples $(x, c(x))$ where $x \sim D$, not adversarially chosen queries.
 
 \item \textbf{Simplex Algorithm (Case Study):} Randomized pivot rules (e.g., random edge) avoid pathological worst-case instances. Random perturbation (lexicographic perturbation) breaks degeneracy.
 \end{itemize}
@@ -182,7 +182,7 @@ Across our fifteen chapters, nine cognitive moves appear again and again. They a
 
 \item \textbf{Rice (Ch. 4):} Programs analyzing programs. Index sets are sets of program indices. If a property is nontrivial and semantic, its index set is undecidable by reduction from halting.
 
-\item \textbf{Recursion Theorem (Ch. 1):} $U(\langle M \rangle, x) = M(x)$. Every Turing machine can obtain its own description and simulate itself the programming-language equivalent of self-awareness.
+\item \textbf{Recursion Theorem (Ch. 4):} $U(\langle M \rangle, x) = M(x)$. Every Turing machine can obtain its own description and simulate itself the programming-language equivalent of self-awareness.
 
 \item \textbf{Zero-Knowledge (Ch. 11):} Simulator rewinds verifier the proof talks about the proof. The simulator must produce a transcript indistinguishable from the real interaction, using the verifier's own code against it.
 
@@ -222,9 +222,9 @@ Across our fifteen chapters, nine cognitive moves appear again and again. They a
 
 \item \textbf{Count-Min Sketch (Case Study):} Approximate data structures. Count-Min guarantees $\sum_{j \neq i} a_j / w$ error with probability $1 - \delta$.
 
-\item \textbf{PAC Learning (Ch. 6):} Probably Approximately Correct. The learner outputs a hypothesis that is approximately correct with high probability. Both error parameters ($\epsilon, \delta$) are adjustable.
+\item \textbf{PAC Learning (Ch. 8):} Probably Approximately Correct. The learner outputs a hypothesis that is approximately correct with high probability. Both error parameters ($\epsilon, \delta$) are adjustable.
 
-\item \textbf{Differential Privacy (Ch. 7):} $\epsilon$-differential privacy guarantees that the output distribution changes by at most $e^\epsilon$ when any single record changes. The guarantee is probabilistic over the algorithm's randomness.
+\item \textbf{Differential Privacy (Ch. 10):} $\epsilon$-differential privacy guarantees that the output distribution changes by at most $e^\epsilon$ when any single record changes. The guarantee is probabilistic over the algorithm's randomness.
 
 \item \textbf{Miller-Rabin (Ch. 10):} Error probability $< 1/4$ per iteration, reducible to $< 2^{-k}$ by $k$ iterations. The probability that a composite number passes all $k$ tests decreases exponentially.
 
@@ -250,7 +250,7 @@ Across our fifteen chapters, nine cognitive moves appear again and again. They a
 
 \item \textbf{ZK-VMs (Ch. 11):} RISC Zero, SP1 arbitrary code $\to$ ZK proof. The virtual machine executes a program and produces a succinct proof of correct execution, abstracting away the cryptographic complexity.
 
-\item \textbf{Differential Privacy (Ch. 7):} Query interface $\to$ privacy guarantee. The noise mechanism is an abstraction layer that separates the data analyst from the raw data.
+\item \textbf{Differential Privacy (Ch. 10):} Query interface $\to$ privacy guarantee. The noise mechanism is an abstraction layer that separates the data analyst from the raw data.
 
 \item \textbf{PyTorch / JAX (Deep Learning):} Automatic differentiation $\to$ abstraction over gradient computation. The programmer defines a forward pass; the framework computes gradients via autograd.
 
@@ -314,9 +314,9 @@ Across our fifteen chapters, nine cognitive moves appear again and again. They a
 
 \item \textbf{Chaitin (Ch. 7):} ``Randomness'' $\to$ $K(x) \ge |x| - c$. A string is random if it has no description shorter than itself. Kolmogorov complexity $K(x)$ is the length of the shortest program outputting $x$.
 
-\item \textbf{Differential Privacy (Ch. 7):} ``Privacy'' $\to$ $\Pr[\mathcal{M}(D) \in S] \le e^\epsilon \Pr[\mathcal{M}(D') \in S]$. The formalization bounds the information leakage caused by any single individual's data.
+\item \textbf{Differential Privacy (Ch. 10):} ``Privacy'' $\to$ $\Pr[\mathcal{M}(D) \in S] \le e^\epsilon \Pr[\mathcal{M}(D') \in S]$. The formalization bounds the information leakage caused by any single individual's data.
 
-\item \textbf{PAC Learning (Ch. 6):} ``Learning'' $\to$ For all distributions $D$, with probability $1-\delta$, output $h$ such that $\Pr_{x \sim D}[h(x) \neq c(x)] < \epsilon$. The definition captured what it meant to learn from examples.
+\item \textbf{PAC Learning (Ch. 8):} ``Learning'' $\to$ For all distributions $D$, with probability $1-\delta$, output $h$ such that $\Pr_{x \sim D}[h(x) \neq c(x)] < \epsilon$. The definition captured what it meant to learn from examples.
 
 \item \textbf{Validity in Consensus (Ch. 13):} Formalized by distinct validity conditions: validity, integrity, agreement, termination. Each condition pins down a precise aspect of what ``agreement'' means.
 
@@ -500,8 +500,6 @@ This chapter synthesized the preceding fourteen chapters into a unified analysis
 
 %======================================================================
 % SECTION 10: CASE STUDIES APPLYING THE PATTERNS TO SEVEN MODERN BREAKTHROUGHS
-%======================================================================
-% SECTION 10: CASE STUDIES APPLYING THE PATTERNS
 %======================================================================
 \section{Case Studies: Applying the Nine Patterns to Seven Modern Breakthroughs}
 \label{sec:anatomy:case_studies}

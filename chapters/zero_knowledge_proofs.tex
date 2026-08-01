@@ -300,9 +300,9 @@ Given a public-coin interactive proof $(P,V)$ with transcript $(a_1, c_1, z_1, a
 \end{enumerate}
 \end{definition}
 
-The security proof uses the \emph{Forking Lemma} (Pointcheval and Stern, 1996): if an adversary can forge a non-interactive proof with non-negligible probability, then by rewinding the adversary and running it twice with the same random tape but different oracle answers (a ``fork''), one can extract a witness. This formalizes the intuition that the hash function acts as an unpredictable verifier.
+The security proof relies on the \emph{Forking Lemma} (Pointcheval and Stern, 1996), formalized below: rewinding the adversary with different oracle answers yields two forgeries from which a witness can be extracted.
 
-The Fiat-Shamir transform is \emph{sound in the Random Oracle Model} (ROM) but not necessarily in the standard model. There exist contrived protocols (e.g., the Goldwasser-Kalai proof) where the transform produces an unsound non-interactive proof despite the interactive version being sound. Nevertheless, the transform is used ubiquitously in practice (Schnorr signatures, EdDSA, zk-SNARKs, STARKs).
+The Fiat-Shamir transform is \emph{sound in the Random Oracle Model} (ROM, discussed below) but not necessarily in the standard model. There exist contrived protocols (e.g., the Goldwasser-Kalai example) where the transform produces an unsound non-interactive proof despite the interactive version being sound. Nevertheless, the transform is used ubiquitously in practice (Schnorr signatures, EdDSA, zk-SNARKs, STARKs).
 
 \paragraph{The Random Oracle Model.} The ROM idealizes a hash function $H$ as a truly random function that responds consistently to each query. Security proofs in the ROM assume the adversary can only learn $H$ values by querying; there is no algebraic structure. While this assumption is known to be false for real hash functions (SHA-256, Keccak, BLAKE3), the ROM remains the standard security model for Fiat-Shamir-transformed protocols. The ``random oracle is not a hash function'' critique (Canetti-Goldreich-Halevi, 1998) shows that there exist schemes secure in the ROM but insecure with any concrete hash function --- yet these counterexamples are highly contrived, and the ROM has proven reliable in practice.
 

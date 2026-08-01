@@ -56,12 +56,10 @@ Before 1985, the notion of a ``proof'' was monolithic: a written document, check
 
 \item \textbf{Knowledge vs. Conviction:} Even if interaction could convince a verifier, what does the verifier \emph{learn}? In a static proof, the verifier learns the proof itself (and thus all the knowledge it contains). In an interactive proof, the verifier may be convinced without learning anything beyond the truth of the statement. This separation of \emph{conviction} from \emph{knowledge} was the key insight that enabled zero-knowledge proofs (Chapter 11), but it was not obvious that such a separation was possible.
 
-\item \textbf{The Collapse of the Polynomial Hierarchy:} In 1985, the polynomial hierarchy (PH) was believed to be the ``top'' of the verification landscape. NP was the first level, co-NP the second, and higher levels alternated quantifiers. The question was whether anything lay \emph{above} PH. Interactive proofs showed that the hierarchy collapses: IP contains the entire polynomial hierarchy (AM = NP $\cap$ coAM at the second level, and more generally, the Arthur-Merlin hierarchy collapses to a finite number of levels). This was unexpected: interaction was more powerful than alternation.
+\item \textbf{The Collapse of the Polynomial Hierarchy:} In 1985, the polynomial hierarchy (PH) was believed to be the ``top'' of the verification landscape. NP was the first level, co-NP the second, and higher levels alternated quantifiers. The question was whether anything lay \emph{above} PH. Interactive proofs showed that the hierarchy collapses: IP contains the entire polynomial hierarchy ($AM \subseteq \Pi_2^P$, and $coNP \subseteq AM$ would collapse PH to its second level). This was unexpected: interaction was more powerful than alternation.
 \end{enumerate}
 
 Before Goldwasser, Micali, and Rackoff, the standard model of verification was: prover sends certificate $\to$ verifier checks in polynomial time. This is NP. The question was: can we do \emph{better}? Can a verifier check something that requires more than polynomial-time static reasoning? The barrier was conceptual: everyone assumed that if a statement is true, there exists a static proof of polynomial size. Interactive proofs shattered this assumption by showing that the \emph{process} of verification --- not just its output --- can encode computational power.
-
-In 1985, the polynomial hierarchy (PH) was believed to be the ``top'' of the verification landscape. NP was the first level, co-NP the second, and higher levels alternated quantifiers. The question was whether anything lay \emph{above} PH. Interactive proofs showed that the hierarchy collapses: IP contains the entire polynomial hierarchy (AM = NP $\cap$ coAM at the second level, and more generally, the Arthur-Merlin hierarchy collapses to a finite number of levels). This was unexpected: interaction was more powerful than alternation.
 
 %======================================================================
 % SECTION 3: HISTORICAL CONTEXT
@@ -79,7 +77,7 @@ By 1985, complexity theory had established a rich taxonomy of classes:
 \end{itemize}
 The relationships were: $P \subseteq NP \subseteq PSPACE \subseteq EXP$. The central open questions were $P \stackrel{?}{=} NP$ and $NP \stackrel{?}{=} PSPACE$.
 
-The \emph{polynomial hierarchy} (PH) was \cite{stockmeyer1976}, defined by Megiddo, Maseih, and Tiwari (1981) and formalized by Stockmeyer (1977):
+The \emph{polynomial hierarchy} (PH) was introduced by Meyer and Stockmeyer (1972) and formalized by Stockmeyer (1976) \cite{Stockmeyer1976}:
 \begin{itemize}
 \item $\Sigma_0^P = P$
 \item $\Sigma_1^P = NP$
@@ -98,7 +96,7 @@ Key developments converging in the 1980s:
 
 \item \textbf{Goldwasser, Micali, and Rackoff (1985):} ``The Knowledge Complexity of Interactive Proof Systems.'' Defined interactive proofs, zero-knowledge proofs, and knowledge complexity. Showed that every NP statement has a zero-knowledge interactive proof (assuming one-way functions exist).
 
-\item \textbf{Babai and Moran (1988):} Showed that IP is contained in PSPACE, completing the upper bound.
+\item \textbf{Babai and Moran (1988):} Showed that the Arthur-Merlin hierarchy collapses: for any constant $k \ge 2$, $AM[k] = AM[2]$. The public-coin hierarchy thus requires only two rounds.
 
 \item \textbf{Shamir (1992):} ``IP = PSPACE.'' The landmark result: interactive proofs can verify \emph{everything} solvable with polynomial space.
 \end{itemize}
@@ -115,7 +113,7 @@ Cook and Levin (1971) showed that SAT is NP-complete: every problem in NP reduce
 
 \item \textbf{Adi Shamir (b. 1952):} Israeli cryptographer. Co-inventor of RSA (with Rivest and Adleman). Proved IP = PSPACE (1992), one of the most elegant results in complexity theory. Also co-inventor of the Shamir Secret Sharing scheme and the Lempel-Ziv-Welch compression algorithm.
 
-\item \textbf{László Babai (b. 1950):} Hungarian-American computer scientist. Graph isomorphism in quasipolynomial time (2015). Co-proved MIP = NEXP, IP = PSPACE. Pioneer of interactive proofs and probabilistically checkable proofs.
+\item \textbf{László Babai (b. 1950):} Hungarian-American computer scientist. Introduced the Arthur-Merlin model (1985) and, with Moran, the collapse theorem for the public-coin hierarchy. Co-proved $MIP = NEXP$ (with Fortnow and Lund, 1991). Also proved graph isomorphism is decidable in quasipolynomial time (2015).
 \end{itemize}
 \end{subsection}
 
@@ -140,7 +138,7 @@ The constants $2/3$ and $1/3$ are arbitrary; they can be amplified to $1 - 2^{-n
 
 \textbf{The Insight:} The verifier's private randomness (messages chosen secretly) can largely be replaced by public randomness (messages chosen openly). The Arthur-Merlin model: Merlin sends a message, Arthur responds with a random challenge, Merlin responds again, and so on. The total number of rounds is polynomial, and the public coins are recorded for all to see.
 
-Result: $AM \subseteq NP \cap coAM$ at the second level. For any constant $k \ge 2$, $AM[k] = AM[2]$. The hierarchy of public-coin protocols collapses to two rounds. This was surprising: private coins can be strictly more powerful for some tasks, but public coins capture essentially all the power for verification.
+Result: $AM \subseteq \Pi_2^P$: the public-coin classes lie inside the second level of the polynomial hierarchy. For any constant $k \ge 2$, $AM[k] = AM[2]$. The hierarchy of public-coin protocols collapses to two rounds. This was surprising: private coins can be strictly more powerful for some tasks, but public coins capture essentially all the power for verification.
 
 \textbf{Why this matters:} Public coins are more practical. In a public-coin protocol, anyone can verify the transcript of the interaction. In a private-coin protocol, only the participants can verify. The collapse to $AM[2]$ means that two rounds of public randomness suffice for essentially all verification tasks.
 
@@ -197,10 +195,10 @@ The polynomial hierarchy PH is defined by alternating quantifiers:
 $\mathsf{PH} = \bigcup_{k \ge 0} \Sigma_k^P$.
 \end{definition}
 
-\begin{theorem}[AM $\subseteq$ NP $\cap$ coNP]
-The class $AM$ (two-round public-coin interactive proofs) is contained in $NP \cap coNP$.
+\begin{theorem}[AM $\subseteq$ $\Pi_2^P$]
+For any constant number of rounds, the class $AM$ (public-coin interactive proofs) is contained in the second level of the polynomial hierarchy: $AM \subseteq \Pi_2^P$.
 
-Proof: $x \in AM$ iff there exists a prover message $m$ such that the verifier accepts with probability $\ge 2/3$. This is an NP condition. $x \notin AM$ iff for all prover messages, the verifier rejects with probability $\ge 2/3$. This is a coNP condition.
+Proof sketch: $x \in AM$ iff there exists a prover message $m$ such that the verifier accepts on at least a $2/3$ fraction of Arthur's coin tosses $r$. Writing this condition with alternating quantifiers --- an existential over the message $m$ followed by a ``majority'' universal over the coin set --- expresses membership in $AM$ as a $\Sigma_2^P$-type condition; since $AM = coAM$ by symmetry, this also gives $AM \subseteq \Pi_2^P$. (The stronger inclusion $AM \subseteq NP \cap coNP$ is not known.)
 \end{theorem}
 
 \begin{theorem}[Graph Non-Isomorphism is in IP]
@@ -270,7 +268,7 @@ The introduction of interactive proofs had far-reaching consequences:
 
 \item \textbf{Verifiable Computation:} A client with limited resources can outsource computation to a powerful server and verify the result with minimal effort. This is the foundation of modern cloud verification protocols and blockchain scalability solutions (rollups).
 
-\item \textbf{Multi-Prover Interactive Proofs (MIP):} Goldwasser, Sipser, and Ben-Or and Guruswami showed that if the prover consists of multiple non-communicating provers, the power increases dramatically: MIP = NEXP. This result was a key stepping stone to IP = PSPACE and to the PCP theorem.
+\item \textbf{Multi-Prover Interactive Proofs (MIP):} Ben-Or, Goldwasser, Kilian, and Wigderson (1988) showed that if the prover is split into multiple non-communicating provers, the power increases dramatically; Babai, Fortnow, and Lund (1991) proved $MIP = NEXP$. This line of work was a direct precursor to the PCP theorem and to $IP = PSPACE$.
 \end{enumerate}
 
 %======================================================================
@@ -319,7 +317,7 @@ Interactive proofs appear in many contemporary applications:
 \section{Summary}
 \label{sec:ip:summary}
 
-This chapter developed the theory of interactive proof systems, demonstrating that interaction between a computationally bounded verifier and an all-powerful prover significantly expands the class of verifiable problems. The interactive proof system was formalized as a two-party protocol where a probabilistic polynomial-time verifier exchanges messages with an unbounded prover. The chapter proved that $\mathsf{NP} \subseteq \mathsf{IP}$ (trivially, the prover sends the NP certificate in a single round) and established that the Arthur--Merlin model (public-coin interactive proofs) is as powerful as the general model (Goldwasser--Sipser 1986): $\mathsf{AM} = \mathsf{IP}$ up to polynomial rounds. Graph Non-Isomorphism was shown to have an interactive proof, demonstrating that $\mathsf{coNP} \subseteq \mathsf{IP}$. The sum-check protocol was presented as a key technical tool, enabling an interactive proof for $\#\mathsf{P}$-complete problems. The main result, $\mathsf{IP} = \mathsf{PSPACE}$ (Shamir 1992), was sketched: the inclusion $\mathsf{IP} \subseteq \mathsf{PSPACE}$ follows from a space-bounded simulation of the prover's message space, while $\mathsf{PSPACE} \subseteq \mathsf{IP}$ uses arithmeticization of quantified Boolean formulas (QBFs). The PCP theorem was discussed as a consequence of interactive proof techniques, establishing $\mathsf{NP} = \mathsf{PCP}(\log n, 1)$ and its implications for hardness of approximation. Multi-prover interactive proofs (MIP) were introduced, with the result $\mathsf{MIP} = \mathsf{NEXP}$ (Babai, Fortnow, Lund 1991). The chapter examined the connection between interactive proofs and zero-knowledge proofs, noting that the interactive proof for Graph Non-Isomorphism is inherently zero-knowledge.
+This chapter developed the theory of interactive proof systems, demonstrating that interaction between a computationally bounded verifier and an all-powerful prover significantly expands the class of verifiable problems. The interactive proof system was formalized as a two-party protocol where a probabilistic polynomial-time verifier exchanges messages with an unbounded prover. The chapter proved that $\mathsf{NP} \subseteq \mathsf{IP}$ (trivially, the prover sends the NP certificate in a single round) and established that the Arthur--Merlin model (public-coin interactive proofs) is as powerful as the general model (Goldwasser--Sipser 1986): $\mathsf{AM} = \mathsf{IP}$ up to polynomial rounds. Graph Non-Isomorphism was shown to have an interactive proof, demonstrating that $\mathsf{coNP} \subseteq \mathsf{IP}$. The main result, $\mathsf{IP} = \mathsf{PSPACE}$ (Shamir 1992), was sketched: the inclusion $\mathsf{IP} \subseteq \mathsf{PSPACE}$ follows from a space-bounded simulation of the prover's message space, while $\mathsf{PSPACE} \subseteq \mathsf{IP}$ uses arithmeticization of quantified Boolean formulas (QBFs). The PCP theorem was discussed as a consequence of interactive proof techniques, establishing $\mathsf{NP} = \mathsf{PCP}(\log n, 1)$ and its implications for hardness of approximation. Multi-prover interactive proofs (MIP) were introduced, with the result $\mathsf{MIP} = \mathsf{NEXP}$ (Babai, Fortnow, Lund 1991). The chapter examined the connection between interactive proofs and zero-knowledge proofs, noting that the interactive proof for Graph Non-Isomorphism is inherently zero-knowledge.
 
 \section*{Key Takeaways}
 \begin{itemize}
@@ -327,11 +325,9 @@ This chapter developed the theory of interactive proof systems, demonstrating th
 \item The Arthur--Merlin model (public-coin) is as powerful as general interactive proofs: $\mathsf{AM} = \mathsf{IP}$ up to polynomial rounds.
 \item The sum-check protocol enables interactive proofs for $\#\mathsf{P}$-complete problems and is a key component of the $\mathsf{IP} = \mathsf{PSPACE}$ proof.
 \item Shamir's theorem ($\mathsf{IP} = \mathsf{PSPACE}$) demonstrates that interaction and randomness together yield verification power equivalent to polynomial space.
-\item Open problems include understanding the power of quantum interactive proofs ($\mathsf{QIP} = \mathsf{PSPACE}$, Ji 2012), the relationship between interactive proofs and machine learning verification, and the practical efficiency of interactive proof systems for delegation of computation.
+\item Open problems include understanding the power of quantum interactive proofs ($\mathsf{QIP} = \mathsf{PSPACE}$, Jain, Ji, Upadhyay, and Watrous 2010), the relationship between interactive proofs and machine learning verification, and the practical efficiency of interactive proof systems for delegation of computation.
 \end{itemize}
 
-%======================================================================
-% SECTION 10: EXERCISES
 %======================================================================
 % SECTION 10: EXERCISES
 %======================================================================
@@ -359,7 +355,7 @@ Show that Graph Non-Isomorphism (GNI) has an interactive proof. Hint: the prover
 \end{exercise}
 
 \begin{exercise}[Intermediate]
-Prove that AM $\subseteq$ NP $\cap$ coNP. Show that if the polynomial hierarchy collapses to the second level, then AM = NP.
+Prove that AM $\subseteq$ $\Pi_2^P$. Show that if the polynomial hierarchy collapses to the second level, then AM = NP.
 \end{exercise}
 
 \begin{exercise}[Intermediate]
@@ -424,19 +420,19 @@ Implement a simple zero-knowledge proof for 3-Colorability. Test with graphs of 
 \item \textbf{1936:} Turing defines computation. The static proof model is born: a proof is a sequence of steps.
 \item \textbf{1965:} Edmonds proposes polynomial time as the definition of efficiency. The NP class is formalized.
 \item \textbf{1971:} Cook and Levin prove NP-completeness. Static proofs are shown to capture a vast class of problems.
-\item \textbf{1975:} Lamport introduces the Byzantine generals problem. Interaction in distributed systems is recognized as fundamental.
-\item \textbf{1981:} Megiddo, Maseih, Tiwari define the polynomial hierarchy. Alternation of quantifiers is recognized as a computational resource.
+\item \textbf{1982:} Lamport, Shostak, and Pease introduce the Byzantine generals problem. Interaction in distributed systems is recognized as fundamental.
+\item \textbf{1972:} Meyer and Stockmeyer define the polynomial hierarchy. Alternation of quantifiers is recognized as a computational resource.
 \item \textbf{1985:} Goldwasser, Micali, Rackoff publish ``The Knowledge Complexity of Interactive Proof Systems.'' Interactive proofs are defined. Zero-knowledge proofs are introduced.
 \item \textbf{1985:} Babai introduces the Arthur-Merlin model. Public-coin interaction is formalized.
 \item \textbf{1986:} Goldwasser and Sipser show that private coins can be more powerful than public coins for certain tasks.
 \item \textbf{1986:} Fiat and Shamir propose the transform converting interactive proofs to signatures.
 \item \textbf{1988:} Babai and Moran show IP $\subseteq$ PSPACE.
-\item \textbf{1990:} Fortnow shows that AM $\neq$ NP unless the polynomial hierarchy collapses.
+\item \textbf{1987:} Boppana, H{\aa}stad, and Zachos prove that if coNP $\subseteq$ AM then the polynomial hierarchy collapses to its second level.
 \item \textbf{1992:} Shamir proves IP = PSPACE. The most powerful result in the theory of interactive proofs.
 \item \textbf{1992:} Arora, Safra and Arora et al. prove the PCP theorem, using arithmeticization from IP = PSPACE.
-\item \textbf{2008:} Gentry constructs the first fully homomorphic encryption scheme, using interactive proof techniques.
-\item \textbf{2016:} Ben-Sasson, Chiesa, Gabizon, Wietersen, and Zahur introduce STARKs (Scalable Transparent ARguments of Knowledge), a practical zero-knowledge proof system based on interactive proofs.
-\item \textbf{2019:} Ben-Sasson et al. introduce HyperPlonk, a universal and transparent setup-free SNARK.
+\item \textbf{2008:} Gentry constructs the first fully homomorphic encryption scheme, using lattice techniques related to interactive proof methods.
+\item \textbf{2018:} Ben-Sasson, Bentov, Horesh, and Riabzev introduce STARKs (Scalable Transparent ARguments of Knowledge), a practical transparent zero-knowledge proof system based on interactive proofs.
+\item \textbf{2023:} Chen, B{\"u}nz, Boneh, and Zhang introduce HyperPlonk, a universal setup-free SNARK with a linear-time prover.
 \item \textbf{2021:} Polygon zkEVM launches, bringing zero-knowledge interactive proofs to Ethereum scaling.
 \end{itemize}
 
@@ -454,8 +450,8 @@ Implement a simple zero-knowledge proof for 3-Colorability. Test with graphs of 
 \item \cite{FiatShamir1986} --- The Fiat-Shamir transform.
 \item \cite{AroraSafra1992} --- The PCP theorem (one of two proofs).
 \item \cite{AroraEtAl1992} --- The PCP theorem (the other proof).
-\item \cite{BabaiMoran1988} --- IP $\subseteq$ PSPACE.
-\item \cite{Fortnow1990} --- AM $\neq$ NP unless PH collapses.
+\item \cite{BabaiMoran1988} --- The collapse of the public-coin hierarchy.
+\item \cite{BoppanaHastadZachos1987} --- coNP $\subseteq$ AM implies PH collapses.
 \item \cite{BenSassonEtAl2016} --- STARKs.
 \item \cite{BenSassonEtAl2019} --- HyperPlonk.
 \end{itemize}

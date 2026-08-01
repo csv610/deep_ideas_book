@@ -507,21 +507,21 @@ Fixed-point combinators are the theoretical foundation of recursion in programmi
 Once Turing established the existence of a universal machine, researchers asked: how simple can a universal machine be? This search yielded progressively smaller machines:
 
 \begin{itemize}
-\item \textbf{Shannon (1956):} Showed that a 2-state, 2-symbol UTM exists, but only with an infinitely repeated input encoding.
-\item \textbf{Minsky (1962):} Constructed a 4-state, 7-symbol UTM using two tape symbols and five work symbols.
-\item \textbf{Rogozhin (1996):} Found minimal UTMs including a 4-state, 6-symbol machine, a 5-state, 5-symbol machine, and a 2-state, 18-symbol machine.
-\item \textbf{Neary and Woods (2003):} Found a 2-state, 3-symbol UTM using tag systems.
-\item \textbf{Current record:} The smallest known UTM (by product $|Q| \cdot |\Gamma|$) is a 2-state, 4-symbol machine (Woods and Neary, 2009).
+\item \textbf{Shannon (1956):} Proved that two internal states suffice for universality \emph{provided the number of symbols is large}, and dually that two symbols suffice \emph{provided the number of states is large}. He did not exhibit a small (state, symbol) pair; in fact a (2,2) machine cannot be universal, since the halting problem is decidable for such small machines.
+\item \textbf{Minsky (1962):} Constructed a 7-state, 4-symbol UTM using tag systems, the smallest known at the time. (His 1967 book also described a 4-state, 7-symbol machine on a circular tape.)
+\item \textbf{Rogozhin (1996):} Found minimal UTMs including a 4-state, 6-symbol machine, a 5-state, 5-symbol machine, and a 2-state, 18-symbol machine, and proved these are minimal in their classes.
+\item \textbf{Neary and Woods (2009):} Constructed \emph{weakly} universal machines (universal only under a periodic input encoding), including a 2-state, 4-symbol machine and a 2-state, 3-symbol machine built on tag systems. Wolfram's 2-state, 3-symbol machine was proven (strongly) universal by Alex Smith (2007).
+\item \textbf{Current frontier:} The smallest known strongly universal machine has state--symbol product $|Q| \cdot |\Gamma| = 10$ (Wolfram's 2-state, 5-symbol machine, universal by Smith's argument); allowing weak universality, Neary and Woods achieve the same product with 2 states and 4 symbols.
 \end{itemize}
 
-\begin{example}[Minsky's 4-State 7-Symbol UTM]
+\begin{example}[Minsky's 7-State 4-Symbol UTM]
 Minsky's machine operates on a circular tape (a loop). It uses:
 \begin{itemize}
-\item States: $Q = \{A, B, C, D\}$ (4 states)
-\item Symbols: $\Gamma = \{\sqcup, 0, 1, a, b, c, d\}$ (7 symbols)
+\item States: $Q = \{A, B, C, D, E, F, G\}$ (7 states)
+\item Symbols: $\Gamma = \{\sqcup, 0, 1, a\}$ (4 symbols)
 \item A complex encoding of the simulated machine's state and tape onto a circular tape
 \end{itemize}
-The machine works by simulating a 2-counter machine (which is Turing-complete) using a single tape with a special encoding. Each counter is represented by the distance between markers on the tape. The 4 finite states are sufficient to manage increment, decrement, and zero-test operations on both counters.
+The machine works by simulating a 2-counter machine (which is Turing-complete) using a single tape with a special encoding. Each counter is represented by the distance between markers on the tape. The 7 finite states are sufficient to manage increment, decrement, and zero-test operations on both counters.
 \end{example}
 
 The search for the smallest UTM is not a mathematical curiosity. It reveals the fundamental complexity of universal computation --- exactly how much structure is needed to achieve universality. This relates to questions in physics (can the universe simulate itself?), biology (how simple must a self-replicating system be?), and the philosophy of mind (how simple a system can exhibit universal behavior?).
@@ -790,7 +790,7 @@ Each of these consequences depends on the foundational insight that computation 
 \section{Summary}
 \label{sec:computation:summary}
 
-This chapter addressed the foundational question of what constitutes a computation, situating the inquiry within the historical context of Hilbert's Entscheidungsproblem. The chapter established three equivalent formalisms for effective calculability: Turing machines, $\lambda$-calculus, and general recursive functions. The Church--Turing Thesis was formulated as the claim that all three formalisms capture the same class of computable functions. The Universal Turing Machine was constructed, demonstrating that a single machine can simulate any Turing machine given its description as input, thereby establishing the theoretical basis for stored-program architectures. The chapter also examined the minimality of universal systems, presenting results on small universal Turing machines (e.g., Rogojhin's 4-state, 6-symbol machine) and the Turing-completeness of simple cellular automata (Rule 110, proved by Cook 2004). The equivalence between Turing machines and $\lambda$-calculus was discussed, along with the s-m-n theorem and the recursion theorem as foundational tools for self-reference in computation. The chapter concluded by surveying alternative models of computation---register machines, counter machines, tag systems, and Post canonical systems---and demonstrating their equivalence to Turing machines, thereby reinforcing the robustness of the Church--Turing Thesis. Several open problems were noted: the Physical Church--Turing Thesis, which asks whether physical processes can compute beyond Turing-computable functions; the Busy Beaver function $\Sigma(n)$, whose growth rate exceeds that of any computable function; and the ongoing search for minimal universal Turing machines.
+This chapter addressed the foundational question of what constitutes a computation, situating the inquiry within the historical context of Hilbert's Entscheidungsproblem. The chapter established three equivalent formalisms for effective calculability: Turing machines, $\lambda$-calculus, and general recursive functions. The Church--Turing Thesis was formulated as the claim that all three formalisms capture the same class of computable functions. The Universal Turing Machine was constructed, demonstrating that a single machine can simulate any Turing machine given its description as input, thereby establishing the theoretical basis for stored-program architectures. The chapter also examined the minimality of universal systems, presenting results on small universal Turing machines (e.g., Rogozhin's 4-state, 6-symbol machine) and the Turing-completeness of simple cellular automata (Rule 110, proved by Cook 2004). The equivalence between Turing machines and $\lambda$-calculus was discussed, along with the s-m-n theorem and the recursion theorem as foundational tools for self-reference in computation. The chapter concluded by surveying alternative models of computation---register machines, counter machines, tag systems, and Post canonical systems---and demonstrating their equivalence to Turing machines, thereby reinforcing the robustness of the Church--Turing Thesis. Several open problems were noted: the Physical Church--Turing Thesis, which asks whether physical processes can compute beyond Turing-computable functions; the Busy Beaver function $\Sigma(n)$, whose growth rate exceeds that of any computable function; and the ongoing search for minimal universal Turing machines.
 
 \section*{Key Takeaways}
 \begin{itemize}

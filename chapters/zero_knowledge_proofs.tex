@@ -1,5 +1,5 @@
 % Chapter 11: Zero Knowledge Proofs
-% Part III: Difficulty
+% Part III: Difficulty and Coordination
 
 \chapter{Zero Knowledge Proofs}
 \label{ch:zk}
@@ -64,7 +64,7 @@ A verifier who is convinced by a ZK proof learns nothing new --- yet the verifie
 \item \textbf{1982:} Goldwasser, Micali, Rackoff (GMR): ``The Knowledge Complexity of Interactive Proof Systems'' (STOC). Defined IP, ZK, knowledge complexity. Quadratic Residuosity ZK proof.
 \item \textbf{1985:} Goldreich, Micali, Wigderson (GMW): ``Proofs that Yield Nothing But Their Validity'' --- \emph{every} NP statement has a ZK proof (assuming OWFs). Graph 3-coloring ZK proof.
 \item \textbf{1986:} Feige, Fiat, Shamir: ZK identification (Fiat-Shamir heuristic).
-\item \textbf{1988:} Brassard, Chaum, Crépeau: Multi-prover ZK (MIP).
+\item \textbf{1988:} Ben-Or, Goldwasser, Kilian, Wigderson: Multi-prover ZK (MIP).
 \item \textbf{1990:} Babai, Fortnow, Lund: $\mathsf{IP} = \mathsf{PSPACE}$ (Shamir 1992).
 \item \textbf{1991:} Kilian: ZK arguments (computationally sound, succinct). PCPs.
 \item \textbf{1992:} Feige, Kilian: Parallel repetition.
@@ -766,9 +766,11 @@ Implement a proof aggregation scheme: given $n$ Groth16 proofs for the same circ
 \hline
 1986 & Feige-Fiat-Shamir: ZK identification, Fiat-Shamir heuristic \\
 \hline
-1988 & Brassard-Chaum-Cr\'epeau: Multi-prover ZK (MIP) \\
+1988 & Ben-Or-Goldwasser-Kilian-Wigderson: Multi-prover ZK (MIP) \\
 \hline
-1990 & Babai-Fortnow-Lund: $\mathsf{IP} = \mathsf{PSPACE}$ (Shamir 1992) \\
+1990 & Babai-Fortnow-Lund: $\mathsf{MIP} = \mathsf{NEXP}$ \\
+\hline
+1990 & Shamir: $\mathsf{IP} = \mathsf{PSPACE}$ \\
 \hline
 1991 & Kilian: ZK arguments (succinct), PCPs \\
 \hline
@@ -835,26 +837,6 @@ Implement a proof aggregation scheme: given $n$ Groth16 proofs for the same circ
 %======================================================================
 % CITATIONS
 %======================================================================
-\section{Citations}
-\label{sec:zk:citations}
-
-\begin{enumerate}
-  \item \cite{GoldwasserMicaliRackoff1985}
-  \item \cite{GoldreichMicaliWigderson1986}
-  \item \cite{FeigeFiatShamir1987}
-  \item \cite{BabaiFortnowLund1991}
-  \item \cite{Kilian1992}
-  \item \cite{Groth2010}
-  \item \cite{BenSasson2013}
-  \item \cite{BenSasson2018}
-  \item \cite{Bunz2018}
-  \item \cite{Chiesa2020}
-  \item \cite{KothapalliSetty2021}
-  \item \cite{Gabizon2019}
-  \item \cite{Bowe2019}
-  \item \cite{Setty2023}
-  \item \cite{Zapico2023}
-\end{enumerate}
 
 %======================================================================
 % INDEX ENTRIES

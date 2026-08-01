@@ -24,6 +24,16 @@ To appreciate the depth of this question, consider a simple example. Suppose we 
 
 The Entscheidungsproblem was the third pillar of Hilbert's program. The first pillar was \emph{consistency}: that a formal system for mathematics cannot prove a contradiction. The second was \emph{completeness}: that every true mathematical statement can be proved within the system. The third was \emph{decidability}: that there exists an algorithm to determine truth or falsity of any statement. G\"odel's incompleteness theorems (1931) had already shattered the first two pillars. The Entscheidungsproblem was the last remaining hope for Hilbert's vision.
 
+\subsection{Why Humans Wanted Mechanical Reasoning}
+\label{sec:computation:why_mechanical}
+
+The dream of mechanical reasoning is as old as logic itself. Aristotle's syllogisms (\emph{Organon}, circa 350 BCE) were presented as rules that guarantee truth if followed correctly --- the first suggestion that reasoning is not a mysterious gift but a \emph{process} that can be followed. Two millennia later, the ambition sharpened. Ramon Llull's \emph{Ars Magna} (1305) built literal ``thinking wheels'' for combining concepts mechanically. Descartes and Pascal mechanized arithmetic --- Pascal's calculator (1642) added and subtracted automatically --- but arithmetic was the easy case; the hard problem was reasoning itself. It was Gottfried Wilhelm Leibniz who took the decisive step. In his \emph{Dissertatio de Arte Combinatoria} (1666), Leibniz proposed a \emph{characteristica universalis}, a universal symbolic language in which every concept is decomposed into atomic primitives, together with a \emph{calculus ratiocinator}, a calculus of reasoning over those symbols. His ambition: any dispute, including a disagreement between two philosophers, could be ``settled as easily as a dispute between two accountants.'' Truth would be \emph{calculated}: \emph{calculemus!} --- ``let us calculate.'' Leibniz even devised a binary notation, glimpsing that symbols themselves could be manipulated mechanically. This is the ambition Hilbert inherited: the reduction of reasoning to rule-following.
+
+\subsection{Why Certainty Mattered}
+\label{sec:computation:why_certainty}
+
+Why did this question carry such weight? Because mathematics was, for most of its history, the gold standard of certainty --- the one domain where disagreement could in principle be settled. Euclid's \emph{Elements} stood for two millennia as the model of incontrovertible proof. The nineteenth century shattered that calm. Non-Euclidean geometry (Lobachevsky, Bolyai, Gauss) showed that even the axioms of space could be varied. Worse, in 1901 Bertrand Russell found a paradox at the very foundations of set theory: the set of all sets that do not contain themselves both does and does not contain itself. Frege's \emph{Grundgesetze der Arithmetik} was already in press; Frege appended a note: ``A scientist can hardly meet with anything more undesirable than to have the foundation give way just as the work is finished.'' If the foundations of mathematics harbored a contradiction, then \emph{every} proof --- including the scientific conclusions built upon mathematics --- rested on sand. The \emph{Grundlagenkrise} (crisis of foundations) was not academic pedantry: it was the demand that mathematics deserve its authority. Restoring that certainty by purely formal, finitary means was the aim of Hilbert's program, and the question whether such means could be \emph{mechanized} is the question that birthed computer science.
+
 %======================================================================
 % SECTION 2: WHY IT SEEMED IMPOSSIBLE
 %======================================================================
@@ -56,7 +66,42 @@ In 1934, G\"odel rejected Church's proposal that $\lambda$-definability captures
 \section{Historical Context: What Was Known at the Time}
 \label{sec:computation:context}
 
-By 1928, mathematics was in crisis. Russell's paradox (1901) had shattered naive set theory. G\"odel's completeness theorem (1929) showed first-order logic is complete --- but his incompleteness theorems (1931) would soon show that any sufficiently strong formal system contains unprovable truths. Hilbert's program --- to prove mathematics consistent, complete, and decidable using finitary methods --- was the last great hope for mathematical certainty.
+By 1928, mathematics was in crisis. Russell's paradox (1901) had shattered naive set theory. G\"odel's completeness theorem (1929) showed first-order logic is complete --- but his incompleteness theorems (1931) would soon show that any sufficiently strong formal system contains unprovable truths. Hilbert's program --- to prove mathematics consistent, complete, and decidable using finitary methods --- was the last great hope for mathematical certainty. To see why that program took the form it did --- and why answering it required a definition of \emph{computation} --- it helps to follow the two-millennia thread that led to the Entscheidungsproblem.
+
+\subsection{From Euclid to Leibniz}
+\label{sec:computation:euclid_to_leibniz}
+
+The search for a mechanical method of reasoning begins with the axiomatic method itself. Euclid's \emph{Elements} (circa 300 BCE) organized geometry as a small set of axioms and rules of inference, showing that a vast body of truth could be generated from a few starting points. al-Khw\=arizm\=i's algebra (circa 820 CE) gave the world the word \emph{algorithm} --- a named, repeatable procedure. Yet for two millennia the axiomatic method was confined to the \emph{content} of mathematics; the act of reasoning itself was left to human judgment. The seventeenth century changed the ambition. Descartes dreamed of a universal method for acquiring knowledge; Pascal built the first mechanical calculator (1642); and Leibniz --- reading both --- proposed to do for reasoning what Pascal had done for arithmetic: reduce it to symbolic manipulation. His \emph{characteristica universalis} (a universal symbolic language) together with his \emph{calculus ratiocinator} (a calculus of reasoning over those symbols) would, he hoped, settle any dispute ``as easily as a dispute between two accountants.'' \emph{Calculemus!} --- ``let us calculate.'' Leibniz even devised a binary notation, glimpsing that symbols themselves could be manipulated mechanically.
+
+\subsection{The Birth of Mathematical Logic}
+\label{sec:computation:birth_of_logic}
+
+Leibniz's dream was not realized in his lifetime; realizing it took two centuries of accumulating precision. The key step was to make \emph{logic itself} a mathematical object. George Boole's \emph{The Laws of Thought} (1854) turned propositions into an algebra of $0$ and $1$ --- logical reasoning as arithmetic. Gottlob Frege's \emph{Begriffsschrift} (1879) introduced quantifiers and a formal predicate logic --- the first system in which the entire structure of a mathematical proof could be written out symbolically. Peano's axioms (1889) showed that the natural numbers could be characterized by finitely many postulates. Russell and Whitehead's \emph{Principia Mathematica} (1910--13) then spent three volumes deriving arithmetic from logic --- a demonstration of how far formalization could go. By the early twentieth century, ``logic'' was no longer a branch of philosophy; it was a mathematical discipline with an exact syntax. The stage was set for the question Hilbert would pose: could the whole of mathematics be captured by such formal rules?
+
+\subsection{Hilbert's Grand Vision}
+\label{sec:computation:hilbert_vision}
+
+David Hilbert, the leading mathematician of his generation, saw in this formalization an opportunity to secure mathematics once and for all. His 1900 list of 23 problems opened with the consistency of arithmetic. Over the following decades, Hilbert developed his \emph{program}, built on two convictions. First, \emph{formalization}: every mathematical statement and proof can be written in a precise formal language with explicit rules of inference. Second, \emph{finitism}: the metamathematical investigation of such a system --- the proof that it cannot produce a contradiction --- must itself be conducted by finitary, combinatorial reasoning, the kind that does not presuppose the mathematics being justified. If consistency could be proved this way, mathematics would be certified from the outside, without circularity. Hilbert's confidence was total; he declared that ``in mathematics there is no \emph{ignorabimus}'' (``there is no ``we shall not know''), and closed his 1930 radio address with ``\emph{Wir m\"ussen wissen --- wir werden wissen}'' (``We must know --- we shall know'').
+
+\subsection{Logic Versus Intuition}
+\label{sec:computation:logic_vs_intuition}
+
+Hilbert's program was not universally accepted; it was the flashpoint of the foundational crisis. Its leading opponent was L.~E.~J. Brouwer, founder of \emph{intuitionism}. Brouwer denied that a mathematical object exists unless it can be constructed --- and therefore rejected the law of the excluded middle (every statement is either true or false) in its unrestricted form. For Brouwer, Hilbert's formal proofs about meaningless symbol strings were not mathematics at all; mathematics is the free creation of the mind, prior to language. Hilbert, by contrast, was content to treat formal symbols as meaningless tokens: ``we can operate with formulas in the same way that a chess player operates with the pieces.'' The dispute over the excluded middle was not idle: a classical proof of the form ``either $P$ or not $P$'' may establish existence without exhibiting a construction, and for an intuitionist that is no proof at all. The controversy matters for computation because it forced a question Hilbert could defer: what counts as a legitimate proof \emph{step}? A finitary, mechanical step --- or something requiring insight? The notion of an ``effective procedure'' stayed unsettled precisely until Turing made it precise.
+
+\subsection{The Entscheidungsproblem}
+\label{sec:computation:entscheidungsproblem}
+
+The decision problem emerged explicitly in Hilbert and Ackermann's \emph{Grundz\"uge der theoretischen Logik} (1928), which asked whether there is an effective procedure that decides, for any formula of first-order logic, whether it is valid. Once G\"odel's completeness theorem (1929) showed that validity coincides with provability, the problem became: can a machine determine whether a given formula has a proof? Hilbert assumed the answer was yes --- another expression of his ``no \emph{ignorabimus}.'' What is striking in retrospect is that the problem could not even be \emph{precisely stated}, because the word ``procedure'' (\emph{Verfahren}) was undefined. What is a procedure? A recipe? A human habit? The word ``algorithm'' had no mathematical content. The Entscheidungsproblem thus turned the definition of computation from a philosophical puzzle into a concrete technical requirement: before asking whether a decision procedure exists, one must say exactly what a procedure \emph{is}.
+
+\subsection{Mathematics Before Computers}
+\label{sec:computation:math_before_computers}
+
+To appreciate the urgency of the Entscheidungsproblem, it helps to recall what mathematics looked like before machines. Calculation was a human activity, and ``computer'' was a job title --- a person who computes. Scientific tables (for navigation, astronomy, ballistics) were produced by armies of human computers, often women, following fixed rules with pencil and paper; their errors were a known and feared source of disaster. Babbage designed the Analytical Engine (1837), with its ``mill'' (arithmetic unit) and ``store'' (memory), to eliminate exactly that human error --- but the machine was never built. The point is not nostalgia: the \emph{human computer} is the conceptual raw material of Turing's definition. When Turing set out to define computation, he did not abstract from electronics (none existed); he abstracted from the human clerk, watching what such a clerk does --- read a symbol, write a symbol, shift attention, follow a finite rule --- and stripped it to its logical core. The computer-as-person is the bridge between mathematics by hand and the machine.
+
+\subsection{Why This Question Changed History}
+\label{sec:computation:why_changed_history}
+
+The Entscheidungsproblem turned out to be the hinge on which the digital age turned --- because its answer was the modern computer. When Turing answered it in 1936, he did so by constructing a mathematical model of computation and then establishing two things. First, no machine of this kind can decide validity --- the problem is unsolvable (Chapter 2). Second --- and this is the part nobody expected --- there is a single \emph{universal} machine that can simulate every other machine; a problem is ``computable'' precisely when this one machine can handle it. The decision problem, which asked whether all of mathematics could be reduced to calculation, was answered by inventing the very notion of calculation that underlies every computer. Hilbert asked whether truth could be mechanized; Turing showed what a mechanism for truth would \emph{be}. That is why a question posed in 1928 about the foundations of logic became, within fifty years, the theoretical foundation of an industry. The rest of this chapter develops that breakthrough.
 
 Key developments converging in the 1930s:
 
@@ -108,7 +153,7 @@ The problem of defining computation was not confined to the logicians. Several o
 \item \textbf{David Hilbert (1926):} In ``On the Infinite,'' Hilbert wrote about the ``finite standpoint'' (\emph{finite Einstellung}) --- the idea that metamathematical reasoning must be based on finitary methods. This directly inspired the search for a finitary definition of computation.
 \end{itemize}
 
-The question ``What is computation?'' did not arise in a vacuum. It grew from two millennia of work on algorithmic problem-solving --- from Euclid's algorithm (circa 300 BCE) to al-Khw\=arizm\=i's algebra (circa 820 CE) to Leibniz's \emph{calculus ratiocinator} (1666) to Babbage's Analytical Engine (1837). Each of these was a precursor to the formal question Turing answered.
+The question ``What is computation?'' did not arise in a vacuum. As the subsections above trace, it grew from two millennia of work on algorithmic problem-solving --- and it was the Entscheidungsproblem that forced the notion to be made precise.
 
 %======================================================================
 % SECTION 4: THE MENTAL LEAP
@@ -987,3 +1032,19 @@ Implement a Turing machine that recognizes the language $\{0^n 1^n \mid n \geq 0
 \index{Busy Beaver}
 \index{tag system}
 \index{stored-program concept}
+\index{axiomatic method}
+\index{Euclid}
+\index{al-Khw\=arizm\=i}
+\index{Leibniz, Gottfried Wilhelm}
+\index{characteristica universalis}
+\index{calculus ratiocinator}
+\index{Boole, George}
+\index{Frege, Gottlob}
+\index{Peano, Giuseppe}
+\index{Principia Mathematica}
+\index{foundations crisis}
+\index{intuitionism}
+\index{Brouwer, L.~E.~J.}
+\index{law of the excluded middle}
+\index{Hilbert's program}
+\index{human computer}

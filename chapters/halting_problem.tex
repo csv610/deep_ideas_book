@@ -44,7 +44,7 @@ The idea that we \emph{cannot} build a halting detector was deeply counterintuit
 \item \textbf{Every problem has an algorithm:} Hilbert's program was rooted in the belief that all mathematical questions are decidable in principle. The prevailing view among mathematicians in the early 20th century was that any well-posed problem has a solution that can be found by mechanical reasoning.
 \end{enumerate}
 
-``Just simulate it for a very long time. If it hasn't halted by then, it probably won't.'' This heuristic fails catastrophically: there are programs that run for $10^{10^{10}}$ steps and then halt. There is no computable bound on halting time. The busy beaver function $\Sigma(n)$ grows faster than any computable function; for $n=5$, $\Sigma(5) = 47,\!176,\!870$, but for $n=6$, the value is already beyond what any existing formal system can prove.
+``Just simulate it for a very long time. If it hasn't halted by then, it probably won't.'' This heuristic fails catastrophically: there are programs that run for $10^{10^{10}}$ steps and then halt. There is no computable bound on halting time. The busy beaver function $\Sigma(n)$ grows faster than any computable function; for $n=5$, $\Sigma(5) = 4098$ and $S(5) = 47,\!176,\!870$, while for $n=6$ the values (verified only in 2025) are numbers too large to write in decimal notation (Section~\ref{sec:halting:busybeaver}).
 
 Hilbert declared in 1930: ``Wir m\"ussen wissen — wir werden wissen'' (We must know — we shall know). This was not naive optimism; it was a deeply held philosophical conviction that the universe of mathematics is completely knowable. G\"odel, Church, and Turing shattered this conviction within six years.
 
@@ -649,6 +649,106 @@ This connection shows that the halting problem and G\"odel's theorem are two sid
 \item Chapter 8 (Complexity): The arithmetical hierarchy is the logical precursor to the polynomial hierarchy $\PH$, which separates problems by quantifier alternation in bounded time.
 \end{itemize}
 
+\subsection{The Busy Beaver Function}
+\label{sec:halting:busybeaver}
+
+The halting problem has a quantitative face, and it is one of the most disquieting objects in all of mathematics: the Busy Beaver function. It asks a question so simple a child can understand it --- \emph{what is the most a small program can accomplish before it stops?} --- and the answer grows beyond the reach of any formal system.
+
+\subsubsection*{The Biggest Small Program}
+
+Fix a Turing machine model with $n$ states and a binary alphabet (a blank tape initially). There are only finitely many such machines --- exactly $(4(n+1))^{2n}$ of them, since each of the $n$ states has a rule for each of the 2 symbols, and a rule specifies a new symbol (2 choices), a direction (2 choices), and a next state (2 choices for the new symbol, 2 for the direction, $n+1$ choices including halt) --- so for $n=5$ there are already $24^{10} \approx 6\times 10^{13}$ machines. Each one is a tiny, completely explicit program. Yet among this finite set, a vast hierarchy of behavior hides.
+
+Rado (1962) defined the two canonical Busy Beaver functions \cite{rado1962}:
+
+\begin{definition}[Busy Beaver Functions]
+For each $n$:
+\begin{itemize}
+\item $\Sigma(n)$ = the maximum number of 1s an $n$-state machine can write on an initially blank tape and still halt.
+\item $S(n)$ = the maximum number of steps an $n$-state machine can run and still halt.
+\end{itemize}
+\end{definition}
+
+A machine attaining $\Sigma(n)$ or $S(n)$ is called a \emph{champion}. The functions are often conflated under the name ``Busy Beaver number'' $\mathsf{BB}(n)$; we will keep them distinct. The known values form an ominous progression:
+
+\[
+\begin{array}{c|cccccc}
+n & 1 & 2 & 3 & 4 & 5 & 6 \\
+\hline
+\Sigma(n) & 1 & 4 & 6 & 13 & 4098 & \approx 10{\uparrow\uparrow} 36534 \\
+S(n) & 1 & 6 & 21 & 107 & 47{,}176{,}870 & \approx 10{\uparrow\uparrow} 36534
+\end{array}
+\]
+
+where $10{\uparrow\uparrow}36534$ denotes a power tower of tens of height 36,534 --- the 6-state values, verified in 2025, are numbers far too large to write in decimal notation.
+
+The discovery of the fifth value is instructive. For two decades the 5-state champion sat at $\Sigma(5) = 4098$ and $S(5) = 47,\!176,\!870$, found by Marxen and Buntrock in 1989 using a cleverly pruned exhaustive search. The difficulty is not running the machines --- the problem is proving that the non-halting ones never halt. Many candidates run for millions of steps and then settle into patterns that only a human-scaled mathematical proof can certify as non-terminating. Each is a miniature research problem in its own right.
+
+\subsubsection*{Beyond Computability}
+
+The central fact about the Busy Beaver functions is that they are not computable. The argument is a one-line reduction to the halting problem:
+
+\begin{theorem}
+$S$ is not computable (and neither is $\Sigma$).
+\end{theorem}
+
+\begin{proof}
+Suppose $S$ were computable. Given an $n$-state machine $M$, simulate it; if it has not halted after $S(n)$ steps, then it will never halt --- because no $n$-state machine that halts runs longer than $S(n)$. This would decide $\HALT$, a contradiction. The same argument applies to $\Sigma$ (the number of 1s a machine writes bounds how long it can usefully run, and vice versa; the two functions determine each other up to a computable factor).
+\end{proof}
+
+So the Busy Beaver function is a \emph{single, concrete, finitely-valued} object that embodies the undecidability of the halting problem. It is not that we lack the computational resources to evaluate it; it is that the evaluation task is mathematically impossible in principle. If $\Sigma$ were computable, so would be $\HALT$.
+
+\subsubsection*{Why Infinity Appears}
+
+Why does such a small, finite problem --- finitely many small programs --- produce values that outrun all of mathematics? The answer is the same diagonalization that underlies every undecidability result in this book, turned into a growth-rate statement:
+
+\begin{theorem}
+$\Sigma$ grows faster than every computable function: for any computable $g: \N \to \N$, there is a constant $c$ such that $\Sigma(n+c) > g(n)$ for all sufficiently large $n$.
+\end{theorem}
+
+\begin{proof}[Proof Sketch]
+Given a computable $g$, build a machine that, on a blank tape, first constructs the number $n$ (using a fixed number of states), then computes $g(n)$ via a program of fixed size, and finally writes $g(n)$ consecutive 1s. This machine has $n + c$ states for some constant $c$ (the $n$ states carry the input, $c$ states run the computation), so $\Sigma(n+c) \ge g(n)$. Since this holds for every computable $g$, $\Sigma$ eventually overtakes every computable function.
+\end{proof}
+
+This is where the infinity comes from. The diagonal lemma and the recursion theorem show that every sufficiently expressive system contains self-reference; the Busy Beaver function shows that self-reference is not merely a curiosity but a wellspring of enormous numbers. Each $n$-state machine is a candidate mini-universe --- some of them simulate the full machinery of arithmetic, search for contradictions in formal systems, or iterate Collatz-like functions whose behavior we cannot yet decide. Scanning all of them requires solving, in one stroke, every ``does this program terminate?'' question that mathematics can pose. The finite set of $n$-state programs is a shelf on which the entire infinite hierarchy of mathematical truth has been compressed.
+
+Wolfram (2002) calls the underlying phenomenon \emph{computational irreducibility}: in general there is no way to predict what a machine will do other than to run it. The Busy Beaver function is the precise statement of that intuition --- the only way to know the fate of every $n$-state machine is to run them all, and the running times are themselves beyond description.
+
+\subsubsection*{Exploding Growth}
+
+The growth of $\Sigma$ is, informally, ``the fastest growth that is not yet infinite.'' It dominates the Ackermann function (because Ackermann is computable), and therefore every function that appears in ordinary mathematics --- exponentiation, towers of exponentiation, Goodstein's sequences, TREE, and so on. As soon as a function can be defined by a finite recipe, $\Sigma$ eventually swamps it.
+
+The concrete records tell the story:
+
+\begin{itemize}
+\item $\Sigma(1)=1, \Sigma(2)=4, \Sigma(3)=6, \Sigma(4)=13$; the corresponding step counts are $S(1)=1, S(2)=6, S(3)=21, S(4)=107$ (all classical, settled by the 1960s--1980s).
+\item $\Sigma(5) = 4098$ and $S(5) = 47,\!176,\!870$, established by Marxen and Buntrock (1989--2000). The 5-state champion runs for 47 million steps --- but note it writes only 4098 ones, a striking illustration of how much wandering a machine can do before it stops.
+\item For two decades the best known 6-state machine was Marxen and Buntrock's, running $119,\!112,\!334,\!170,\!342,\!540$ steps --- a 119-quadrillion-step program, still less than $2^{57}$. It looked like the problem might be ``merely'' enormous.
+\item In July 2024, the Busy Beaver Challenge project broke what had become known as the \emph{Collatz barrier}: a 6-state machine was found whose run is driven by an iterated Collatz-like function and runs roughly $10^{36534}$ steps --- a number with 36,535 digits.
+\item In 2025, the same project announced a computer-verified determination of $S(6)$ (and $\Sigma(6)$): the true 6-state champion runs for a number of steps expressible as a \emph{power tower of tens of height 36,534} --- far larger than any previously exhibited concrete natural number, and larger than can be written in ordinary decimal notation.
+\end{itemize}
+
+The gap between $n=5$ and $n=6$ --- from 47 million steps to a power tower of height 36,534 --- is the gap between a problem that brute force and ingenuity can crack and one that requires a new proof strategy. Every increment of $n$ hides a potential leap in difficulty, and there is no pattern to rely on: the values jump by more than any computable function can track.
+
+\subsubsection*{Limits of Mathematics}
+
+Why can't mathematics simply \emph{settle} the Busy Beaver function? For a specific small $n$, the statement ``$S(n) = m$'' is in principle decidable by exhaustive search --- but exhaustively running the machines is not the obstacle. The obstacle is proving that the non-halting machines do not halt, and for many machines this is equivalent to proving deep theorems.
+
+This is not a practical limitation but a formal one. Yedidia and Aaronson (2016) constructed an explicit Turing machine with 7,910 states that halts if and only if ZFC is inconsistent \cite{aaronson2016}; later work (notably by O'Connor and the Busy Beaver Challenge, 2023) brought the number down to fewer than 800 states for a machine whose non-halting is independent of ZF. Such machines are, in effect, formal systems disguised as small programs: to determine their behavior you must determine the consistency of the system, which the system itself cannot do (Section~\ref{sec:godel:second} of Chapter 3).
+
+Consequently, no consistent formal system $F$ that extends Peano Arithmetic can determine the true value of $S(n)$ for all $n$. Worse, the failure is explicit: for each such $F$ there is a specific input $n_F$ --- the number of states of $F$'s own G\"odel machine --- at which $F$ provably cannot settle the value, no matter how many axioms or how much computation time $F$ is given. Mathematics can push the frontier with stronger axioms, but the frontier always recedes: for each new system, a new threshold appears beyond which the Busy Beaver again escapes.
+
+\subsubsection*{Relation to G\"odel}
+
+The Busy Beaver function is the incompleteness theorems turned into numbers. Recall the G\"odel machine $M_F$ from the previous section: it searches for a proof of $0=1$ in $F$ and halts if it finds one. If $F$ is consistent, $M_F$ never halts, and $F$ cannot prove that fact. Let $k$ be the number of states of $M_F$. Now suppose $F$ could prove the true value of $S(k)$. Then $F$ would know that $M_F$ --- being a $k$-state machine --- either halts within $S(k)$ steps or never halts. Simulating $M_F$ for $S(k)$ steps is a finite, provably correct computation, so $F$ would conclude that $M_F$ never halts, which (by G\"odel's second theorem) $F$ cannot do. Contradiction. Therefore:
+
+\begin{corollary}
+For any consistent formal system $F$ extending PA, $F$ cannot prove the true value of $S(k)$, where $k$ is the number of states of the G\"odel machine for $F$. In particular, no consistent formal system settles the Busy Beaver function.
+\end{corollary}
+
+This is why the ``limits of mathematics'' bite at such small inputs: the Busy Beaver function is a \emph{skeleton key} for producing true-but-unprovable statements. Given any formal system $F$, one needs only to count the states of its G\"odel machine, and the value of $S$ at that point --- a statement about a tiny program --- is already beyond $F$'s reach. Every formal system, however strong, has a specific, explicit, small Busy Beaver value it can never determine.
+
+The picture that emerges completes the chapter's arc. The halting problem is undecidable --- there is no general method. G\"odel's theorems say the undecidability is intrinsic to formal reasoning. And the Busy Beaver function shows that this abstract failure has a concrete, numerical form: finitely many small programs, an exhaustively enumerable search space, and yet values that recede beyond every axiom system ever written down. The finite contains the infinite.
+
 %======================================================================
 % SECTION 6: CONSEQUENCES
 %======================================================================
@@ -744,7 +844,7 @@ Every static analysis tool faces the same fundamental tradeoff: soundness (no fa
 
 \item \textbf{AI Safety / Interpretability:} Can we build an AI that proves it won't enter an infinite loop? The halting problem says: not in general. This constrains formal verification of AI behavior. However, for specific AI architectures (e.g., transformer networks with finite context), we can sometimes prove termination.
 
-\item \textbf{Busy Beaver and the Limits of Mathematics:} $\Sigma(n)$ (maximum halting steps for $n$-state TM) grows faster than any computable function. Determining $\Sigma(5)$ required proving that a specific 5-state TM runs for 47,176,870 steps — the boundary of what mathematics can currently decide. $\Sigma(6)$ is unknown and likely beyond current mathematics.
+\item \textbf{Busy Beaver and the Limits of Mathematics:} The Busy Beaver functions $\Sigma(n)$ (maximum 1s written) and $S(n)$ (maximum steps) grow faster than every computable function (Section~\ref{sec:halting:busybeaver}). Establishing $S(5) = 47,\!176,\!870$ took decades of ingenious search plus proofs that the non-halting candidates never halt. In 2025, $S(6)$ was computer-verified to be a power tower of height 36,534 --- the largest value ever explicitly determined --- and no formal system can settle the function beyond a point.
 
 \item \textbf{Chaitin's $\Omega$ (Chapter 7):} The halting probability $\Omega = \sum_{p: U(p)\downarrow} 2^{-|p|}$ is a real number that encodes the halting problem. Its bits are algorithmically random and unprovable in any fixed formal system. $\Omega$ is a concrete example of a number that is well-defined but whose digits cannot be computed.
 
@@ -924,7 +1024,11 @@ Implement a quine (a program that prints its own source code) in your favorite p
 1977 & Cousot \& Cousot: Abstract Interpretation — sound approximation of undecidable properties \\ \hline
 1984 & Cousot \& Cousot: Formal definition of abstract interpretation \\ \hline
 2002 & Wolfram: Computational irreducibility; Principle of Computational Equivalence \\ \hline
-2019 & Busy Beaver $\Sigma(5)$ resolved: 47,176,870 steps \\ \hline
+1962 & Rado: defines the Busy Beaver functions $\Sigma(n)$ and $S(n)$ \\ \hline
+1989--2000 & Marxen--Buntrock: $\Sigma(5)=4098$, $S(5)=47{,}176{,}870$; 6-state 119-quadrillion-step record \\ \hline
+2016 & Yedidia--Aaronson: explicit 7,910-state machine whose halting is independent of ZFC \\ \hline
+2024 & Busy Beaver Challenge breaks the ``Collatz barrier''; 6-state machine running $\approx 10^{36534}$ steps \\ \hline
+2025 & Busy Beaver Challenge verifies $S(6)$: a power tower of tens of height 36,534 \\ \hline
 2024 & AI verification tools incorporate undecidability-aware techniques \\ \hline
 \end{tabularx}
 
@@ -949,6 +1053,8 @@ Implement a quine (a program that prints its own source code) in your favorite p
   \item \cite{kleene1936}
   \item \cite{cousot1977}
   \item \cite{myhill1955}
+  \item \cite{rado1962}
+  \item \cite{aaronson2016}
 \end{enumerate}
 
 %======================================================================
@@ -965,6 +1071,9 @@ Implement a quine (a program that prints its own source code) in your favorite p
 \index{Rice's Theorem}
 \index{computational irreducibility}
 \index{Busy Beaver}
+\index{Busy Beaver!champion}
+\index{Busy Beaver!Collatz barrier}
+\index{Busy Beaver!$\Sigma(n)$ and $S(n)$}
 \index{arithmetical hierarchy}
 \index{Turing jump}
 \index{Turing degrees}

@@ -252,12 +252,14 @@ An infinite sequence $X \in \{0,1\}^\omega$ is \emph{Martin-L\"of random} if for
 
 \textbf{Properties of Martin-L\"of randomness:}
 \begin{enumerate}
-\item \textbf{Equivalence to incompressibility:} $X$ is Martin-L\"of random iff there exists $c$ such that $K(X_{1:n}) \ge n - c$ for all $n$ (Schnorr 1973).
+\item \textbf{Equivalence to incompressibility:} $X$ is Martin-L\"of random iff there exists $c$ such that $K(X_{1:n}) \ge n - c$ for all $n$ (Levin 1973; Schnorr 1973).
 \item \textbf{Equivalence to passing statistical tests:} $X$ passes every effective statistical test (this was Martin-L\"of's original definition).
 \item \textbf{Almost all sequences are random:} The set of non-random sequences has Lebesgue measure 0.
 \item \textbf{No random sequence is computable:} If $X$ is computable, $K(X_{1:n}) \le O(\log n)$, so $X$ cannot be random.
 \item \textbf{Randomness is not absolute:} There exist sequences that are random relative to some but not all effective tests.
 \end{enumerate}
+
+An \emph{effective statistical test} is best understood as a computable suspicion: a program that, examining longer and longer initial segments of a sequence, can certify with high confidence that the sequence is not random. The classical tests --- equal frequency of 0s and 1s, absence of long runs, absence of periodicity, low description length --- are all effective tests. A sequence is Martin-L\"of random exactly when it defeats \emph{every} such suspicion at once: no effective test, however clever, ever rejects it. Incompressibility is the special case where the suspicion is ``this sequence has a short description,'' and the Levin--Schnorr theorem says this single suspicion is powerful enough to absorb all the others. The intuition is sweeping: there is only \emph{one} kind of statistical pattern --- structure that a program can exploit --- and any sequence that hides from that one kind is indistinguishable from a fair coin toss in every respect that mathematics can express.
 
 \begin{example}[Non-random Sequences]
 \begin{itemize}

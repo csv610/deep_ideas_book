@@ -5,10 +5,10 @@
 \label{ch:godel}
 
 %======================================================================
-% SECTION 1: THE QUESTION
+% SECTION 1: WHAT IS A FORMAL SYSTEM?
 %======================================================================
-\section{The Question: What Problem Was Humanity Trying to Solve?}
-\label{sec:godel:question}
+\section{What Is a Formal System?}
+\label{sec:godel:formalsystem}
 
 By the early 20th century, mathematics faced a foundational crisis. Paradoxes in set theory (Russell's paradox, 1901) showed that intuitive reasoning about infinite collections leads to contradictions. Hilbert's program (1920s) proposed a solution: formalize all of mathematics in a precise axiomatic system, then prove using \emph{finitary} methods that this system is:
 
@@ -20,17 +20,30 @@ By the early 20th century, mathematics faced a foundational crisis. Paradoxes in
 
 Can mathematics prove every truth? Can a formal system prove its own consistency?
 
-Hilbert believed the answer was yes. He famously declared in 1930: \emph{``Wir müssen wissen, wir werden wissen''} (``We must know, we shall know''). Gödel proved the answer is \emph{no} --- twice.
+Hilbert believed the answer was yes. He famously declared in 1930: \emph{``Wir müssen wissen, wir werden wissen''} (``We must know, we shall know''). Gödel proved the answer is \emph{no} --- twice. To understand why, we first need to understand precisely what a formal system is, and why a whole generation of mathematicians believed that one could be built to contain all of mathematics.
 
-Is there a formal system that captures all mathematical truth? Or are there true statements that can never be proven within the system? And can a system prove its own consistency?
+\subsection{The Anatomy of a Formal System}
+\label{sec:godel:anatomy}
 
-The second of Hilbert's famous 23 problems (1900) asked for a proof of the consistency of the arithmetic axioms. Hilbert believed that such a proof would forever secure mathematics against paradox. When he retired in 1930, his address to the Society of German Scientists and Physicians reiterated his unwavering faith: no mathematical truth would remain unknown. Within a year, a 25-year-old Austrian logician had shattered this vision.
+What, exactly, was the object Hilbert wanted to construct? A \emph{formal system} is a mathematical object made of pure syntax --- a precise, rule-governed language with no meaning attached:
 
-%======================================================================
-% SECTION 2: WHY IT SEEMED IMPOSSIBLE
-%======================================================================
-\section{Why It Seemed Impossible}
-\label{sec:godel:impossible}
+\begin{definition}[Formal System]
+A formal system consists of:
+\begin{enumerate}
+\item An \textbf{alphabet}: a finite set of symbols (e.g., $0, S, +, \times, =, \neg, \to, \forall, (, )$ and variables).
+\item \textbf{Formation rules}: rules for which finite strings of symbols are well-formed \emph{formulas}.
+\item \textbf{Axioms}: a finite list (or finite schema) of formulas taken as starting points.
+\item \textbf{Rules of inference}: mechanical rules for deriving new formulas from old ones (e.g., modus ponens: from $\phi$ and $\phi \to \psi$, derive $\psi$).
+\end{enumerate}
+A \emph{proof} (derivation) is a finite sequence of formulas, each of which is either an axiom or is obtained from earlier formulas by a rule of inference. A \emph{theorem} is the last formula of some proof.
+\end{definition}
+
+The defining feature is that a formal system is \emph{mechanical}: each proof step is a finite, checkable manipulation of symbols, requiring no insight. This is why Hilbert could compare operating with formulas to playing chess --- the rules, not the meaning, do all the work. Peano Arithmetic (PA) is the canonical example: its axioms are Robinson's arithmetic $\mathsf{Q}$ together with the induction schema, and its only rule of inference is modus ponens. Gödel's theorems apply to any formal system that is \emph{consistent} and \emph{strong enough} to express elementary arithmetic. Nothing about such a system, in itself, refers to truth or meaning; those live only in the \emph{interpretation} we give to the symbols.
+
+\subsection{Hilbert's Program: The Three Pillars}
+\label{sec:godel:hilbert}
+
+The second of Hilbert's famous 23 problems (1900) asked for a proof of the consistency of the arithmetic axioms. Hilbert believed that such a proof would forever secure mathematics against paradox. The program had two phases: \emph{axiomatization} (express all mathematics in formal language) and \emph{consistency proving} (use finitary metamathematics to show no contradiction can be derived). When he retired in 1930, his address to the Society of German Scientists and Physicians reiterated his unwavering faith: no mathematical truth would remain unknown. Within a year, a 25-year-old Austrian logician had shattered this vision.
 
 The idea that a formal system could be both complete and consistent was not just hoped for --- it was \emph{assumed}. The alternative was unthinkable:
 
@@ -38,37 +51,12 @@ The idea that a formal system could be both complete and consistent was not just
 \item \textbf{The Intuition of Completeness:} Mathematics discovers eternal truths. A proper formalization should capture \emph{all} of them. Incompleteness would mean mathematics has ``blind spots'' --- true statements that are formally unprovable. This seemed like a defect in the formalism, not in mathematics itself.
 
 \item \textbf{The Intuition of Consistency:} If mathematics is the study of necessary truths, it cannot contain contradictions. But proving consistency \emph{within} the system seemed circular --- you would be using the system to vouch for itself. Hilbert's hope was to use \emph{weaker} (finitary) methods to prove the consistency of stronger systems.
-
-\item \textbf{Self-Reference as Paradox:} The liar paradox (``This statement is false'') shows that self-referential statements break logic. Gödel's insight was to \emph{harness} self-reference, not avoid it. But before Gödel, self-reference in formal systems was considered a bug to be eliminated (Russell's type theory), not a tool.
 \end{enumerate}
-
-``This statement is false.'' If true, it's false. If false, it's true. Classical logic bans such statements. Russell's type theory (1908) stratified propositions to prevent self-reference. Tarski (1933) later showed that a language cannot define its own truth predicate without paradox. Gödel had to \emph{encode} self-reference in arithmetic --- where no one expected it to live.
 
 The prevailing view was that any foundational crisis could be resolved by more careful axiomatization. After all, Zermelo-Fraenkel set theory (1908--1922) had eliminated the known paradoxes. Hilbert's program was the logical next step: prove once and for all that the new foundations were sound.
 
-%======================================================================
-% SECTION 3: HISTORICAL CONTEXT
-%======================================================================
-\section{Historical Context: What Was Known at the Time}
-\label{sec:godel:context}
-
-David Hilbert, the most influential mathematician of his era, proposed: formalize mathematics completely, then prove the formal system consistent using only finitary reasoning (reasoning about concrete symbols, not infinite sets). This would secure mathematics against paradoxes forever. The program had two phases: \emph{axiomatization} (express all mathematics in formal language) and \emph{consistency proving} (use finitary metamathematics to show no contradiction can be derived).
-
-Key precursors to Gödel's breakthrough:
-
-\begin{itemize}
-\item \textbf{1901:} Russell's Paradox destroys Frege's logicism.
-\item \textbf{1908:} Russell's Type Theory; Zermelo's set theory axioms.
-\item \textbf{1910--13:} \emph{Principia Mathematica} (Whitehead \& Russell) --- 2000 pages to derive $1+1=2$.
-\item \textbf{1920s:} Hilbert develops metamathematics (proof theory) as a discipline.
-\item \textbf{1929:} Gödel's \emph{Completeness Theorem} for first-order logic: every valid formula is provable. This gave hope --- maybe \emph{arithmetic} is complete too?
-\item \textbf{1930:} Gödel's PhD (Completeness). At the Königsberg conference, he quietly announces: ``I have a result that shows Hilbert's program is impossible.''
-\item \textbf{1931:} ``Über formal unentscheidbare Sätze der Principia Mathematica und verwandter Systeme I'' --- the Incompleteness Theorems.
-\end{itemize}
-
-Gödel numbering (encoding syntax as arithmetic) is the direct predecessor of Turing's encoding of machines as data. Both rely on: \emph{syntax can be made into data}. Turing read Gödel's 1931 paper and used the same technique for his 1936 paper. The stored-program computer (von Neumann architecture) is a physical realization of this principle: programs are data.
-
-\subsection*{The Pre-Gödel Landscape}
+\subsection{The Pre-Gödel Landscape}
+\label{sec:godel:landscape}
 
 Before 1931, several approaches tried to secure foundations:
 
@@ -81,7 +69,23 @@ Before 1931, several approaches tried to secure foundations:
 
 Gödel's 1929 Completeness Theorem (every valid first-order formula is provable) raised hopes --- but it applied to \emph{first-order logic}, not to arithmetic with induction. The completeness theorem gave a perfect match between semantic validity and syntactic provability for first-order logic. If arithmetic were similarly complete, Hilbert's program would succeed.
 
-\subsection*{Gödel's Life and Context}
+\subsection{The Road to 1931}
+\label{sec:godel:road}
+
+The key developments that converged in Gödel's breakthrough:
+
+\begin{itemize}
+\item \textbf{1901:} Russell's Paradox destroys Frege's logicism.
+\item \textbf{1908:} Russell's Type Theory; Zermelo's set theory axioms.
+\item \textbf{1910--13:} \emph{Principia Mathematica} (Whitehead \& Russell) --- 2000 pages to derive $1+1=2$.
+\item \textbf{1920s:} Hilbert develops metamathematics (proof theory) as a discipline.
+\item \textbf{1929:} Gödel's \emph{Completeness Theorem} for first-order logic: every valid formula is provable. This gave hope --- maybe \emph{arithmetic} is complete too?
+\item \textbf{1930:} Gödel's PhD (Completeness). At the Königsberg conference, he quietly announces: ``I have a result that shows Hilbert's program is impossible.''
+\item \textbf{1931:} ``Über formal unentscheidbare Sätze der Principia Mathematica und verwandter Systeme I'' --- the Incompleteness Theorems.
+\end{itemize}
+
+\subsection{Gödel's Life and Context}
+\label{sec:godel:life}
 
 Kurt Friedrich Gödel was born April 28, 1906 in Brünn, Austria-Hungary (now Brno, Czech Republic). A shy, precocious child, he excelled in mathematics and languages. He entered the University of Vienna in 1924, originally intending to study physics, but was drawn to mathematics and logic.
 
@@ -98,9 +102,26 @@ Gödel's later work included the consistency of the Continuum Hypothesis with ZF
 Gödel's philosophical legacy is as significant as his mathematical one. He wrote extensively on the philosophy of mathematics, defending Platonism against both formalism and intuitionism. His 1951 Gibbs Lecture, ``Some Basic Theorems on the Foundations of Mathematics,'' argued that the incompleteness theorems decisively refute the view that mathematics is a purely formal game. He also contributed to Leibniz scholarship, believing that Leibniz had discovered a universal characteristic (``characteristica universalis'') that could resolve all disputes through calculation --- a vision that anticipates modern formal verification and AI reasoning.
 
 %======================================================================
-% SECTION 4: THE MENTAL LEAP
+% SECTION 2: SELF-REFERENCE
 %======================================================================
-\section{The Mental Leap: The Creative Insight That Changed Everything}
+\section{Self-Reference}
+\label{sec:godel:selfref}
+
+The key to the whole affair was a phenomenon everyone else regarded as a pathology: \emph{self-reference}. A sentence that talks about itself seemed to be precisely the kind of thing that breaks logic. Gödel's masterstroke was to treat self-reference not as a bug to be eliminated but as an instrument to be engineered --- by smuggling it into arithmetic, where no one expected to find it. This section develops the idea; the encoding machinery that makes it fully rigorous is developed in Section~\ref{sec:godel:numbering}.
+
+\subsection{The Liar Paradox}
+\label{sec:godel:liar}
+
+``This statement is false.'' If true, it's false. If false, it's true. Classical logic bans such statements. The paradox is ancient --- Epimenides, a Cretan, reportedly declared that all Cretans are liars --- but its sharp modern form is the self-referential liar sentence $L$: ``$L$ is false.'' Whatever truth value one assigns to $L$, one contradicts oneself. The difficulty is not the sentence's subject matter; it is the sentence's ability to talk about \emph{its own truth value}. Any language that can express self-reference seems to contain a logical time bomb.
+
+\subsection{Self-Reference as a Bug}
+\label{sec:godel:selfref_bug}
+
+Before Gödel, self-reference in formal systems was considered a bug to be eliminated, not a tool. Russell's type theory (1908) stratified propositions to prevent self-reference: a sentence may only quantify over types strictly below its own, so no sentence can refer to itself or to its own truth. Tarski (1933) later showed that a language cannot define its own truth predicate without paradox --- truth in a language can only be defined in a richer meta-language, never in the language itself. The lesson drawn from the tradition was clear: self-reference breaks logic; keep it out.
+
+But the intuition that self-reference \emph{must} be avoided was about to be overturned. Gödel realized that self-reference could be \emph{encoded} in the innocuous language of arithmetic, where no one expected it to live.
+
+\subsection{Gödel's Leap: Harnessing Self-Reference}
 \label{sec:godel:leap}
 
 Statements \emph{about} a formal system (provability, consistency) can be translated into statements \emph{within} the system (arithmetic) by encoding symbols, formulas, and proofs as numbers. The statement ``Formula $\phi$ is provable'' becomes an arithmetic statement about the Gödel number of $\phi$. Then, using diagonalization, construct a sentence $G$ that says ``I am not provable.'' If $G$ is provable, the system is inconsistent. If $G$ is not provable, $G$ is true but unprovable --- the system is incomplete.
@@ -117,7 +138,8 @@ This leap had three audacious components:
 
 Before Gödel, ``true'' and ``provable'' were conflated for formal systems. Hilbert's program \emph{required} them to coincide (completeness). Gödel showed they diverge: there are arithmetic truths that no finite proof can reach. The map is not the territory. More subtly, Gödel showed that \emph{every} consistent, sufficiently strong system suffers this divergence --- it is not a defect of a particular system but a law of mathematical reality.
 
-\subsection*{The Structure of the Proof}
+\subsection{The Structure of the Proof}
+\label{sec:godel:structure}
 
 The proof is a masterpiece of encoding and self-reference:
 
@@ -129,14 +151,47 @@ The proof is a masterpiece of encoding and self-reference:
 \item \textbf{Consistency $\to$ Incompleteness:} If the system could prove its own consistency, it would prove $G$ --- contradiction.
 \end{enumerate}
 
-%======================================================================
-% SECTION 5: THE MATHEMATICS
-%======================================================================
-\section{The Mathematics: Rigorous Development of the Theory}
-\label{sec:godel:math}
+\subsection{The Diagonal Lemma}
+\label{sec:godel:diagonal}
 
-\subsection{Gödel Numbering}
+\begin{lemma}[Diagonal / Fixed Point Lemma]
+For any formula $\phi(v)$ with one free variable, there exists a sentence $G$ such that:
+\[
+\mathsf{PA} \vdash G \leftrightarrow \phi(\ulcorner G \urcorner)
+\]
+\end{lemma}
+
+\begin{proof}[Proof Sketch]
+Define $\mathsf{diag}(n) = \ulcorner \phi(\ulcorner \phi \urcorner) \urcorner$ where $n = \ulcorner \phi \urcorner$. This function is recursive. Let $\delta(v) = \phi(\mathsf{diag}(v))$. Let $d = \ulcorner \delta \urcorner$. Then $G = \delta(d)$ satisfies $G \leftrightarrow \phi(\ulcorner G \urcorner)$.
+\end{proof}
+
+\subsubsection*{Detailed Construction of the Fixed Point}
+
+Step 1: Define the substitution function $\mathsf{subst}(n, m)$. If $n = \ulcorner \phi(v) \urcorner$ (a formula with one free variable), then $\mathsf{subst}(n, m) = \ulcorner \phi(\overline{m}) \urcorner$ (the result of substituting the numeral for $m$ for the free variable in $\phi$). This function is primitive recursive --- substitution is a purely syntactic operation.
+
+Step 2: Define the diagonal function $\mathsf{diag}(n) = \mathsf{subst}(n, n)$. If $n = \ulcorner \phi(v) \urcorner$, then $\mathsf{diag}(n) = \ulcorner \phi(\ulcorner \phi(v) \urcorner) \urcorner = \ulcorner \phi(\overline{n}) \urcorner$.
+
+Step 3: Given $\phi(v)$, define $\delta(v) := \phi(\mathsf{diag}(v))$. Let $d = \ulcorner \delta \urcorner$. Then:
+\[
+G := \delta(d) = \phi(\mathsf{diag}(d))
+= \phi(\ulcorner \delta(d) \urcorner)
+= \phi(\ulcorner G \urcorner)
+\]
+
+So PA proves $G \leftrightarrow \phi(\ulcorner G \urcorner)$ because $\mathsf{diag}(d)$ computes $\ulcorner G \urcorner$ by construction.
+
+The crucial insight: $G$ is literally the same syntactic object as $\phi(\ulcorner G \urcorner)$ after computation of the diagonal function. Self-reference is achieved not by semantic magic but by syntactic construction.
+
+%======================================================================
+% SECTION 3: GÖDEL NUMBERING
+%======================================================================
+\section{Gödel Numbering}
 \label{sec:godel:numbering}
+
+Self-reference is achieved not by magic but by arithmetic. The trick is \emph{Gödel numbering}: turn the symbols, formulas, and proofs of a formal system into natural numbers. Then the system --- which talks about numbers --- can talk about its own syntax. This is the arithmetization of metamathematics: the deepest philosophical questions about mathematics become questions about the arithmetic of natural numbers.
+
+\subsection{Encoding Mathematics}
+\label{sec:godel:encoding}
 
 Let $\mathcal{L}$ be the language of Peano Arithmetic (PA): symbols $\{0, S, +, \times, =, \neg, \to, \forall, (, ), x_1, x_2, \dots\}$.
 
@@ -297,7 +352,8 @@ Every primitive recursive function is representable in PA. Moreover, the represe
 
 This theorem is the bridge between syntax-as-numbers and the internal expressive power of PA. Because all syntactic predicates are primitive recursive, they are representable, which means PA can ``talk about'' its own syntax.
 
-\subsubsection*{The Provability Predicate}
+\subsection{The Provability Predicate}
+\label{sec:godel:provpred}
 
 Define the primitive recursive predicate:
 \begin{itemize}
@@ -315,38 +371,15 @@ Define the primitive recursive predicate:
 
 This is a $\Sigma_1$ formula --- it says ``there exists a natural number that encodes a proof of the formula with Gödel number $y$.'' When $y = \ulcorner \phi \urcorner$, $\mathsf{Prov}(\ulcorner \phi \urcorner)$ asserts ``$\phi$ is provable in PA.''
 
-\subsection{The Diagonal Lemma}
-\label{sec:godel:diagonal}
+%======================================================================
+% SECTION 4: THE INCOMPLETENESS THEOREMS
+%======================================================================
+\section{The Incompleteness Theorems}
+\label{sec:godel:incompleteness}
 
-\begin{lemma}[Diagonal / Fixed Point Lemma]
-For any formula $\phi(v)$ with one free variable, there exists a sentence $G$ such that:
-\[
-\mathsf{PA} \vdash G \leftrightarrow \phi(\ulcorner G \urcorner)
-\]
-\end{lemma}
+All the machinery is now in place. With the encoding of Section~\ref{sec:godel:numbering} and the diagonal lemma of Section~\ref{sec:godel:selfref}, the two theorems follow almost directly.
 
-\begin{proof}[Proof Sketch]
-Define $\mathsf{diag}(n) = \ulcorner \phi(\ulcorner \phi \urcorner) \urcorner$ where $n = \ulcorner \phi \urcorner$. This function is recursive. Let $\delta(v) = \phi(\mathsf{diag}(v))$. Let $d = \ulcorner \delta \urcorner$. Then $G = \delta(d)$ satisfies $G \leftrightarrow \phi(\ulcorner G \urcorner)$.
-\end{proof}
-
-\subsubsection*{Detailed Construction of the Fixed Point}
-
-Step 1: Define the substitution function $\mathsf{subst}(n, m)$. If $n = \ulcorner \phi(v) \urcorner$ (a formula with one free variable), then $\mathsf{subst}(n, m) = \ulcorner \phi(\overline{m}) \urcorner$ (the result of substituting the numeral for $m$ for the free variable in $\phi$). This function is primitive recursive --- substitution is a purely syntactic operation.
-
-Step 2: Define the diagonal function $\mathsf{diag}(n) = \mathsf{subst}(n, n)$. If $n = \ulcorner \phi(v) \urcorner$, then $\mathsf{diag}(n) = \ulcorner \phi(\ulcorner \phi(v) \urcorner) \urcorner = \ulcorner \phi(\overline{n}) \urcorner$.
-
-Step 3: Given $\phi(v)$, define $\delta(v) := \phi(\mathsf{diag}(v))$. Let $d = \ulcorner \delta \urcorner$. Then:
-\[
-G := \delta(d) = \phi(\mathsf{diag}(d))
-= \phi(\ulcorner \delta(d) \urcorner)
-= \phi(\ulcorner G \urcorner)
-\]
-
-So PA proves $G \leftrightarrow \phi(\ulcorner G \urcorner)$ because $\mathsf{diag}(d)$ computes $\ulcorner G \urcorner$ by construction.
-
-The crucial insight: $G$ is literally the same syntactic object as $\phi(\ulcorner G \urcorner)$ after computation of the diagonal function. Self-reference is achieved not by semantic magic but by syntactic construction.
-
-\subsection{First Incompleteness Theorem}
+\subsection{The First Incompleteness Theorem}
 \label{sec:godel:first}
 
 \begin{theorem}[Gödel's First Incompleteness Theorem (1931)]
@@ -385,15 +418,7 @@ Conversely, the undecidability of the halting problem follows from the first inc
 
 The two results are equivalent in the sense that each implies the other. They are the same phenomenon viewed through different lenses: a limit on formal systems (logical lens) and a limit on computation (computability lens).
 
-\subsubsection*{Gödel's Completeness Theorem (1929)}
-
-Before his incompleteness results, Gödel proved a \emph{completeness} theorem: for first-order logic, every semantically valid formula is provable. Formally, if $\models \phi$ (every model satisfies $\phi$), then $\vdash \phi$ (there is a formal proof). This was the first major result connecting semantics (truth in models) with syntax (formal provability) for first-order logic.
-
-The completeness theorem seems to contradict the incompleteness theorem, but there is no contradiction: completeness applies to first-order \emph{logic} (the deductive apparatus), while incompleteness applies to specific \emph{theories} (like PA). The logical rules are complete: everything that is logically valid is provable. But the axioms of PA do not capture all arithmetic truths --- the set of models of PA includes non-standard models (with infinite numbers) where different sentences are true.
-
-This distinction is crucial: completeness of logic does not imply completeness of theories. Gödel himself was surprised by this --- he had hoped that the completeness theorem would help prove the consistency of the Continuum Hypothesis, but his incompleteness results blocked that approach.
-
-\subsection{Second Incompleteness Theorem}
+\subsection{The Second Incompleteness Theorem}
 \label{sec:godel:second}
 
 \begin{definition}[Consistency Statement]
@@ -471,10 +496,12 @@ Löb's theorem also implies that the provability predicate $\mathsf{Prov}$ satis
 
 Löb's theorem says: the only formulas $\phi$ for which the system can prove ``if $\phi$ is provable then $\phi$ is true'' are those that are already theorems. The system cannot prove its own soundness on any non-theorem. This is a precise formalization of the idea that the system cannot ``trust'' itself beyond what it has already proven.
 
-\subsection{Tarski's Undefinability of Truth (1933)}
-\label{sec:godel:tarski}
+\subsection{Why Truth Differs From Proof}
+\label{sec:godel:truth_vs_proof}
 
-Closely related to Gödel's theorems is Tarski's result that a sufficiently expressive language cannot define its own truth predicate.
+The first incompleteness theorem's central phenomenon is the divergence of \emph{truth} from \emph{provability}. The sentence $G$ is true in the standard model $\N$ --- it asserts its own unprovability, and indeed it is unprovable --- yet the system cannot prove it. Why should this be?
+
+The reason is that the two notions live at different logical levels. Provability is a $\Sigma_1$ property: $\mathsf{Prov}(y) \equiv \exists x\, \mathsf{Proof}(x, y)$, where the existence is witnessed by a concrete number --- the code of a proof. Truth, by contrast, is not definable in the language at all. Tarski's theorem makes this precise:
 
 \begin{theorem}[Tarski's Undefinability of Truth]
 There is no formula $\mathsf{True}(v)$ in the language of PA such that for every sentence $\phi$:
@@ -487,9 +514,11 @@ There is no formula $\mathsf{True}(v)$ in the language of PA such that for every
 Suppose such a $\mathsf{True}$ exists. Apply the diagonal lemma to $\neg \mathsf{True}(v)$ to obtain a sentence $L$ such that $\mathsf{PA} \vdash L \leftrightarrow \neg \mathsf{True}(\ulcorner L \urcorner)$. But by the property of $\mathsf{True}$, we have $\mathsf{PA} \vdash \mathsf{True}(\ulcorner L \urcorner) \leftrightarrow L$. Combining, $\mathsf{PA} \vdash L \leftrightarrow \neg L$, a contradiction. Therefore no such truth predicate exists.
 \end{proof}
 
-Tarski's theorem is the formal version of the liar paradox: ``This statement is false'' cannot be expressed within the language without contradiction. While Gödel showed that \emph{provability} is expressible, Tarski showed that \emph{truth} (in the standard model) is not. This hierarchy: truth is not definable in the object language but can be defined in a meta-language (Tarski's hierarchy of languages).
+Tarski's theorem is the formal version of the liar paradox: ``This statement is false'' cannot be expressed within the language without contradiction. While Gödel showed that \emph{provability} is expressible (as the $\Sigma_1$ predicate $\mathsf{Prov}$), Tarski showed that \emph{truth} (in the standard model) is not. Note the contrast: $\mathsf{Prov}$ is a $\Sigma_1$ formula that captures provability, but it does not capture truth --- there are true but unprovable sentences. Truth is a $\Pi_1^1$ notion (truth in the standard model requires quantifying over all subsets of $\N$), far beyond the expressive power of a $\Sigma_1$ formula.
 
-Note the contrast: $\mathsf{Prov}$ is a $\Sigma_1$ formula that captures provability, but it does not capture truth --- there are true but unprovable sentences. Truth is a $\Pi_1^1$ notion (truth in the standard model requires quantifying over all subsets of $\N$), far beyond the expressive power of a $\Sigma_1$ formula.
+There is also a subtlety worth confronting directly: does Gödel's 1929 \emph{completeness} theorem contradict the incompleteness theorem? There is no contradiction: completeness applies to first-order \emph{logic} (the deductive apparatus), while incompleteness applies to specific \emph{theories} (like PA). The logical rules are complete: everything that is logically valid is provable. But the axioms of PA do not capture all arithmetic truths --- the set of models of PA includes non-standard models (with infinite numbers) where different sentences are true.
+
+This distinction is crucial: completeness of logic does not imply completeness of theories. Gödel himself was surprised by this --- he had hoped that the completeness theorem would help prove the consistency of the Continuum Hypothesis, but his incompleteness results blocked that approach.
 
 \subsection{Rosser's Improvement (1936)}
 \label{sec:godel:rosser}
@@ -640,10 +669,15 @@ Goodstein's theorem is true in $\N$ but unprovable in PA. The proof uses transfi
 Kirby and Paris (1982) proved that Goodstein's theorem implies the consistency of PA, establishing it as another natural independent statement.
 
 %======================================================================
-% SECTION 6: CONSEQUENCES
+% SECTION 5: PHILOSOPHICAL CONSEQUENCES
 %======================================================================
-\section{Consequences: What Became Possible}
+\section{Philosophical Consequences}
 \label{sec:godel:consequences}
+
+The incompleteness theorems are among the most consequential results in the intellectual history of mathematics. They did not merely solve a puzzle; they redrew the map of what mathematics, logic, and computation can and cannot do.
+
+\subsection{What Became Possible}
+\label{sec:godel:became_possible}
 
 \begin{enumerate}
 \item \textbf{Death of Hilbert's Program:} No finitary consistency proof for PA exists (since PA cannot prove its own consistency, and any finitary proof would be formalizable in PA). Hilbert's program survives only in a modified form: relative consistency proofs (e.g., Con(ZF) $\to$ Con(ZFC)) and proof-theoretic reductions.
@@ -661,7 +695,8 @@ Kirby and Paris (1982) proved that Goodstein's theorem implies the consistency o
 \item \textbf{Limits of Formal Verification:} Incompleteness imposes fundamental limits on automated theorem proving and program verification. No algorithm can decide all truths of arithmetic, and no formally verified system can prove its own correctness.
 \end{enumerate}
 
-\subsection*{Natural Independence Results}
+\subsection{Natural Independence Results}
+\label{sec:godel:natural_survey}
 
 Gödel's original sentence $G$ is constructed specifically to be unprovable. But many ``natural'' mathematical statements are also independent:
 
@@ -676,11 +711,8 @@ Gödel's original sentence $G$ is constructed specifically to be unprovable. But
 \item \textbf{Borel Determinacy (Martin 1975):} All Borel games are determined. Requires replacement (cannot be proved in Zermelo set theory).
 \end{itemize}
 
-%======================================================================
-% SECTION 7: PHILOSOPHICAL SIGNIFICANCE
-%======================================================================
-\section{Philosophical Significance: What It Taught Us About Knowledge, Computation, or Reality}
-\label{sec:godel:philosophy}
+\subsection{What the Theorems Taught Us}
+\label{sec:godel:lessons}
 
 \begin{enumerate}
 \item \textbf{Truth Transcends Proof:} There are mathematical truths that no formal system can capture. Mathematical knowledge is not reducible to mechanical derivation. This is the \emph{Lucas-Penrose argument} (1961, 1989): human mathematicians ``see'' the truth of $G$, so human minds are not formal systems. (Controversial; see Feferman, Putnam.)
@@ -694,7 +726,8 @@ Gödel's original sentence $G$ is constructed specifically to be unprovable. But
 \item \textbf{Incompleteness as Generative:} Because no system is complete, mathematics is inexhaustible. New axioms (large cardinals, determinacy, forcing axioms) extend the frontier. Incompleteness is why mathematics never ends.
 \end{enumerate}
 
-\subsection*{The Lucas-Penrose Argument: A Detailed Examination}
+\subsection{The Lucas-Penrose Argument: A Detailed Examination}
+\label{sec:godel:lucas_penrose}
 
 In 1961, philosopher John Lucas published ``Minds, Machines, and Gödel,'' arguing that Gödel's theorems prove the human mind is not a Turing machine. The argument was later revived and expanded by physicist Roger Penrose in \emph{The Emperor's New Mind} (1989) and \emph{Shadows of the Mind} (1994).
 
@@ -723,7 +756,8 @@ In 1961, philosopher John Lucas published ``Minds, Machines, and Gödel,'' argui
 
 Most philosophers and logicians today consider the Lucas-Penrose argument unsound. However, it continues to provoke valuable discussion about mechanism, consciousness, and the limits of computation.
 
-\subsection*{Mechanism vs. Platonism}
+\subsection{Mechanism vs. Platonism}
+\label{sec:godel:mechanism_platonism}
 
 The incompleteness theorems intersect with two major philosophical positions in the philosophy of mathematics:
 
@@ -739,10 +773,7 @@ Gödel wrote: ``I am convinced that the incompleteness theorems do not contradic
 
 Kurt Gödel was a mathematical Platonist. He believed that mathematical objects (sets, numbers, functions) exist independently of human thought and that the axioms of set theory describe a real universe. He wrote extensively on the philosophy of mathematics, arguing that intuition plays a role in discovering new axioms (such as large cardinal axioms) that extend the reach of formal systems. His Platonism influenced his work on the constructible universe $L$ and his belief that the Continuum Hypothesis has a definite truth value (unlike the view of formalists, who see it as a matter of choice).
 
-%======================================================================
-% SECTION 8: MODERN LEGACY
-%======================================================================
-\section{Modern Legacy: Where This Idea Appears Today}
+\subsection{Modern Legacy: Where This Idea Appears Today}
 \label{sec:godel:legacy}
 
 \begin{itemize}
@@ -761,6 +792,13 @@ Kurt Gödel was a mathematical Platonist. He believed that mathematical objects 
 \item \textbf{Cryptography and Zero-Knowledge Proofs:} Gödel's encoding of proofs as numbers anticipates the use of encodings in cryptography. Zero-knowledge proofs allow one to prove knowledge of a mathematical proof without revealing it --- a direct descendant of the arithmetization of metamathematics.
 \end{itemize}
 
+\subsection{Influence on Computer Science}
+\label{sec:godel:cs}
+
+The most concrete legacy of the incompleteness theorems is the transformation they enabled in computer science. Gödel numbering (encoding syntax as arithmetic) is the direct predecessor of Turing's encoding of machines as data. Both rely on the same principle: \emph{syntax can be made into data}. Turing read Gödel's 1931 paper and used the same technique for his 1936 paper. The stored-program computer (von Neumann architecture) is a physical realization of this principle: programs are data.
+
+The direct lines of influence run through every chapter of this book:
+
 \begin{itemize}
 \item Chapter 1 (Computation): Gödel numbering $\to$ Turing's encoding of machines.
 \item Chapter 2 (Halting): Incompleteness $\leftrightarrow$ Undecidability. $G$ is true $\leftrightarrow$ halting problem instance.
@@ -769,8 +807,10 @@ Kurt Gödel was a mathematical Platonist. He believed that mathematical objects 
 \item Chapter 11 (Zero Knowledge): Proving knowledge of a proof without revealing it.
 \end{itemize}
 
+Three further consequences deserve emphasis. First, the recursion theorem (Kleene 1938) generalizes the diagonal lemma: for any computable function $f$, there is an index $e$ such that $\varphi_e = \varphi_{f(e)}$. This is the basis of quines, viruses, and self-reproducing programs. Second, Chaitin's $\Omega$ (1975) --- the halting probability --- is a real number that encodes the halting problem; its bits are true but unprovable in any fixed formal system, a quantitative version of incompleteness. Third, incompleteness imposes a fundamental limit on formal verification: no algorithm can decide all truths of arithmetic, and no formally verified system can prove its own correctness. Practical verification works around this by restricting to decidable fragments, but the boundary Gödel drew is absolute.
+
 %======================================================================
-% SECTION 9: LESSONS FOR FUTURE SCIENTISTS
+% SUMMARY
 %======================================================================
 \section{Summary}
 \label{sec:godel:summary}
@@ -786,8 +826,6 @@ This chapter examined Gödel's incompleteness theorems, which demonstrate inhere
 \item Open problems include the classification of natural independent statements beyond PA, the computation of proof-theoretic ordinals for stronger theories, and the relationship between incompleteness and computational complexity.
 \end{itemize}
 
-%======================================================================
-% EXERCISES
 %======================================================================
 % EXERCISES
 %======================================================================
@@ -960,8 +998,10 @@ Formulate the principle that ``provability implies truth'' as $\mathsf{Prov}(\ul
 \index{Gödel numbering}
 \index{diagonal lemma}
 \index{self-reference}
+\index{liar paradox}
 \index{provability}
 \index{consistency}
+\index{formal system}
 \index{Hilbert's program}
 \index{Rosser's theorem}
 \index{Gentzen}
@@ -988,4 +1028,3 @@ Formulate the principle that ``provability implies truth'' as $\mathsf{Prov}(\ul
 \index{recursion theorem}
 \index{$\beta$-function}
 \index{cut elimination}
-

@@ -522,6 +522,37 @@ A surprising connection: if a proof system has the \emph{feasible interpolation}
 
 A landmark result: Krajíček (1997) proved that if NP $\neq$ coNP, then there is no polynomial-time algorithm for the \emph{implication problem} in propositional logic (does $\phi \models \psi$ hold when both formulas have polynomial length?). This shows that the NP $\neq$ coNP question has direct practical consequences for automated reasoning.
 
+\subsection{Approximation Algorithms: The Constructive Response}
+\label{sec:np:approx}
+
+NP-completeness forbids exact, worst-case polynomial algorithms --- but that is a verdict about \emph{exactness}, not about doing useful work. The constructive response of the field is the theory of \emph{approximation algorithms}: relax the demand ``solve it exactly'' to ``solve it provably close to optimally,'' and the hardness dissolves into a quantitative theory of difficulty. The deepest surprise --- and the reason this belongs in the same section as the PCP theorem --- is that the \emph{same} reduction machinery that proves a problem hard also proves that the natural approximation algorithms are exactly as good as anything could be.
+
+\subsubsection*{The Approximation Ratio}
+
+\begin{definition}[Approximation Ratio]
+Let $\Pi$ be an optimization problem and let $\mathsf{OPT}(x)$ denote the optimum value on instance $x$. An algorithm is an $\alpha$-approximation for $\Pi$ if on every instance $x$ it runs in polynomial time and returns a solution of value at least $\mathsf{OPT}(x)/\alpha$ (for maximization) or at most $\alpha \cdot \mathsf{OPT}(x)$ (for minimization).
+\end{definition}
+
+The ratio is a contract between algorithm and analyst: it trades the impossible guarantee of optimality for a provable, multiplicative bound. A \emph{polynomial-time approximation scheme} (PTAS) strengthens this: for every $\epsilon > 0$ there is a $(1+\epsilon)$-approximation running in time polynomial in $|x|$ (for fixed $\epsilon$). An \emph{FPTAS} adds the requirement that the running time is also polynomial in $1/\epsilon$ --- the strongest practical notion of ``arbitrarily close to optimal.''
+
+The ratio reframes the hardness: the question ``is this problem hard?'' becomes ``\emph{how} hard?'' --- a hierarchy of ever-weaker guarantees (a 2-approximation, a $\ln n$-approximation, an $n^{1-\epsilon}$-approximation, no finite ratio at all) that mirrors the hierarchies of earlier chapters. NP-hardness says only where the bottom of this ladder is.
+
+\subsubsection*{Two Canonical Algorithms}
+
+The simplest results already display the defining move. \emph{Vertex cover} has a trivial-looking 2-approximation: take a maximal matching and output all its endpoints. The bound is forced: every edge of a matching must be covered by a distinct vertex, so $\mathsf{OPT}$ is at least the matching size, and the endpoints form a cover of exactly twice that size. Nothing clever --- yet provably within a factor of 2 of optimum.
+
+\emph{Set cover} shows the same move at larger scale. The greedy algorithm --- repeatedly pick the set covering the most uncovered elements --- achieves the ratio $H_n \approx \ln n$, by a classical charging argument: an element covered at stage $i$ pays at most $1/(n - i + 1)$, and these charges telescope into the harmonic series. The ``mental leap'' here is the accounting itself: a bound on the algorithm's cost derived not from the structure of its output but from the \emph{rate at which it consumes the instance}.
+
+\subsubsection*{The Boundary Is Sharp}
+
+The deepest fact is that these bounds are not heuristic --- they are optimal. Feige (1998) proved that set cover admits no $(1-\epsilon)\ln n$-approximation unless $\mathsf{P} = \mathsf{NP}$, exactly matching greedy's $\ln n$; under the Unique Games Conjecture (Khot 2002), vertex cover is pinned at $2-\epsilon$, matching the maximal-matching algorithm, with Dinur-Safra (2002) giving the unconditional $(1.36-\epsilon)$ lower bound. The pattern is the PCP theorem all over again: the reductions that prove hardness also show that the obvious algorithms sit exactly on the boundary of what is possible. Approximation theory is thus not a retreat from the central question but a sharpening of it --- the same completeness spirit, made quantitative.
+
+The boundary also \emph{divides} problems. Some admit a PTAS --- Euclidean TSP (Arora 1996; Mitchell 1996) and Knapsack (FPTAS, Ibarra-Kim 1975) --- while others are APX-hard and admit none unless $\mathsf{P} = \mathsf{NP}$. The distinction is not arbitrary: an FPTAS would, in effect, turn a weakly NP-hard problem into a polynomial one, which is exactly why weakly NP-hard problems (Knapsack, with its pseudo-polynomial dynamic program) are approximable and strongly NP-hard ones are not.
+
+\subsubsection*{Why This Completes the Chapter}
+
+The chapter's arc is now visible end to end: the Question (why are these problems hard), the Leap (reductions and completeness), the negative frontier (PCP hardness), and here the constructive frontier --- the field's answer to ``what do we do?'' is not to give up but to write a new, honest contract with the problem. Approximation algorithms are where the abstract theory of NP-completeness touches operations research, machine learning, and large-scale computation: every modern solver, from CDCL SAT solvers to ILP branch-and-cut, is a cousin of this idea --- an exchange of exactness for tractability, with the trade-off made explicit rather than hidden. It is the book's map-and-territory theme once more: the approximate solution is a different map, but an honest one, and the theory tells us precisely how much of the territory it can be trusted to cover.
+
 %======================================================================
 % SECTION 6: CONSEQUENCES
 %======================================================================
@@ -868,6 +899,13 @@ Implement the $k$-Vertex Cover kernelization algorithm, then apply a branching a
 \index{PCP theorem}
 \index{Dinur's gap amplification}
 \index{approximation algorithms}
+\index{approximation ratio}
+\index{PTAS}
+\index{FPTAS}
+\index{APX}
+\index{vertex cover!2-approximation}
+\index{set cover!greedy}
+\index{APX-hard}
 \index{parameterized complexity}
 \index{W-hierarchy}
 \index{FPT}

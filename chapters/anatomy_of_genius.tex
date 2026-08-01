@@ -1,4 +1,4 @@
-% Chapter 14: The Anatomy of Human Genius
+% Chapter 16: The Anatomy of Human Genius
 % Part V: Epilogue
 
 \chapter{The Anatomy of Human Genius}
@@ -10,7 +10,7 @@
 \section{The Question: What Patterns Unite These Breakthroughs?}
 \label{sec:anatomy:question}
 
-We have traced fourteen breakthroughs across computation, information, difficulty, and coordination. Each chapter asked the same nine questions. Now we ask the meta-question:
+We have traced fifteen breakthroughs across computation, information, difficulty, and coordination. Each chapter asked the same nine questions. Now we ask the meta-question:
 
 What recurring patterns of creativity appear across all these breakthroughs? Can we extract a ``periodic table'' of intellectual revolutions?
 
@@ -72,7 +72,7 @@ The history of creativity research shows a pendulum: from romanticism (genius is
 \section{The Mental Leaps: Nine Recurring Patterns}
 \label{sec:anatomy:patterns}
 
-Across our fifteen chapters, nine cognitive moves appear again and again. They are not steps in a linear process they are \emph{tools} that breakthrough thinkers reach for. The patterns form a toolkit, not a recipe. A single breakthrough may use multiple patterns simultaneously, and the same pattern may manifest differently across domains.
+Across our sixteen chapters, nine cognitive moves appear again and again. They are not steps in a linear process they are \emph{tools} that breakthrough thinkers reach for. The patterns form a toolkit, not a recipe. A single breakthrough may use multiple patterns simultaneously, and the same pattern may manifest differently across domains.
 
 \subsection{1. Change the Representation}
 \label{sec:anatomy:repr}
@@ -102,7 +102,7 @@ Across our fifteen chapters, nine cognitive moves appear again and again. They a
 
 \item \textbf{Lempel-Ziv (Ch. 5):} Variable-length codes $\to$ dictionary-based compression. Instead of assigning codes to symbols, build a dictionary of repeated substrings and encode pointers.
 
-\item \textbf{Differential Privacy (Ch. 10):} Query response $\to$ randomized mechanism. A single bit of output is replaced by a probability distribution over outputs, calibrated to the sensitivity of the query.
+\item \textbf{Differential Privacy (Ch.~\ref{ch:dp}):} Query response $\to$ randomized mechanism. A single bit of output is replaced by a probability distribution over outputs, calibrated to the sensitivity of the query.
 \end{itemize}
 
 \textbf{Pattern:} \emph{Re-representation is the universal solvent.} When stuck, don't push harder change the language. The right representation makes the solution visible.
@@ -160,7 +160,7 @@ Across our fifteen chapters, nine cognitive moves appear again and again. They a
 
 \item \textbf{Bloom Filters (Case Study):} $k$ independent hash functions map each element to $k$ bits. The false positive rate $(1 - e^{-kn/m})^k$ is controlled by the ratio of hash functions to bits.
 
-\item \textbf{Differential Privacy (Ch. 10):} Randomized response adds calibrated noise. The Laplace mechanism adds noise $\text{Lap}(\Delta f / \epsilon)$ to the query output, providing $\epsilon$-differential privacy.
+\item \textbf{Differential Privacy (Ch.~\ref{ch:dp}):} Randomized response adds calibrated noise. The Laplace mechanism adds noise $\text{Lap}(\Delta f / \epsilon)$ to the query output, providing $\epsilon$-differential privacy.
 
 \item \textbf{Shannon (Ch. 5):} Random coding achieves channel capacity. Shannon proved existence of capacity-achieving codes by averaging over random codebooks a probabilistic method argument.
 
@@ -224,7 +224,7 @@ Across our fifteen chapters, nine cognitive moves appear again and again. They a
 
 \item \textbf{PAC Learning (Ch. 8):} Probably Approximately Correct. The learner outputs a hypothesis that is approximately correct with high probability. Both error parameters ($\epsilon, \delta$) are adjustable.
 
-\item \textbf{Differential Privacy (Ch. 10):} $\epsilon$-differential privacy guarantees that the output distribution changes by at most $e^\epsilon$ when any single record changes. The guarantee is probabilistic over the algorithm's randomness.
+\item \textbf{Differential Privacy (Ch.~\ref{ch:dp}):} $\epsilon$-differential privacy guarantees that the output distribution changes by at most $e^\epsilon$ when any single record changes. The guarantee is probabilistic over the algorithm's randomness.
 
 \item \textbf{Miller-Rabin (Ch. 10):} Error probability $< 1/4$ per iteration, reducible to $< 2^{-k}$ by $k$ iterations. The probability that a composite number passes all $k$ tests decreases exponentially.
 
@@ -250,7 +250,7 @@ Across our fifteen chapters, nine cognitive moves appear again and again. They a
 
 \item \textbf{ZK-VMs (Ch. 11):} RISC Zero, SP1 arbitrary code $\to$ ZK proof. The virtual machine executes a program and produces a succinct proof of correct execution, abstracting away the cryptographic complexity.
 
-\item \textbf{Differential Privacy (Ch. 10):} Query interface $\to$ privacy guarantee. The noise mechanism is an abstraction layer that separates the data analyst from the raw data.
+\item \textbf{Differential Privacy (Ch.~\ref{ch:dp}):} Query interface $\to$ privacy guarantee. The noise mechanism is an abstraction layer that separates the data analyst from the raw data.
 
 \item \textbf{PyTorch / JAX (Deep Learning):} Automatic differentiation $\to$ abstraction over gradient computation. The programmer defines a forward pass; the framework computes gradients via autograd.
 
@@ -314,7 +314,7 @@ Across our fifteen chapters, nine cognitive moves appear again and again. They a
 
 \item \textbf{Chaitin (Ch. 7):} ``Randomness'' $\to$ $K(x) \ge |x| - c$. A string is random if it has no description shorter than itself. Kolmogorov complexity $K(x)$ is the length of the shortest program outputting $x$.
 
-\item \textbf{Differential Privacy (Ch. 10):} ``Privacy'' $\to$ $\Pr[\mathcal{M}(D) \in S] \le e^\epsilon \Pr[\mathcal{M}(D') \in S]$. The formalization bounds the information leakage caused by any single individual's data.
+\item \textbf{Differential Privacy (Ch.~\ref{ch:dp}):} ``Privacy'' $\to$ $\Pr[\mathcal{M}(D) \in S] \le e^\epsilon \Pr[\mathcal{M}(D') \in S]$. The formalization bounds the information leakage caused by any single individual's data.
 
 \item \textbf{PAC Learning (Ch. 8):} ``Learning'' $\to$ For all distributions $D$, with probability $1-\delta$, output $h$ such that $\Pr_{x \sim D}[h(x) \neq c(x)] < \epsilon$. The definition captured what it meant to learn from examples.
 
@@ -397,7 +397,7 @@ Encoding / Error-Correction & 6, 10 & $C: \{0,1\}^k \to \{0,1\}^n$, distance $d$
 
 Each signature is a \emph{reusable mathematical technology}. Breakthroughs often \emph{import} a signature from one domain to another. Shannon's entropy came from statistical mechanics; it now governs communication, machine learning, and quantum information. The eigenvector signature moved from physics (vibrating strings, quantum mechanics) to network analysis (eigenvector centrality, recommendation systems). The fixed point signature moved from topology (Brouwer) to logic (G\"odel) to computation (Turing) to distributed systems (consensus). The recursive Bayesian signature moved from control theory (Kalman) to machine learning (Bayesian deep learning, state-space models).
 
-The taxonomy reveals something striking: the fifteen main chapters plus seven case studies span only about twenty distinct mathematical signatures, yet these few signatures generate an enormous diversity of breakthroughs. This suggests that mathematical structure, not domain content, is the fundamental carrier of intellectual progress. A new domain advances primarily by importing and adapting existing signatures, not by inventing entirely new ones.
+The taxonomy reveals something striking: the sixteen main chapters plus seven case studies span only about twenty distinct mathematical signatures, yet these few signatures generate an enormous diversity of breakthroughs. This suggests that mathematical structure, not domain content, is the fundamental carrier of intellectual progress. A new domain advances primarily by importing and adapting existing signatures, not by inventing entirely new ones.
 
 The most powerful breakthroughs occur when a mathematician recognizes that a structure from one domain \emph{is} the same structure in another. Shannon recognized that communication is probabilistic (importing Boltzmann's entropy). Eigenvector centrality recognized that network influence is a Markov chain stationary distribution (importing Perron-Frobenius). G\"odel recognized that proof theory is arithmetic (importing number theory). Kalman recognized that filtering is recursive Bayesian estimation (importing Bayes from statistics, state-space from control). Dantzig recognized that optimization is polytope vertex-walking (importing geometry from linear algebra). Each import transformed the receiving field.
 
@@ -487,7 +487,7 @@ The table also suggests a \emph{completeness} conjecture: perhaps every breakthr
 \section{Summary}
 \label{sec:anatomy:summary}
 
-This chapter synthesized the preceding fourteen chapters into a unified analysis of breakthrough patterns in computer science, mathematics, and related disciplines. The chapter identified nine recurring cognitive patterns across the breakthroughs studied: (1) changing representation, (2) accepting impossibility, (3) introducing randomness, (4) self-reference, (5) probabilistic reasoning, (6) abstraction layers, (7) reduction, (8) formalization, and (9) identifying invariants. Each pattern was illustrated through detailed case studies of seven modern breakthroughs not covered in the main chapters: the Fast Fourier Transform (Cooley--Tukey 1965), the Kalman filter (1960), CRISPR--Cas9 gene editing (2012), the Transformer architecture (Vaswani et al. 2017), the simplex algorithm (Dantzig 1947), backpropagation (Rumelhart, Hinton, Williams 1986), and hash tables with Bloom filters. Cross-cutting themes were identified: the small mathematical core underlying each breakthrough, the role of constraints as creative forcing functions, the cumulative nature of the pattern stack, the fractal recurrence of patterns across scales, and the importance of cross-domain import. The chapter analyzed the timing conditions necessary for breakthrough adoption, noting that many ideas (the FFT known to Gauss in 1805, backpropagation discovered by Werbos in 1974) were anticipated but not adopted until the ecosystem was ready. The concept of exaptation---borrowing a tool designed for one purpose for an entirely different application---was identified as a meta-pattern. The chapter concluded by discussing the relationship between the generation of breakthroughs and their recognition, proposing that the patterns described here constitute both a descriptive account of historical breakthroughs and a prescriptive framework for future research.
+This chapter synthesized the preceding fifteen chapters into a unified analysis of breakthrough patterns in computer science, mathematics, and related disciplines. The chapter identified nine recurring cognitive patterns across the breakthroughs studied: (1) changing representation, (2) accepting impossibility, (3) introducing randomness, (4) self-reference, (5) probabilistic reasoning, (6) abstraction layers, (7) reduction, (8) formalization, and (9) identifying invariants. Each pattern was illustrated through detailed case studies of seven modern breakthroughs not covered in the main chapters: the Fast Fourier Transform (Cooley--Tukey 1965), the Kalman filter (1960), CRISPR--Cas9 gene editing (2012), the Transformer architecture (Vaswani et al. 2017), the simplex algorithm (Dantzig 1947), backpropagation (Rumelhart, Hinton, Williams 1986), and hash tables with Bloom filters. Cross-cutting themes were identified: the small mathematical core underlying each breakthrough, the role of constraints as creative forcing functions, the cumulative nature of the pattern stack, the fractal recurrence of patterns across scales, and the importance of cross-domain import. The chapter analyzed the timing conditions necessary for breakthrough adoption, noting that many ideas (the FFT known to Gauss in 1805, backpropagation discovered by Werbos in 1974) were anticipated but not adopted until the ecosystem was ready. The concept of exaptation---borrowing a tool designed for one purpose for an entirely different application---was identified as a meta-pattern. The chapter concluded by discussing the relationship between the generation of breakthroughs and their recognition, proposing that the patterns described here constitute both a descriptive account of historical breakthroughs and a prescriptive framework for future research.
 
 \section*{Key Takeaways}
 \begin{itemize}
@@ -713,7 +713,7 @@ The hash table's breakthrough was recognizing that \emph{randomized mapping solv
 \section{Cross-Cutting Themes: What the Case Studies Reveal}
 \label{sec:anatomy:cross_cutting}
 
-Across these seven case studies (and the fifteen main chapters), certain meta-patterns emerge that transcend individual breakthroughs:
+Across these seven case studies (and the sixteen main chapters), certain meta-patterns emerge that transcend individual breakthroughs:
 
 \begin{enumerate}
 \item \textbf{The Hard Core Is Small:} Each breakthrough has a tiny mathematical core (FFT: Cooley-Tukey factorization; Kalman: Riccati equation; CRISPR: PAM+seed; Transformer: attention formula; Simplex: pivot + ratio test; Backprop: chain rule; Hash/Bloom: universal hashing). The rest is engineering, generalization, and application. The hard core can often be expressed in a single equation or a few lines of code.
@@ -816,7 +816,7 @@ Build a citation network of breakthroughs colored by the patterns they use. Do b
 \end{exercise}
 
 \begin{exercise}[Computational]
-Given the text of this chapter, extract all instances of each pattern across the fifteen main chapters and seven case studies. Build a bipartite graph connecting breakthroughs to patterns. Compute centrality measures: which breakthrough is most ``pattern-rich''? Which pattern is most ``ubiquitous''?
+Given the text of this chapter, extract all instances of each pattern across the sixteen main chapters and seven case studies. Build a bipartite graph connecting breakthroughs to patterns. Compute centrality measures: which breakthrough is most ``pattern-rich''? Which pattern is most ``ubiquitous''?
 \end{exercise}
 
 \begin{exercise}[Research]

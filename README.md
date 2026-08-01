@@ -8,7 +8,7 @@ A scholarly monograph examining the foundational ideas that shaped modern comput
 
 ## Overview
 
-Fourteen chapters explore breakthroughs spanning:
+Sixteen chapters explore breakthroughs spanning:
 
 - **Computability** — Turing machines, λ-calculus, the Church--Turing Thesis
 - **Undecidability** — The halting problem, Gödel's incompleteness theorems, Rice's Theorem
@@ -18,6 +18,8 @@ Fourteen chapters explore breakthroughs spanning:
 - **Cryptography** — Public-key systems, zero-knowledge proofs, post-quantum schemes
 - **Distributed computing** — Consensus protocols, the FLP impossibility theorem
 - **Interactive proofs** — IP = PSPACE, multi-prover systems
+- **Randomized computation** — Probabilistic algorithms, the polynomial hierarchy of randomness
+- **Privacy** — Differential privacy and its information-theoretic foundations
 
 Each chapter develops the relevant mathematics rigorously, situating results within their historical and conceptual context.
 
@@ -27,8 +29,10 @@ Each chapter develops the relevant mathematics rigorously, situating results wit
 |------|-------|----------|
 | I | The Nature of Computation | 1--4 |
 | II | Information | 5--7 |
-| III | Difficulty and Coordination | 8--13 |
-| IV | Epilogue | 14 |
+| III | Difficulty and Coordination | 8--15 |
+| IV | Epilogue | 16 |
+
+Six appendices follow: the Mind Map (reading paths and the science of learning), a historical timeline, biographical sketches, mathematical prerequisites, further reading, and selected exercise solutions.
 
 ## Intended Audience
 
@@ -50,6 +54,8 @@ make pdf        # Build the PDF
 make clean      # Remove build artifacts
 make check      # Verify compilation
 ```
+
+A pre-built PDF is available from the [latest release](https://github.com/csv610/deep_ideas_book/releases/latest).
 
 ## Citation
 

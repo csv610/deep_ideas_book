@@ -60,18 +60,20 @@ Shannon was born in Petoskey, Michigan, and grew up in Gaylord. He built model a
 
 Beyond his technical work, Shannon was a playful inventor. He built a maze-solving mouse (``Theseus''), a juggling machine, the ``Ultimate Machine'' (a box with a switch that turns itself off), a Roman numeral calculator (THROBAC), and a flame-throwing trumpet. He rode a unicycle through Bell Labs hallways while juggling. His playful spirit was inseparable from his creativity.
 
-1948: ``A Mathematical Theory of Communication'' — the founding paper of information theory. Vannevar Bush described it as ``one of the greatest works of the century.''
+1948: ``A Mathematical Theory of Communication'' --- the founding paper of information theory \cite{Shannon1948}. Vannevar Bush described it as ``one of the greatest works of the century.''
 
 Key precursors:
 
 \begin{itemize}
 \item \textbf{1920s:} Nyquist (telegraph speed), Hartley (``amount of information'' $\propto \log(\text{number of symbols})$).
-\item \textbf{1928:} Hartley's formula: $H = n \log s$ ($n$ symbols, $s$ choices each) — but only for \emph{equiprobable} symbols, no noise.
-\item \textbf{1930s:} Wiener (cybernetics, feedback, stochastic processes) — Wiener's work on prediction theory heavily influenced Shannon's approach to noise.
-\item \textbf{1940:} Shannon's PhD thesis on genetics — showing his pattern of applying mathematical tools from one field to another.
+\item \textbf{1928:} Hartley's formula: $H = n \log s$ ($n$ symbols, $s$ choices each) --- but only for \emph{equiprobable} symbols, no noise.
+\item \textbf{1930s:} Wiener (cybernetics, feedback, stochastic processes) --- Wiener's work on prediction theory heavily influenced Shannon's approach to noise.
+\item \textbf{1940:} Shannon's PhD thesis on genetics --- showing his pattern of applying mathematical tools from one field to another.
 \item \textbf{1943:} Shannon meets Turing at Bell Labs; they discuss ``machines that think'' and cryptography. They shared tea and discussed the Turing machine, leading Shannon to think about communication between machines.
-\item \textbf{1948:} Shannon's two-part paper in \emph{Bell System Technical Journal} — 55 pages that created a field. It appeared in July and October 1948. By 1949, Warren Weaver had popularized it in a book version that added the famous diagram: Source $\to$ Transmitter $\to$ Channel $\to$ Receiver $\to$ Destination.
+\item \textbf{1948:} Shannon's two-part paper in \emph{Bell System Technical Journal} --- 55 pages that created a field. It appeared in July and October 1948. By 1949, Warren Weaver had popularized it in a book version that added the famous diagram: Source $\to$ Transmitter $\to$ Channel $\to$ Receiver $\to$ Destination \cite{Shannon1949}.
 \end{itemize}
+
+Standard references: Cover and Thomas \cite{coverthomas2006}, MacKay \cite{MacKay1999}, and the Kolmogorov complexity perspective \cite{kolmogorov1965}.
 
 Shannon, like Turing, analyzed a human activity (communication) and extracted a mathematical essence. Turing asked ``What is a mechanical procedure?'' Shannon asked ``What is a message?'' Both answered by \emph{stripping away meaning} — syntax without semantics.
 
@@ -88,7 +90,7 @@ Information is not \emph{meaning} — it is \emph{choice}. The information conte
 This leap had three revolutionary components:
 
 \begin{enumerate}
-\item \textbf{Meaning Is Explicitly Discarded:} ``The semantic aspects of communication are irrelevant to the engineering problem.'' (Shannon 1948) A random string and a Shakespeare sonnet of the same length have the \emph{same} information content if drawn from the same distribution. This was the most controversial move — and the most productive.
+\item \textbf{Meaning Is Explicitly Discarded:} ``The semantic aspects of communication are irrelevant to the engineering problem.'' (Shannon 1948 \cite{Shannon1948}) A random string and a Shakespeare sonnet of the same length have the \emph{same} information content if drawn from the same distribution. This was the most controversial move --- and the most productive.
 
 \item \textbf{Entropy as the Measure:} Borrowing from statistical mechanics (Boltzmann, Gibbs), Shannon defined the information of a random variable $X$ with distribution $p(x)$ as:
 \[

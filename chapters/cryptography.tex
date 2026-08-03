@@ -61,14 +61,14 @@ Even after Diffie and Hellman published their key exchange, many experts doubted
 \label{sec:crypto:context}
 
 \begin{itemize}
-\item \textbf{1974:} Ralph Merkle (Berkeley undergrad) proposes \emph{public-key cryptography} in a class project (rejected initially). Publishes 1978.
-\item \textbf{1976:} Whitfield Diffie \& Martin Hellman (Stanford): ``New Directions in Cryptography'' — public-key key exchange (Diffie-Hellman), digital signatures, one-way functions.
-\item \textbf{1977:} Rivest, Shamir, Adleman (MIT): RSA — first practical public-key encryption + signatures.
+\item \textbf{1974:} Ralph Merkle (Berkeley undergrad) proposes \emph{public-key cryptography} in a class project (rejected initially). Publishes 1978 \cite{Merkle1978}.
+\item \textbf{1976:} Whitfield Diffie \& Martin Hellman (Stanford): ``New Directions in Cryptography'' --- public-key key exchange (Diffie-Hellman), digital signatures, one-way functions \cite{DiffieHellman1976}.
+\item \textbf{1977:} Rivest, Shamir, Adleman (MIT): RSA --- first practical public-key encryption + signatures \cite{RSA1978}.
 \item \textbf{1973--1977 (Classified):} James Ellis, Clifford Cocks, Malcolm Williamson (GCHQ, UK) independently invent public-key crypto, DH, RSA. Declassified 1997.
-\item \textbf{1985:} Koblitz, Miller: Elliptic Curve Cryptography (ECC) — smaller keys, faster.
-\item \textbf{1988:} ElGamal: Encryption variant of DH.
-\item \textbf{2000s:} Pairing-based crypto (Boneh-Franklin IBE, BLS signatures).
-\item \textbf{2010s:} Post-quantum crypto (lattices, isogenies, codes, hashes).
+\item \textbf{1985:} Koblitz, Miller: Elliptic Curve Cryptography (ECC) --- smaller keys, faster \cite{Koblitz1987,Miller1985}.
+\item \textbf{1988:} ElGamal: Encryption variant of DH \cite{ElGamal1985}.
+\item \textbf{2000s:} Pairing-based crypto (Boneh-Franklin IBE, BLS signatures) \cite{BonehFranklin2001,BonehLynnShacham2001}.
+\item \textbf{2010s:} Post-quantum crypto (lattices, isogenies, codes, hashes) \cite{NISTPQC2024}.
 \end{itemize}
 
 The story of public-key cryptography is remarkable for its simultaneous discovery. Three groups — Merkle, Diffie-Hellman, and the classified GCHQ team — converged on the same concept within a few years, each approaching it from a different angle. This phenomenon (multiple discovery) is common in science (calculus, evolution by natural selection, the oxygen theory of combustion) but unusually condensed here: the GCHQ breakthroughs (1973-1977), Merkle's class project (1974), and Diffie-Hellman's academic publication (1976) all occurred within a span of four years, entirely independently.
@@ -82,11 +82,11 @@ The story of public-key cryptography is remarkable for its simultaneous discover
 Key figures:
 
 \begin{itemize}
-\item \textbf{Diffie \& Hellman:} Visionaries who saw the \emph{concept} (key exchange, signatures).
-\item \textbf{Rivest, Shamir, Adleman:} Found the \emph{trapdoor} (factoring).
-\item \textbf{Merkle:} Invented Merkle puzzles (pre-DH key exchange) and Merkle trees.
+\item \textbf{Diffie \& Hellman:} Visionaries who saw the \emph{concept} (key exchange, signatures) \cite{DiffieHellman1976}.
+\item \textbf{Rivest, Shamir, Adleman:} Found the \emph{trapdoor} (factoring) \cite{RSA1978}.
+\item \textbf{Merkle:} Invented Merkle puzzles (pre-DH key exchange) and Merkle trees \cite{Merkle1978}.
 \item \textbf{GCHQ team:} Did it first, in secret. Ellis (concept), Cocks (RSA), Williamson (DH).
-\item \textbf{Koblitz \& Miller:} Independently proposed elliptic curve groups for crypto (1985).
+\item \textbf{Koblitz \& Miller:} Independently proposed elliptic curve groups for crypto (1985) \cite{Koblitz1987,Miller1985}.
 \end{itemize}
 
 Whitfield Diffie (b. 1944) began his career at MIT working on symbolic mathematics (MACSYMA). Fascinated by the key distribution problem, he independently began exploring public-key cryptography in the early 1970s. His famous 1976 paper with Martin Hellman, ``New Directions in Cryptography,'' is one of the most influential papers in computer science. Diffie served as Chief Security Officer at Sun Microsystems and later at ICANN. He won the Turing Award in 2015 with Hellman.

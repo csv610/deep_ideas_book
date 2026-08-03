@@ -59,26 +59,26 @@ The challenge of error-correcting codes mirrors the fundamental tension in commu
 \label{sec:ec:context}
 
 \begin{itemize}
-\item \textbf{1948:} Shannon proves capacity exists; random codes achieve it.
-\item \textbf{1950:} Hamming invents (7,4) Hamming code — first perfect single-error-correcting code. Algebraic coding theory born.
-\item \textbf{1954--57:} Golay codes (perfect binary and ternary).
-\item \textbf{1959--60:} Bose-Chaudhuri-Hocquenghem (BCH) codes; Reed-Solomon codes (non-binary, burst-error correction).
+\item \textbf{1948:} Shannon proves capacity exists; random codes achieve it \cite{Shannon1948}.
+\item \textbf{1950:} Hamming invents (7,4) Hamming code --- first perfect single-error-correcting code. Algebraic coding theory born \cite{Hamming1950}.
+\item \textbf{1954--57:} Golay codes (perfect binary and ternary) \cite{Golay1949}.
+\item \textbf{1959--60:} Bose-Chaudhuri-Hocquenghem (BCH) codes; Reed-Solomon codes (non-binary, burst-error correction) \cite{ReedSolomon1960}.
 \item \textbf{1960:} Peterson: Decoding algorithm for BCH codes.
-\item \textbf{1966:} Forney: Concatenated codes (inner + outer) $\to$ exponentially decreasing error probability with polynomial complexity.
-\item \textbf{1967:} Gallager: LDPC codes (forgotten until 1990s).
-\item \textbf{1973:} Viterbi algorithm (for convolutional codes).
-\item \textbf{1993:} Berrou, Glavieux, Thitimajshima: Turbo codes — near capacity with iterative decoding.
-\item \textbf{1996:} MacKay, Neal; Richardson, Urbanke: Rediscovery of LDPC codes.
-\item \textbf{2009:} Arıkan: Polar codes — first \emph{provably} capacity-achieving for symmetric channels with explicit construction and $O(n \log n)$ decoding.
+\item \textbf{1966:} Forney: Concatenated codes (inner + outer) $\to$ exponentially decreasing error probability with polynomial complexity \cite{Forney1966}.
+\item \textbf{1967:} Gallager: LDPC codes (forgotten until 1990s) \cite{Gallager1963}.
+\item \textbf{1973:} Viterbi algorithm (for convolutional codes) \cite{Viterbi1967}.
+\item \textbf{1993:} Berrou, Glavieux, Thitimajshima: Turbo codes --- near capacity with iterative decoding \cite{Berrou1993}.
+\item \textbf{1996:} MacKay, Neal; Richardson, Urbanke: Rediscovery of LDPC codes \cite{gallager1968}.
+\item \textbf{2009:} Ar{\i}kan: Polar codes --- first \emph{provably} capacity-achieving for symmetric channels with explicit construction and $O(n \log n)$ decoding \cite{Arikan2009}.
 \end{itemize}
 
 Key figures:
 \begin{itemize}
-\item \textbf{Richard Hamming (1915--1998):} Bell Labs. Frustrated by computer crashes on weekends — wanted automatic error correction.
-\item \textbf{Irving Reed \& Gustave Solomon (1960):} Polynomial-based codes over finite fields. Foundation of CDs, DVDs, QR codes, DSL, RAID.
-\item \textbf{Robert Gallager (1931--2021):} MIT. PhD thesis (1963) invented LDPC codes and iterative message passing. Ignored for 30 years.
-\item \textbf{Claude Berrou (1951--):} Telecom Bretagne. Turbo codes (1993) shocked the community — ``too good to be true.''
-\item \textbf{Erdal Arıkan (1958--):} Bilkent. Polar codes (2009) — channel polarization, deterministic construction.
+\item \textbf{Richard Hamming (1915--1998):} Bell Labs. Frustrated by computer crashes on weekends --- wanted automatic error correction \cite{Hamming1950}.
+\item \textbf{Irving Reed \& Gustave Solomon (1960):} Polynomial-based codes over finite fields. Foundation of CDs, DVDs, QR codes, DSL, RAID \cite{ReedSolomon1960}.
+\item \textbf{Robert Gallager (1931--2021):} MIT. PhD thesis (1963) invented LDPC codes and iterative message passing. Ignored for 30 years \cite{Gallager1963,gallager1968}.
+\item \textbf{Claude Berrou (1951--):} Telecom Bretagne. Turbo codes (1993) shocked the community --- ``too good to be true'' \cite{Berrou1993}.
+\item \textbf{Erdal Ar{\i}kan (1958--):} Bilkent. Polar codes (2009) --- channel polarization, deterministic construction \cite{Arikan2009}.
 \end{itemize}
 
 Richard Hamming joined Bell Labs in 1946, working on the Bell Model V relay computer — one of the largest electromechanical computers ever built. The machine ran complex calculations unattended over weekends, but parity-check circuits would detect errors and halt the machine. When Hamming arrived Monday morning, he would find the machine stopped and have to reload the program from scratch. Frustrated, he asked: ``If the machine can detect an error, why can't it locate and correct it?'' This question led directly to the first error-correcting codes.
